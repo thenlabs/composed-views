@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Tests;
+namespace NubecuLabs\ComposedViews\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Andaniel05\PyramidalTests\Utils\StaticVarsInjectionTrait;
