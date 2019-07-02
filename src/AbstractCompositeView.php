@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace NubecuLabs\ComposedViews;
 
+use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\CompositeComponentInterface;
 use NubecuLabs\Components\CompositeComponentTrait;
 
@@ -13,4 +14,11 @@ use NubecuLabs\Components\CompositeComponentTrait;
 abstract class AbstractCompositeView extends AbstractView implements CompositeComponentInterface
 {
     use CompositeComponentTrait;
+
+    public function validateChild(ComponentInterface $child): bool
+    {
+        return $child instanceof AbstractView ?
+            true : false
+        ;
+    }
 }
