@@ -1,6 +1,14 @@
 <?php
 
+use NubecuLabs\Components\ComponentInterface;
+
 createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php', function () {
+    test('is instance of NubecuLabs\Components\ComponentInterface', function () {
+        $view = $this->createMock($this->getViewClass());
+
+        $this->assertInstanceOf(ComponentInterface::class, $view);
+    });
+
     testCase('the render() method returns result for string convertion', function () {
         setUp(function () {
             $this->result = randomString();
