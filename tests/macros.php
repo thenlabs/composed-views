@@ -3,34 +3,71 @@
 use NubecuLabs\Components\ComponentInterface;
 
 createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php', function () {
-    test('is instance of NubecuLabs\Components\ComponentInterface', function () {
-        $view = $this->createMock($this->getViewClass());
-
-        $this->assertInstanceOf(ComponentInterface::class, $view);
-    });
-
-    testCase('the render() method returns result for string convertion', function () {
+    testCase("it is created a new view component", function () {
         setUp(function () {
-            $this->result = randomString();
-
-            $this->view = $this->getMockBuilder($this->getViewClass())
-                ->setMethods(['render'])
-                ->getMock();
-            $this->view->method('render')->willReturn($this->result);
+            $this->component = $this->getMockForAbstractClass($this->getViewClass());
         });
 
-        test(function () {
-            $this->assertSame($this->result, strval($this->view));
+        test('is instance of NubecuLabs\Components\ComponentInterface', function () {
+            $this->assertInstanceOf(ComponentInterface::class, $this->component);
         });
 
-        test(function () {
-            $this->assertSame($this->result, (string) $this->view);
+        testCase('__toString() returns result of the render() method', function () {
+            setUp(function () {
+                $this->result = randomString();
+
+                $this->view = $this->getMockBuilder($this->getViewClass())
+                    ->setMethods(['render'])
+                    ->getMockForAbstractClass();
+                $this->view->method('render')->willReturn($this->result);
+            });
+
+            test(function () {
+                $this->assertSame($this->result, strval($this->view));
+            });
+
+            test(function () {
+                $this->assertSame($this->result, (string) $this->view);
+            });
+
+            test(function () {
+                echo $this->view;
+
+                $this->expectOutputString($this->result);
+            });
         });
 
-        test(function () {
-            echo $this->view;
+        test('render() returns result of getView()', function () {
+            $view = randomString();
 
-            $this->expectOutputString($this->result);
+            $component = $this->getMockBuilder($this->getViewClass())
+                ->setMethods(['getView'])
+                ->getMockForAbstractClass();
+            $component->expects($this->once())
+                ->method('getView')
+                ->willReturn($view)
+            ;
+
+            $this->assertSame($view, $component->render());
+        });
+
+        testCase('it is assigned a custom view by the user', function () {
+            setUp(function () {
+                $this->view = randomString();
+
+                $this->component = $this->getMockBuilder($this->getViewClass())
+                    ->setMethods(['getView'])
+                    ->getMockForAbstractClass();
+                $this->component->expects($this->never())
+                    ->method('getView')
+                ;
+
+                $this->component->setView($this->view);
+            });
+
+            test('render() returns the user view', function () {
+                $this->assertSame($this->view, $this->component->render());
+            });
         });
     });
 });
