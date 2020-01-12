@@ -50,24 +50,5 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             $this->assertSame($view, $component->render());
         });
-
-        testCase('it is assigned a custom view by the user', function () {
-            setUp(function () {
-                $this->view = randomString();
-
-                $this->component = $this->getMockBuilder($this->getViewClass())
-                    ->setMethods(['getView'])
-                    ->getMockForAbstractClass();
-                $this->component->expects($this->never())
-                    ->method('getView')
-                ;
-
-                $this->component->setView($this->view);
-            });
-
-            test('render() returns the user view', function () {
-                $this->assertSame($this->view, $this->component->render());
-            });
-        });
     });
 });
