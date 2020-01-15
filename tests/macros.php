@@ -12,6 +12,22 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->assertInstanceOf(ComponentInterface::class, $this->component);
         });
 
+        test('render() returns result of getView()', function () {
+            $view = randomString();
+            $args = range(0, mt_rand(0, 10));
+
+            $component = $this->getMockBuilder($this->getViewClass())
+                ->setMethods(['getView'])
+                ->getMockForAbstractClass();
+            $component->expects($this->once())
+                ->method('getView')
+                ->with($this->equalTo($args))
+                ->willReturn($view)
+            ;
+
+            $this->assertSame($view, $component->render($args));
+        });
+
         testCase('__toString() returns result of the render() method', function () {
             setUp(function () {
                 $this->result = randomString();
@@ -35,20 +51,6 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
                 $this->expectOutputString($this->result);
             });
-        });
-
-        test('render() returns result of getView()', function () {
-            $view = randomString();
-
-            $component = $this->getMockBuilder($this->getViewClass())
-                ->setMethods(['getView'])
-                ->getMockForAbstractClass();
-            $component->expects($this->once())
-                ->method('getView')
-                ->willReturn($view)
-            ;
-
-            $this->assertSame($view, $component->render());
         });
     });
 });

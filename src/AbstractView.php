@@ -14,11 +14,14 @@ abstract class AbstractView implements ComponentInterface
 {
     use ComponentTrait;
 
-    abstract protected function getView(array $data): string;
+    abstract protected function getView(array $data = []): string;
 
+    /**
+     * @final
+     */
     public function render(array $data = []): string
     {
-        return $this->getView(array_merge([], $data));
+        return $this->getView($data);
     }
 
     public function __toString()
