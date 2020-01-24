@@ -6,6 +6,7 @@ namespace NubecuLabs\ComposedViews;
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\ComponentTrait;
 use NubecuLabs\ComposedViews\Event\RenderEvent;
+use Closure;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -29,5 +30,10 @@ abstract class AbstractView implements ComponentInterface
     public function __toString()
     {
         return $this->render();
+    }
+
+    public function addFilter(callable $callback): void
+    {
+        $this->on('render', $callback);
     }
 }

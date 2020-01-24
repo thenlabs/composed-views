@@ -31,7 +31,7 @@ class RenderEvent extends Event
         return $this->view ? $this->view : $this->pageCrawler->saveHTML();
     }
 
-    public function setView(string $view): void
+    public function setView(?string $view): void
     {
         $this->view = $view;
     }
