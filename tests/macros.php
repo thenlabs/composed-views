@@ -105,7 +105,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 });
             });
 
-            test('the render result contains filter changes', function () {
+            test('the render result contains changes of the filter', function () {
                 $crawler = new HtmlPageCrawler($this->view->render());
 
                 $this->assertCount(1, $crawler->filter("div[{$this->attrName}=\"{$this->attrValue}\"]"));
