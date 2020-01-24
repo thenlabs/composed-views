@@ -5,6 +5,7 @@ namespace NubecuLabs\ComposedViews;
 
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\ComponentTrait;
+use NubecuLabs\ComposedViews\Event\RenderEvent;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -16,12 +17,13 @@ abstract class AbstractView implements ComponentInterface
 
     abstract protected function getView(array $data = []): string;
 
-    /**
-     * @final
-     */
     public function render(array $data = []): string
     {
-        return $this->getView($data);
+        $renderEvent = new RenderEvent($this->getView($data));
+
+        $this->dispatchEvent('render', $renderEvent);
+
+        return $renderEvent->getView();
     }
 
     public function __toString()

@@ -14,7 +14,9 @@
         "php": "^7.2"
     },
     "require": {
-        "nubeculabs/components": "dev-master"
+        "nubeculabs/components": "dev-master",
+        "artyuum/html-element": "^2.0",
+        "wa72/htmlpagedom": "^2.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
