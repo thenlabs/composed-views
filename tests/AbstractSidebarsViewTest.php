@@ -34,37 +34,58 @@ testCase('AbstractSidebarsViewTest.php', function () {
         test('getSidebars() returns an empty array', function () {
             $this->assertEmpty($this->sidebarsView->getSidebars());
         });
+
+        test('getSidebar($name) returns null when not exists none sidebar with that name', function () {
+            $this->assertNull($this->sidebarsView->getSidebar(uniqid()));
+        });
     });
 
-    testCase('exists a sidebars view that specify two sidebars across getSidebarsNames() method', function () {
+    testCase('exists a sidebars view that specify two sidebars', function () {
         setUp(function () {
-            $this->name1 = $name1 = uniqid();
-            $this->name2 = $name2 = uniqid();
+            $this->name1 = uniqid();
+            $this->name2 = uniqid();
 
-            $this->sidebarsView = (new ClassBuilder)->extends(AbstractSidebarsView::class)
+            $this->classBuilder = (new ClassBuilder)->extends(AbstractSidebarsView::class)
                 ->addMethod('getView')
                     ->setAccess('protected')
                     ->setClosure(function (array $data = []): string {
                         return '';
                     })
-                ->end()
-                ->addMethod('getSidebarsNames')
-                    ->setAccess('public')
-                    ->setClosure(function () use ($name1, $name2): array {
-                        return [$name1, $name2];
-                    })
-                ->end()
-                ->newInstance();
+                ->end();
         });
 
-        useMacro('is a composite view');
+        testCase('across getSidebarsNames() method', function () {
+            setUp(function () {
+                $name1 = $this->name1;
+                $name2 = $this->name2;
 
-        test('the view has the expected sidebars', function () {
-            $sidebars = $this->sidebarsView->getSidebars();
+                $this->classBuilder
+                    ->addMethod('getSidebarsNames')
+                        ->setAccess('public')
+                        ->setClosure(function () use ($name1, $name2): array {
+                            return [$name1, $name2];
+                        })
+                    ->end();
 
-            $this->assertCount(2, $sidebars);
-            $this->assertEquals("sidebar-{$this->name1}", $sidebars[0]->getName());
-            $this->assertEquals("sidebar-{$this->name2}", $sidebars[1]->getName());
+                $this->sidebarsView = $this->classBuilder->newInstance();
+            });
+
+            useMacro('is a composite view');
+
+            test('the view has the expected sidebars', function () {
+                $sidebars = $this->sidebarsView->getSidebars();
+
+                $this->assertCount(2, $sidebars);
+                $this->assertEquals("sidebar-{$this->name1}", $sidebars[0]->getName());
+                $this->assertEquals("sidebar-{$this->name2}", $sidebars[1]->getName());
+            });
+
+            test('getSidebar($name) returns the expected sidebar', function () {
+                $sidebar2 = $this->sidebarsView->getSidebar($this->name2);
+
+                $this->assertInstanceOf(Sidebar::class, $sidebar2);
+                $this->assertEquals("sidebar-{$this->name2}", $sidebar2->getName());
+            });
         });
     });
 });

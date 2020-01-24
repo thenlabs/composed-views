@@ -26,6 +26,13 @@ abstract class AbstractSidebarsView extends AbstractCompositeView
         }, false);
     }
 
+    public function getSidebar(string $name): ?Sidebar
+    {
+        return $this->findChild(function ($child) use ($name) {
+            return $child->getName() === "sidebar-{$name}" ? true : false;
+        }, false);
+    }
+
     public function getSidebarsNames(): array
     {
         return [];
