@@ -35,6 +35,6 @@ abstract class AbstractSidebarsView extends AbstractCompositeView
 
     public function getSidebarsNames(): array
     {
-        return [];
+        return isset($this->sidebarsNames) ? $this->sidebarsNames : [];
     }
 }

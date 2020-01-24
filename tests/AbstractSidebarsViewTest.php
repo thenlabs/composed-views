@@ -12,12 +12,6 @@ setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
 testCase('AbstractSidebarsViewTest.php', function () {
-    createMacro('is a composite view', function () {
-        test('is a composite view', function () {
-            $this->assertInstanceOf(AbstractCompositeView::class, $this->sidebarsView);
-        });
-    });
-
     testCase('exists a sidebars view that not specify none sidebar name', function () {
         setUp(function () {
             $this->sidebarsView = new class extends AbstractSidebarsView
@@ -29,7 +23,9 @@ testCase('AbstractSidebarsViewTest.php', function () {
             };
         });
 
-        useMacro('is a composite view');
+        test('is a composite view', function () {
+            $this->assertInstanceOf(AbstractCompositeView::class, $this->sidebarsView);
+        });
 
         test('getSidebars() returns an empty array', function () {
             $this->assertEmpty($this->sidebarsView->getSidebars());
@@ -54,6 +50,23 @@ testCase('AbstractSidebarsViewTest.php', function () {
                 ->end();
         });
 
+        createMacro('check expected sidebars', function () {
+            test('the view has the expected sidebars', function () {
+                $sidebars = $this->sidebarsView->getSidebars();
+
+                $this->assertCount(2, $sidebars);
+                $this->assertEquals("sidebar-{$this->name1}", $sidebars[0]->getName());
+                $this->assertEquals("sidebar-{$this->name2}", $sidebars[1]->getName());
+            });
+
+            test('getSidebar($name) returns the expected sidebar', function () {
+                $sidebar2 = $this->sidebarsView->getSidebar($this->name2);
+
+                $this->assertInstanceOf(Sidebar::class, $sidebar2);
+                $this->assertEquals("sidebar-{$this->name2}", $sidebar2->getName());
+            });
+        });
+
         testCase('across getSidebarsNames() method', function () {
             setUp(function () {
                 $name1 = $this->name1;
@@ -70,22 +83,21 @@ testCase('AbstractSidebarsViewTest.php', function () {
                 $this->sidebarsView = $this->classBuilder->newInstance();
             });
 
-            useMacro('is a composite view');
+            useMacro('check expected sidebars');
+        });
 
-            test('the view has the expected sidebars', function () {
-                $sidebars = $this->sidebarsView->getSidebars();
+        testCase('across the sidebarsNames property', function () {
+            setUp(function () {
+                $this->classBuilder
+                    ->addProperty('sidebarsNames')
+                        ->setAccess('protected')
+                        ->setValue([$this->name1, $this->name2])
+                    ->end();
 
-                $this->assertCount(2, $sidebars);
-                $this->assertEquals("sidebar-{$this->name1}", $sidebars[0]->getName());
-                $this->assertEquals("sidebar-{$this->name2}", $sidebars[1]->getName());
+                $this->sidebarsView = $this->classBuilder->newInstance();
             });
 
-            test('getSidebar($name) returns the expected sidebar', function () {
-                $sidebar2 = $this->sidebarsView->getSidebar($this->name2);
-
-                $this->assertInstanceOf(Sidebar::class, $sidebar2);
-                $this->assertEquals("sidebar-{$this->name2}", $sidebar2->getName());
-            });
+            useMacro('check expected sidebars');
         });
     });
 });
