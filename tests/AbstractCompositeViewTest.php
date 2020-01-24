@@ -25,7 +25,7 @@ testCase('AbstractCompositeViewTest.php', function () {
         $this->assertInstanceOf(CompositeComponentInterface::class, $view);
     });
 
-    test('', function () {
+    test('renderChildren() returns result of render each child', function () {
         $result1 = '<div>'.uniqid().'</div>';
         $child1 = $this->createMock(AbstractView::class);
         $child1->method('getId')->willReturn('child1');
