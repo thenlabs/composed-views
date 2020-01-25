@@ -39,8 +39,10 @@ class RenderEvent extends Event
 
     public function __call($method, $arguments)
     {
-        if (is_callable([$this->pageCrawler, $method])) {
-            return call_user_func_array([$this->pageCrawler, $method], $arguments);
+        $callback = [$this->pageCrawler, $method];
+
+        if (is_callable($callback)) {
+            return call_user_func_array($callback, $arguments);
         } else {
             throw new BadMethodCallException("Unknow method '{$method}'.");
         }
