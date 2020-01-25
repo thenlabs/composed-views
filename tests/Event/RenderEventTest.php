@@ -6,6 +6,7 @@ use NubecuLabs\ComposedViews\Event\RenderEvent;
 use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\ComposedViews\Tests\TestCase;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
+use BadMethodCallException;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
@@ -33,5 +34,14 @@ testCase('RenderEventTest.php', function () {
         })->call($event);
 
         $this->assertEquals($result, $event->{$method}($argument));
+    });
+
+    test('throwns an BadMethodCallException when the called method not exists', function () {
+        $method = uniqid('method');
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage("Unknow method '{$method}'.");
+
+        $event = new RenderEvent('');
+        $event->{$method}();
     });
 });

@@ -5,6 +5,7 @@ namespace NubecuLabs\ComposedViews\Event;
 
 use NubecuLabs\Components\Event\Event;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
+use BadMethodCallException;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -38,6 +39,10 @@ class RenderEvent extends Event
 
     public function __call($method, $arguments)
     {
-        return call_user_func_array([$this->pageCrawler, $method], $arguments);
+        if (is_callable([$this->pageCrawler, $method])) {
+            return call_user_func_array([$this->pageCrawler, $method], $arguments);
+        } else {
+            throw new BadMethodCallException("Unknow method '{$method}'.");
+        }
     }
 }
