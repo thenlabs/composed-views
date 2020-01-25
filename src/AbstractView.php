@@ -6,7 +6,10 @@ namespace NubecuLabs\ComposedViews;
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\ComponentTrait;
 use NubecuLabs\ComposedViews\Event\RenderEvent;
+use NubecuLabs\ComposedViews\Annotation\ViewData;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Closure;
+use ReflectionClass;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -35,5 +38,38 @@ abstract class AbstractView implements ComponentInterface
     public function addFilter(callable $callback): void
     {
         $this->on('render', $callback);
+    }
+
+    public function __call($method, $arguments)
+    {
+        foreach ($this->getModel()['properties'] as $propertyName => $propertyInfo) {
+            if ($method == $propertyInfo['getter']) {
+                return $this->{$propertyName};
+            }
+        }
+    }
+
+    private function getModel(): array
+    {
+        $properties = [];
+
+        $class = new ReflectionClass($this);
+        $reader = new AnnotationReader();
+        // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
+        new ViewData;
+
+        foreach ($class->getProperties() as $property) {
+            foreach ($reader->getPropertyAnnotations($property) as $annotation) {
+                if ($annotation instanceof ViewData) {
+                    $propertyName = $property->getName();
+
+                    $properties[$propertyName] = [
+                        'getter' => 'get'.ucfirst($propertyName)
+                    ];
+                }
+            }
+        }
+
+        return compact('properties');
     }
 }

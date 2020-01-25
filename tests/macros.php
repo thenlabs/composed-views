@@ -112,4 +112,42 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             });
         });
     });
+
+    testCase('exists a view with an annotated data', function () {
+        setUp(function () {
+            $this->classBuilder = (new ClassBuilder)->extends($this->getViewClass())
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []): string {
+                        return '';
+                    })
+                ->end();
+        });
+
+        testCase('annotation by default', function () {
+            setUp(function () {
+                $this->propertyName = uniqid('property');
+                $this->propertyValue = uniqid();
+
+                $this->getterName = 'get'.ucfirst($this->propertyName);
+                $this->setterName = 'set'.ucfirst($this->propertyName);
+
+                $this->classBuilder
+                    ->addProperty($this->propertyName)
+                        ->setAccess('protected')
+                        ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                        ->setValue($this->propertyValue)
+                    ->end();
+
+                $this->view = $this->classBuilder->newInstance();
+            });
+
+            test('exists a magic getter for the property', function () {
+                $this->assertEquals(
+                    $this->propertyValue,
+                    call_user_func([$this->view, $this->getterName])
+                );
+            });
+        });
+    });
 });
