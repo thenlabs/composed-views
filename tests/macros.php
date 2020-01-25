@@ -135,24 +135,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->end();
         });
 
-        testCase('annotation by default', function () {
-            setUp(function () {
-                $this->propertyName = uniqid('property');
-                $this->propertyValue = uniqid();
-
-                $this->getterName = 'get'.ucfirst($this->propertyName);
-                $this->setterName = 'set'.ucfirst($this->propertyName);
-
-                $this->classBuilder
-                    ->addProperty($this->propertyName)
-                        ->setAccess('protected')
-                        ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
-                        ->setValue($this->propertyValue)
-                    ->end();
-
-                $this->view = $this->classBuilder->newInstance();
-            });
-
+        createMacro('getter and setter tests', function () {
             test('exists a magic getter for the property', function () {
                 $this->assertEquals(
                     $this->propertyValue,
@@ -171,6 +154,48 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                     call_user_func([$this->view, $this->getterName])
                 );
             });
+        });
+
+        testCase('annotation by default', function () {
+            setUp(function () {
+                $this->propertyName = uniqid('property');
+                $this->propertyValue = uniqid();
+
+                $this->getterName = 'get'.ucfirst($this->propertyName);
+                $this->setterName = 'set'.ucfirst($this->propertyName);
+
+                $this->classBuilder
+                    ->addProperty($this->propertyName)
+                        ->setAccess('protected')
+                        ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                        ->setValue($this->propertyValue)
+                    ->end();
+
+                $this->view = $this->classBuilder->newInstance();
+            });
+
+            useMacro('getter and setter tests');
+        });
+
+        testCase('annotation specifying custom methods', function () {
+            setUp(function () {
+                $this->propertyName = uniqid('property');
+                $this->propertyValue = uniqid();
+
+                $this->getterName = uniqid('getter');
+                $this->setterName = uniqid('setter');
+
+                $this->classBuilder
+                    ->addProperty($this->propertyName)
+                        ->setAccess('protected')
+                        ->addComment("@NubecuLabs\ComposedViews\Annotation\ViewData(getter=\"{$this->getterName}\", setter=\"{$this->setterName}\")")
+                        ->setValue($this->propertyValue)
+                    ->end();
+
+                $this->view = $this->classBuilder->newInstance();
+            });
+
+            useMacro('getter and setter tests');
         });
     });
 });

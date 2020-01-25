@@ -72,8 +72,8 @@ abstract class AbstractView implements ComponentInterface
                     $propertyName = $property->getName();
 
                     $properties[$propertyName] = [
-                        'getter' => 'get'.ucfirst($propertyName),
-                        'setter' => 'set'.ucfirst($propertyName),
+                        'getter' => $annotation->getter ?? 'get'.ucfirst($propertyName),
+                        'setter' => $annotation->setter ?? 'set'.ucfirst($propertyName),
                     ];
                 }
             }

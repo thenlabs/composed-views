@@ -8,4 +8,7 @@ namespace NubecuLabs\ComposedViews\Annotation;
  */
 class ViewData
 {
+    public $getter;
+
+    public $setter;
 }
