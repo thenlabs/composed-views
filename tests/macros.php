@@ -1,9 +1,12 @@
 <?php
 
+namespace NubecuLabs\ComposedViews\Tests;
+
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\ClassBuilder\ClassBuilder;
 use NubecuLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
+use BadMethodCallException;
 
 createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php', function () {
     test('the view is instance of NubecuLabs\Components\ComponentInterface', function () {
@@ -79,6 +82,14 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                     })
                 ->end()
                 ->newInstance();
+        });
+
+        test('throwns an BadMethodCallException when the called method not exists', function () {
+            $method = uniqid('method');
+            $this->expectException(BadMethodCallException::class);
+            $this->expectExceptionMessage("Unknow method '{$method}'.");
+
+            $this->view->{$method}();
         });
 
         testCase('it is applied a filter where all content is assigned', function () {

@@ -10,6 +10,7 @@ use NubecuLabs\ComposedViews\Annotation\ViewData;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Closure;
 use ReflectionClass;
+use BadMethodCallException;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -49,8 +50,11 @@ abstract class AbstractView implements ComponentInterface
 
             if ($method == $propertyInfo['setter']) {
                 $this->{$propertyName} = $arguments[0];
+                return;
             }
         }
+
+        throw new BadMethodCallException("Unknow method '{$method}'.");
     }
 
     private function getModel(): array
