@@ -46,6 +46,10 @@ abstract class AbstractView implements ComponentInterface
             if ($method == $propertyInfo['getter']) {
                 return $this->{$propertyName};
             }
+
+            if ($method == $propertyInfo['setter']) {
+                $this->{$propertyName} = $arguments[0];
+            }
         }
     }
 
@@ -64,7 +68,8 @@ abstract class AbstractView implements ComponentInterface
                     $propertyName = $property->getName();
 
                     $properties[$propertyName] = [
-                        'getter' => 'get'.ucfirst($propertyName)
+                        'getter' => 'get'.ucfirst($propertyName),
+                        'setter' => 'set'.ucfirst($propertyName),
                     ];
                 }
             }

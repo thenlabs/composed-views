@@ -148,6 +148,18 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                     call_user_func([$this->view, $this->getterName])
                 );
             });
+
+            test('exists a magic setter for the property', function () {
+                $newValue = uniqid();
+
+                // set the new value to the property.
+                call_user_func([$this->view, $this->setterName], $newValue);
+
+                $this->assertEquals(
+                    $newValue,
+                    call_user_func([$this->view, $this->getterName])
+                );
+            });
         });
     });
 });
