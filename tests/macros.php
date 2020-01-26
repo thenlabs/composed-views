@@ -198,4 +198,54 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             useMacro('getter and setter tests');
         });
     });
+
+    testCase('exists a view with an annotated data where it is used for render the view', function () {
+        setUp(function () {
+            $this->view = (new ClassBuilder)->extends($this->getViewClass())
+                ->addProperty('attrName')
+                    ->setAccess('protected')
+                    ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                ->end()
+                ->addProperty('value')
+                    ->setAccess('protected')
+                    ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                ->end()
+                ->addProperty('content')
+                    ->setAccess('protected')
+                    ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                ->end()
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []): string {
+                        extract($data);
+                        return "<label data-{$attrName}=\"{$value}\">{$content}</label>";
+                    })
+                ->end()
+                ->newInstance();
+
+            $this->attrName = uniqid();
+            $this->value = uniqid();
+            $this->content = uniqid();
+
+            $this->view->setAttrName($this->attrName);
+            $this->view->setValue($this->value);
+            $this->view->setContent($this->content);
+        });
+
+        test('getView() receive the annotated properties as data', function () {
+            $this->assertEquals(
+                "<label data-{$this->attrName}=\"{$this->value}\">{$this->content}</label>",
+                $this->view->render()
+            );
+        });
+
+        test('across the render method it is possible override data of the view', function () {
+            $newValue = uniqid();
+
+            $this->assertEquals(
+                "<label data-{$this->attrName}=\"{$newValue}\">{$this->content}</label>",
+                $this->view->render(['value' => $newValue])
+            );
+        });
+    });
 });

@@ -24,8 +24,15 @@ abstract class AbstractView implements ComponentInterface
 
     public function render(array $data = []): string
     {
-        $renderEvent = new RenderEvent($this->getView($data));
+        $ownData = [];
+        foreach ($this->getModel()['properties'] as $propertyName => $propertyInfo) {
+            $ownData[$propertyName] = $propertyInfo['value'];
+        }
 
+        $data = array_merge($ownData, $data);
+        $content = $this->getView($data);
+
+        $renderEvent = new RenderEvent($content);
         $this->dispatchEvent('render', $renderEvent);
 
         return $renderEvent->getView();
@@ -74,6 +81,7 @@ abstract class AbstractView implements ComponentInterface
                     $properties[$propertyName] = [
                         'getter' => $annotation->getter ?? 'get'.ucfirst($propertyName),
                         'setter' => $annotation->setter ?? 'set'.ucfirst($propertyName),
+                        'value' => $this->{$propertyName},
                     ];
                 }
             }
