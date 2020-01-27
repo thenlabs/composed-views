@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace NubecuLabs\ComposedViews\Asset;
 
+use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\Components\DependencyInterface;
+use NubecuLabs\Components\EditableDependencyTrait;
 use Artyum\HtmlElement\HtmlElement;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class HtmlAsset implements DependencyInterface
+class HtmlAsset extends AbstractView implements DependencyInterface
 {
+    use EditableDependencyTrait;
+
     protected $name;
     protected $htmlElement;
 
@@ -25,28 +29,13 @@ class HtmlAsset implements DependencyInterface
         return $this->htmlElement;
     }
 
-    public function getName(): string
+    public function setName(?string $name): void
     {
-        return $this->name;
+        $this->name = $name;
     }
 
-    public function getVersion(): ?string
+    public function getView(array $data = []): string
     {
-        return '';
-    }
-
-    public function getIncompatibleVersions(): ?string
-    {
-        return '';
-    }
-
-    public function getIncludedDependencies(): array
-    {
-        return [];
-    }
-
-    public function getDependencies(): array
-    {
-        return [];
+        return $this->htmlElement->toHtml();
     }
 }

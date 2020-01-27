@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nubeculabs/Components.git",
-                "reference": "f759c6d1c1a692f7082c9707e5e11064f6299202"
+                "reference": "fe0028819039764811f9d71206126bd9baefa579"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nubeculabs/Components/zipball/f759c6d1c1a692f7082c9707e5e11064f6299202",
-                "reference": "f759c6d1c1a692f7082c9707e5e11064f6299202",
+                "url": "https://api.github.com/repos/nubeculabs/Components/zipball/fe0028819039764811f9d71206126bd9baefa579",
+                "reference": "fe0028819039764811f9d71206126bd9baefa579",
                 "shasum": ""
             },
             "require": {
@@ -285,7 +285,7 @@
                     "name": "NubecuLabs Community"
                 }
             ],
-            "time": "2019-08-27T11:00:03+00:00"
+            "time": "2020-01-26T23:59:49+00:00"
         },
         {
             "name": "symfony/css-selector",

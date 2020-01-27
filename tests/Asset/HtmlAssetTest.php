@@ -3,6 +3,7 @@
 namespace NubecuLabs\ComposedViews\Tests\Asset;
 
 use NubecuLabs\Components\DependencyInterface;
+use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\ComposedViews\Asset\HtmlAsset;
 use NubecuLabs\ComposedViews\Tests\TestCase;
 use Artyum\HtmlElement\HtmlElement;
@@ -20,6 +21,30 @@ testCase('HtmlAssetTest.php', function () {
 
     test('is a component dependency', function () {
         $this->assertInstanceOf(DependencyInterface::class, $this->asset);
+    });
+
+    test('is a view', function () {
+        $this->assertInstanceOf(AbstractView::class, $this->asset);
+    });
+
+    test('testing setName()', function () {
+        $newName = uniqid();
+
+        $this->asset->setName($newName);
+
+        $this->assertEquals($newName, $this->asset->getName());
+    });
+
+    test('getView() returns result of the html element', function () {
+        $name = uniqid();
+        $expectedContent = uniqid();
+
+        $element = $this->createMock(HtmlElement::class);
+        $element->method('toHtml')->willReturn($expectedContent);
+
+        $asset = new HtmlAsset($name, $element);
+
+        $this->assertEquals($expectedContent, $asset->getView());
     });
 
     test('the dependency name it is specified on the constructor', function () {
