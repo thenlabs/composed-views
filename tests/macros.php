@@ -32,7 +32,8 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
     });
 
     test('addFilter($closure) is alias for on("render", $closure)', function () {
-        $closure = function () {};
+        $closure = function () {
+        };
 
         $view = $this->getMockBuilder($this->getViewClass())
             ->setMethods(['on'])

@@ -3,7 +3,6 @@
 namespace NubecuLabs\ComposedViews\Tests\Event;
 
 use NubecuLabs\ComposedViews\Event\RenderEvent;
-use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\ComposedViews\Tests\TestCase;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;

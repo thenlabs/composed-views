@@ -2,7 +2,6 @@
 
 namespace NubecuLabs\ComposedViews\Tests;
 
-use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\ComposedViews\AbstractCompositeView;
 use NubecuLabs\ComposedViews\AbstractSidebarsView;
 use NubecuLabs\ComposedViews\Sidebar;
@@ -14,8 +13,7 @@ setTestCaseClass(TestCase::class);
 testCase('AbstractSidebarsViewTest.php', function () {
     testCase('exists a sidebars view that not specify none sidebar name', function () {
         setUp(function () {
-            $this->sidebarsView = new class extends AbstractSidebarsView
-            {
+            $this->sidebarsView = new class extends AbstractSidebarsView {
                 public function getView(array $data = []): string
                 {
                     return '';

@@ -8,7 +8,6 @@ use NubecuLabs\Components\ComponentTrait;
 use NubecuLabs\ComposedViews\Event\RenderEvent;
 use NubecuLabs\ComposedViews\Annotation\ViewData;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Closure;
 use ReflectionClass;
 use BadMethodCallException;
 
