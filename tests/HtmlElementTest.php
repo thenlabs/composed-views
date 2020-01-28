@@ -7,6 +7,7 @@ use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\ComposedViews\HtmlElement;
 use NubecuLabs\ComposedViews\Tests\TestCase;
 use Artyum\HtmlElement\HtmlElement as ArtyumHtmlElement;
+use BadMethodCallException;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
@@ -59,5 +60,34 @@ testCase('HtmlAssetTest.php', function () {
         $element->setArtyumHtmlElement($artyumElement);
 
         $this->assertEquals($expectedView, $element->getView());
+    });
+
+    test('is a proxy to the artyum element property', function () {
+        $argument = uniqid();
+        $result = uniqid();
+        $method = uniqid('method');
+
+        $artyumElement = $this->getMockBuilder(ArtyumHtmlElement::class)
+            ->disableOriginalConstructor()
+            ->setMethods([$method])
+            ->getMock();
+        $artyumElement->expects($this->once())
+            ->method($method)
+            ->with($this->equalTo($argument))
+            ->willReturn($result);
+
+        $element = new HtmlElement;
+        $element->setArtyumHtmlElement($artyumElement);
+
+        $this->assertEquals($result, $element->{$method}($argument));
+    });
+
+    test('throwns an BadMethodCallException when the called method not exists', function () {
+        $method = uniqid('method');
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage("Unknow method '{$method}'.");
+
+        $element = new HtmlElement;
+        $element->{$method}();
     });
 });

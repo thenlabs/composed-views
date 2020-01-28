@@ -6,6 +6,7 @@ namespace NubecuLabs\ComposedViews;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\EditableDependencyTrait;
 use Artyum\HtmlElement\HtmlElement as ArtyumHtmlElement;
+use BadMethodCallException;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -40,5 +41,16 @@ class HtmlElement extends AbstractView implements DependencyInterface
     public function setArtyumHtmlElement(ArtyumHtmlElement $artyumHtmlElement): void
     {
         $this->artyumHtmlElement = $artyumHtmlElement;
+    }
+
+    public function __call($method, $arguments)
+    {
+        $callback = [$this->artyumHtmlElement, $method];
+
+        if (is_callable($callback)) {
+            return call_user_func_array($callback, $arguments);
+        } else {
+            throw new BadMethodCallException("Unknow method '{$method}'.");
+        }
     }
 }
