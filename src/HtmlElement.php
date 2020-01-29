@@ -50,7 +50,7 @@ class HtmlElement extends AbstractView implements DependencyInterface
         if (is_callable($callback)) {
             return call_user_func_array($callback, $arguments);
         } else {
-            throw new BadMethodCallException("Unknow method '{$method}'.");
+            return parent::__call($method, $arguments);
         }
     }
 }

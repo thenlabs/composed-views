@@ -4,38 +4,28 @@ declare(strict_types=1);
 namespace NubecuLabs\ComposedViews\Asset;
 
 use NubecuLabs\ComposedViews\AbstractView;
+use NubecuLabs\ComposedViews\Annotation\ViewData;
+use NubecuLabs\ComposedViews\HtmlElement;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\EditableDependencyTrait;
-use Artyum\HtmlElement\HtmlElement;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class HtmlAsset extends AbstractView implements DependencyInterface
+class HtmlAsset extends HtmlElement implements DependencyInterface
 {
-    use EditableDependencyTrait;
+    /**
+     * @ViewData
+     */
+    protected $basePath;
 
-    protected $name;
-    protected $htmlElement;
+    /**
+     * @ViewData
+     */
+    protected $packagePath;
 
-    public function __construct(string $name, HtmlElement $htmlElement)
-    {
-        $this->name = $name;
-        $this->htmlElement = $htmlElement;
-    }
-
-    public function getHtmlElement(): HtmlElement
-    {
-        return $this->htmlElement;
-    }
-
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getView(array $data = []): string
-    {
-        return $this->htmlElement->toHtml();
-    }
+    /**
+     * @ViewData
+     */
+    protected $filename;
 }
