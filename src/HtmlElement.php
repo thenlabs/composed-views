@@ -6,7 +6,6 @@ namespace NubecuLabs\ComposedViews;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\EditableDependencyTrait;
 use Artyum\HtmlElement\HtmlElement as ArtyumHtmlElement;
-use BadMethodCallException;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

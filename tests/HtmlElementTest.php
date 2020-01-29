@@ -5,7 +5,6 @@ namespace NubecuLabs\ComposedViews\Tests;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\ComposedViews\HtmlElement;
-use NubecuLabs\ComposedViews\Tests\TestCase;
 use Artyum\HtmlElement\HtmlElement as ArtyumHtmlElement;
 use BadMethodCallException;
 

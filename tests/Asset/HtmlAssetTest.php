@@ -6,7 +6,6 @@ use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\ComposedViews\AbstractView;
 use NubecuLabs\ComposedViews\Asset\HtmlAsset;
 use NubecuLabs\ComposedViews\Tests\TestCase;
-use Artyum\HtmlElement\HtmlElement;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
