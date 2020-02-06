@@ -17,7 +17,8 @@
         "nubeculabs/components": "dev-master",
         "artyuum/html-element": "^2.0",
         "wa72/htmlpagedom": "^2.0",
-        "doctrine/annotations": "^1.6"
+        "doctrine/annotations": "^1.6",
+        "thenlabs/cli": "dev-master"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
@@ -33,5 +34,11 @@
         "psr-4": {
             "NubecuLabs\\ComposedViews\\Tests\\": "tests/"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "/home/andaniel/ThenLabs/cli"
+        }
+    ]
 }
