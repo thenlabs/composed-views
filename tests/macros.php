@@ -16,7 +16,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
     });
 
     test('render($data) returns result of getView($data)', function () {
-        $viewStr = randomString();
+        $viewStr = uniqid();
         $args = range(0, mt_rand(0, 10));
 
         $view = $this->getMockBuilder($this->getViewClass())
@@ -50,7 +50,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
     testCase('__toString() returns result of the render() method', function () {
         setUp(function () {
-            $this->result = randomString();
+            $this->result = uniqid();
 
             $this->view = $this->getMockBuilder($this->getViewClass())
                 ->setMethods(['render'])
