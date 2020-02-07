@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\ComposedViews\Event;
+namespace ThenLabs\ComposedViews\Event;
 
-use NubecuLabs\Components\Event\Event;
+use ThenLabs\Components\Event\Event;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
 

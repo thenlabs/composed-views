@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\ComposedViews\Annotation;
+namespace ThenLabs\ComposedViews\Annotation;
 
 /**
  * @Annotation

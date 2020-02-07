@@ -1,10 +1,10 @@
 <?php
 
-namespace NubecuLabs\ComposedViews\Tests;
+namespace ThenLabs\ComposedViews\Tests;
 
-use NubecuLabs\ComposedViews\AbstractView;
-use NubecuLabs\ComposedViews\AbstractCompositeView;
-use NubecuLabs\ComposedViews\Sidebar;
+use ThenLabs\ComposedViews\AbstractView;
+use ThenLabs\ComposedViews\AbstractCompositeView;
+use ThenLabs\ComposedViews\Sidebar;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);

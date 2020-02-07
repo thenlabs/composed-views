@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\ComposedViews;
+namespace ThenLabs\ComposedViews;
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\ComponentTrait;
-use NubecuLabs\ComposedViews\Event\RenderEvent;
-use NubecuLabs\ComposedViews\Annotation\ViewData;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\ComponentTrait;
+use ThenLabs\ComposedViews\Event\RenderEvent;
+use ThenLabs\ComposedViews\Annotation\ViewData;
 use Doctrine\Common\Annotations\AnnotationReader;
 use ReflectionClass;
 use BadMethodCallException;

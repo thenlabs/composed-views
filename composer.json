@@ -1,5 +1,5 @@
 {
-    "name": "nubeculabs/composed-views",
+    "name": "thenlabs/composed-views",
     "license": "MIT",
     "authors": [
         {
@@ -7,14 +7,14 @@
             "email": "andaniel05@gmail.com"
         },
         {
-            "name": "NubecuLabs Community"
+            "name": "ThenLabs Community"
         }
     ],
     "platform": {
         "php": "^7.2"
     },
     "require": {
-        "nubeculabs/components": "dev-master",
+        "thenlabs/components": "dev-master",
         "artyuum/html-element": "^2.0",
         "wa72/htmlpagedom": "^2.0",
         "doctrine/annotations": "^1.6",
@@ -23,22 +23,16 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
         "andaniel05/pyramidaltests": "dev-master",
-        "nubeculabs/class-builder": "dev-master"
+        "thenlabs/class-builder": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "NubecuLabs\\ComposedViews\\": "src/"
+            "ThenLabs\\ComposedViews\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NubecuLabs\\ComposedViews\\Tests\\": "tests/"
+            "ThenLabs\\ComposedViews\\Tests\\": "tests/"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "/home/andaniel/ThenLabs/cli"
-        }
-    ]
+    }
 }

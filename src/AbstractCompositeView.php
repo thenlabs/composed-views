@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\ComposedViews;
+namespace ThenLabs\ComposedViews;
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\CompositeComponentInterface;
-use NubecuLabs\Components\CompositeComponentTrait;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\CompositeComponentInterface;
+use ThenLabs\Components\CompositeComponentTrait;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

@@ -1,10 +1,10 @@
 <?php
 
-namespace NubecuLabs\ComposedViews\Tests;
+namespace ThenLabs\ComposedViews\Tests;
 
-use NubecuLabs\Components\DependencyInterface;
-use NubecuLabs\ComposedViews\AbstractView;
-use NubecuLabs\ComposedViews\HtmlElement;
+use ThenLabs\Components\DependencyInterface;
+use ThenLabs\ComposedViews\AbstractView;
+use ThenLabs\ComposedViews\HtmlElement;
 use Artyum\HtmlElement\HtmlElement as ArtyumHtmlElement;
 use BadMethodCallException;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace NubecuLabs\ComposedViews\Tests;
+namespace ThenLabs\ComposedViews\Tests;
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\ClassBuilder\ClassBuilder;
-use NubecuLabs\ComposedViews\Event\RenderEvent;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
 
 createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php', function () {
-    test('the view is instance of NubecuLabs\Components\ComponentInterface', function () {
+    test('the view is instance of ThenLabs\Components\ComponentInterface', function () {
         $view = $this->getMockForAbstractClass($this->getViewClass());
 
         $this->assertInstanceOf(ComponentInterface::class, $view);
@@ -168,7 +168,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $this->classBuilder
                     ->addProperty($this->propertyName)
                         ->setAccess('protected')
-                        ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                        ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
                         ->setValue($this->propertyValue)
                     ->end();
 
@@ -189,7 +189,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $this->classBuilder
                     ->addProperty($this->propertyName)
                         ->setAccess('protected')
-                        ->addComment("@NubecuLabs\ComposedViews\Annotation\ViewData(getter=\"{$this->getterName}\", setter=\"{$this->setterName}\")")
+                        ->addComment("@ThenLabs\ComposedViews\Annotation\ViewData(getter=\"{$this->getterName}\", setter=\"{$this->setterName}\")")
                         ->setValue($this->propertyValue)
                     ->end();
 
@@ -205,15 +205,15 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->view = (new ClassBuilder)->extends($this->getViewClass())
                 ->addProperty('attrName')
                     ->setAccess('protected')
-                    ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
                 ->end()
                 ->addProperty('value')
                     ->setAccess('protected')
-                    ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
                 ->end()
                 ->addProperty('content')
                     ->setAccess('protected')
-                    ->addComment('@NubecuLabs\ComposedViews\Annotation\ViewData')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
                 ->end()
                 ->addMethod('getView')
                     ->setAccess('protected')

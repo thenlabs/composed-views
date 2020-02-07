@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\ComposedViews;
+namespace ThenLabs\ComposedViews;
 
-use NubecuLabs\Components\DependencyInterface;
-use NubecuLabs\Components\EditableDependencyTrait;
+use ThenLabs\Components\DependencyInterface;
+use ThenLabs\Components\EditableDependencyTrait;
 use Artyum\HtmlElement\HtmlElement as ArtyumHtmlElement;
 
 /**

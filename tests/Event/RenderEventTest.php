@@ -1,9 +1,9 @@
 <?php
 
-namespace NubecuLabs\ComposedViews\Tests\Event;
+namespace ThenLabs\ComposedViews\Tests\Event;
 
-use NubecuLabs\ComposedViews\Event\RenderEvent;
-use NubecuLabs\ComposedViews\Tests\TestCase;
+use ThenLabs\ComposedViews\Event\RenderEvent;
+use ThenLabs\ComposedViews\Tests\TestCase;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
 

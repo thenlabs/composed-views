@@ -1,8 +1,8 @@
 <?php
 
-namespace NubecuLabs\ComposedViews\Tests;
+namespace ThenLabs\ComposedViews\Tests;
 
-use NubecuLabs\ComposedViews\AbstractView;
+use ThenLabs\ComposedViews\AbstractView;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
