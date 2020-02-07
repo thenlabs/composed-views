@@ -3,16 +3,18 @@
 
 ## Instalación.
 
-Cree o añada al archivo `composer.json` las siguientes dependencias:
+Cree un archivo `composer.json` con al menos las siguientes opciones:
 
 ```JSON
 {
     "require": {
-        "thenlabs/components": "dev-master",
-        "thenlabs/class-builder": "dev-master",
-        "thenlabs/cli": "dev-master",
         "thenlabs/composed-views": "dev-master"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
 ```
 
+Seguidamente, ejecute el comando:
+
+    $ composer update
