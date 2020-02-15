@@ -101,6 +101,11 @@ abstract class AbstractView implements ComponentInterface
         return $this->sidebars[$name] ?? null;
     }
 
+    public function setSidebar(string $name, Sidebar $sidebar): void
+    {
+        $this->sidebars[$name] = $sidebar;
+    }
+
     protected function createSidebar(string $name): void
     {
         $this->sidebars[$name] = new Sidebar;
@@ -108,6 +113,12 @@ abstract class AbstractView implements ComponentInterface
 
     public function renderSidebar(string $name): string
     {
-        throw new Exception\UnexistentSidebarException($name);
+        $sidebar = $this->sidebars[$name] ?? null;
+
+        if (! $sidebar) {
+            throw new Exception\UnexistentSidebarException($name);
+        }
+
+        return $sidebar->render();
     }
 }

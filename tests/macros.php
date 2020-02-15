@@ -301,5 +301,21 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             $this->view->renderSidebar($sidebar);
         });
+
+        test('renderSidebar($name) returns the sidebar view', function () {
+            $result = uniqid();
+            $sidebarName = uniqid('sidebar');
+
+            $sidebar = $this->getMockBuilder(Sidebar::class)
+                ->setMethods(['render'])
+                ->getMock();
+            $sidebar->expects($this->once())
+                ->method('render')
+                ->willReturn($result);
+
+            $this->view->setSidebar($sidebarName, $sidebar);
+
+            $this->assertEquals($result, $this->view->renderSidebar($sidebarName));
+        });
     });
 });
