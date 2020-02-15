@@ -20,16 +20,16 @@ class RenderEvent extends Event
     /**
      * @var HtmlPageCrawler
      */
-    protected $pageCrawler;
+    protected $crawler;
 
     public function __construct(string $view)
     {
-        $this->pageCrawler = new HtmlPageCrawler($view);
+        $this->crawler = new HtmlPageCrawler($view);
     }
 
     public function getView(): string
     {
-        return $this->view ? $this->view : strval($this->pageCrawler);
+        return $this->view ? $this->view : strval($this->crawler);
     }
 
     public function setView(?string $view): void
@@ -39,7 +39,7 @@ class RenderEvent extends Event
 
     public function __call($method, $arguments)
     {
-        $callback = [$this->pageCrawler, $method];
+        $callback = [$this->crawler, $method];
 
         if (is_callable($callback)) {
             return call_user_func_array($callback, $arguments);

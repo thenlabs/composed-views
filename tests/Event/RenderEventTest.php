@@ -16,11 +16,11 @@ testCase('RenderEventTest.php', function () {
         $argument = uniqid();
         $result = uniqid();
 
-        $pageCrawler = $this->getMockBuilder(HtmlPageCrawler::class)
+        $crawler = $this->getMockBuilder(HtmlPageCrawler::class)
             ->disableOriginalConstructor()
             ->setMethods([$method])
             ->getMock();
-        $pageCrawler->expects($this->once())
+        $crawler->expects($this->once())
             ->method($method)
             ->with($this->equalTo($argument))
             ->willReturn($result);
@@ -28,8 +28,8 @@ testCase('RenderEventTest.php', function () {
         $event = new RenderEvent('');
 
         // install the page crawler inside event.
-        (function () use ($pageCrawler) {
-            $this->pageCrawler = $pageCrawler;
+        (function () use ($crawler) {
+            $this->crawler = $crawler;
         })->call($event);
 
         $this->assertEquals($result, $event->{$method}($argument));
