@@ -4,6 +4,8 @@ namespace ThenLabs\ComposedViews\Tests;
 
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\ComposedViews\Sidebar;
+use ThenLabs\ComposedViews\Exception\UnexistentSidebarException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
@@ -83,6 +85,10 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                     })
                 ->end()
                 ->newInstance();
+        });
+
+        test('getSidebars() returns an empty array', function () {
+            $this->assertEmpty($this->view->getSidebars());
         });
 
         test('throwns an BadMethodCallException when the called method not exists', function () {
@@ -247,6 +253,53 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 "<label data-{$this->attrName}=\"{$newValue}\">{$this->content}</label>",
                 $this->view->render(['value' => $newValue])
             );
+        });
+    });
+
+    testCase('exists a view with two sidebars', function () {
+        setUp(function () {
+            $this->sidebarName1 = $sidebarName1 = uniqid('sidebar');
+            $this->sidebarName2 = $sidebarName2 = uniqid('sidebar');
+
+            $this->view = (new ClassBuilder)->extends($this->getViewClass())
+                ->addMethod('__construct')
+                    ->setClosure(function () use ($sidebarName1, $sidebarName2) {
+                        $this->createSidebar($sidebarName1);
+                        $this->createSidebar($sidebarName2);
+                    })
+                ->end()
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []): string {
+                        return '<div>'.uniqid().'</div>';
+                    })
+                ->end()
+                ->newInstance();
+        });
+
+        test('getSidebars() returns an array with two instances of Sidebar', function () {
+            $sidebars = $this->view->getSidebars();
+
+            $this->assertCount(2, $sidebars);
+            $this->assertInstanceOf(Sidebar::class, $sidebars[$this->sidebarName1]);
+            $this->assertInstanceOf(Sidebar::class, $sidebars[$this->sidebarName2]);
+        });
+
+        test('getSidebar($name) returns null when the searched sidebar not exists', function () {
+            $this->assertNull($this->view->getSidebar(uniqid()));
+        });
+
+        test('getSidebar($name) returns the expected sidebar', function () {
+            $this->assertInstanceOf(Sidebar::class, $this->view->getSidebar($this->sidebarName1));
+        });
+
+        test('renderSidebar($name) throwns an UnexistentSidebarException when searched not exists', function () {
+            $sidebar = uniqid();
+
+            $this->expectException(UnexistentSidebarException::class);
+            $this->expectExceptionMessage("The sidebar '{$sidebar}' not exists.");
+
+            $this->view->renderSidebar($sidebar);
         });
     });
 });

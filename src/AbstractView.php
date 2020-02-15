@@ -19,6 +19,8 @@ abstract class AbstractView implements ComponentInterface
 {
     use ComponentTrait;
 
+    protected $sidebars = [];
+
     abstract protected function getView(array $data = []): string;
 
     public function render(array $data = []): string
@@ -87,5 +89,25 @@ abstract class AbstractView implements ComponentInterface
         }
 
         return compact('properties');
+    }
+
+    public function getSidebars(): array
+    {
+        return $this->sidebars;
+    }
+
+    public function getSidebar(string $name): ?Sidebar
+    {
+        return $this->sidebars[$name] ?? null;
+    }
+
+    protected function createSidebar(string $name): void
+    {
+        $this->sidebars[$name] = new Sidebar;
+    }
+
+    public function renderSidebar(string $name): string
+    {
+        throw new Exception\UnexistentSidebarException($name);
     }
 }
