@@ -3,6 +3,7 @@
 namespace ThenLabs\ComposedViews\Tests;
 
 use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\DependencyInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\ComposedViews\Sidebar;
 use ThenLabs\ComposedViews\Exception\UnexistentSidebarException;
@@ -316,6 +317,33 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->view->setSidebar($sidebarName, $sidebar);
 
             $this->assertEquals($result, $this->view->renderSidebar($sidebarName));
+        });
+
+        test('getAdditionalDependencies() includes the sidebars dependencies', function () {
+            $dependencyName1 = uniqid('dep');
+            $dependencyName2 = uniqid('dep');
+
+            $dependency1 = $this->createMock(DependencyInterface::class);
+            $dependency1->method('getName')->willReturn($dependencyName1);
+
+            $dependency2 = $this->createMock(DependencyInterface::class);
+            $dependency2->method('getName')->willReturn($dependencyName2);
+
+            $child1 = $this->createMock($this->getViewClass());
+            $child1->method('getId')->willReturn('child1');
+            $child1->method('getDependencies')->willReturn([$dependency1]);
+
+            $child2 = $this->createMock($this->getViewClass());
+            $child2->method('getId')->willReturn('child2');
+            $child2->method('getDependencies')->willReturn([$dependency2]);
+
+            $this->view->getSidebar($this->sidebarName1)->addChild($child1);
+            $this->view->getSidebar($this->sidebarName2)->addChild($child2);
+
+            $this->assertEquals(
+                [$dependencyName1 => $dependency1, $dependencyName2 => $dependency2],
+                $this->view->getAdditionalDependencies()
+            );
         });
     });
 });

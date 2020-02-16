@@ -13,7 +13,9 @@ use ThenLabs\Components\CompositeComponentTrait;
  */
 abstract class AbstractCompositeView extends AbstractView implements CompositeComponentInterface
 {
-    use CompositeComponentTrait;
+    use CompositeComponentTrait, AdditionalDependenciesFromSidebars {
+        AdditionalDependenciesFromSidebars::getAdditionalDependencies insteadof CompositeComponentTrait;
+    }
 
     public function validateChild(ComponentInterface $child): bool
     {
