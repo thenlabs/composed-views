@@ -86,5 +86,25 @@ testCase('HtmlElementTest.php', function () {
                 $this->assertSame($this->innerHtml, $this->element->getInnerHtml());
             });
         });
+
+        testCase('$element->setEndTag(false)', function () {
+            setUp(function () {
+                $this->element->setEndTag(false);
+            });
+
+            test('$element->hasEndTag() === false', function () {
+                $this->assertFalse($this->element->hasEndTag());
+            });
+        });
+
+        testCase('$element->setSelfClosingTag(false)', function () {
+            setUp(function () {
+                $this->element->setSelfClosingTag(false);
+            });
+
+            test('$element->hasSelfClosingTag() === false', function () {
+                $this->assertFalse($this->element->hasSelfClosingTag());
+            });
+        });
     });
 });

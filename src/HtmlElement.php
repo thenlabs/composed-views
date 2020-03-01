@@ -16,6 +16,8 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
     protected $tagName = 'div';
     protected $attributes = [];
     protected $innerHtml = '';
+    protected $endTag = true;
+    protected $selfClosingTag = false;
 
     public function setName(?string $name): void
     {
@@ -59,11 +61,21 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
 
     public function hasEndTag(): bool
     {
-        return true;
+        return $this->endTag;
+    }
+
+    public function setEndTag(bool $endTag): void
+    {
+        $this->endTag = $endTag;
     }
 
     public function hasSelfClosingTag(): bool
     {
-        return false;
+        return $this->selfClosingTag;
+    }
+
+    public function setSelfClosingTag(bool $selfClosingTag): void
+    {
+        $this->selfClosingTag = $selfClosingTag;
     }
 }
