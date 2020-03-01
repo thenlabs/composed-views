@@ -51,6 +51,35 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         $view->addFilter($closure);
     });
 
+    test('setBasePath($value) invoke to setData("basePath", $value)', function () {
+        $value = uniqid();
+
+        $view = $this->getMockBuilder($this->getViewClass())
+            ->setMethods(['setData'])
+            ->getMockForAbstractClass();
+        $view->expects($this->once())
+            ->method('setData')
+            ->with(
+                $this->equalTo('basePath'),
+                $this->equalTo($value)
+            )
+        ;
+
+        $view->setBasePath($value);
+    });
+
+    test('getBasePath() returns value from getTopData("basePath")', function () {
+        $view = $this->getMockBuilder($this->getViewClass())
+            ->setMethods(['getTopData'])
+            ->getMockForAbstractClass();
+        $view->expects($this->once())
+            ->method('getTopData')
+            ->with($this->equalTo('basePath'))
+        ;
+
+        $view->getBasePath();
+    });
+
     testCase('__toString() returns result of the render() method', function () {
         setUp(function () {
             $this->result = uniqid();

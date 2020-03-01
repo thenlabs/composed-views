@@ -90,4 +90,14 @@ abstract class AbstractView implements ComponentInterface
 
         return compact('properties');
     }
+
+    public function setBasePath(string $basePath): void
+    {
+        $this->setData('basePath', $basePath);
+    }
+
+    public function getBasePath(): ?string
+    {
+        return $this->getTopData('basePath');
+    }
 }

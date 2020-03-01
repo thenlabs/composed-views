@@ -27,7 +27,7 @@ testCase('RenderEventTest.php', function () {
 
         $event = new RenderEvent('');
 
-        // install the page crawler inside event.
+        // install the crawler inside event.
         (function () use ($crawler) {
             $this->crawler = $crawler;
         })->call($event);
