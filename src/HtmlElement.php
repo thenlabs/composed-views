@@ -103,5 +103,9 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
     public function setSelfClosingTag(bool $selfClosingTag): void
     {
         $this->selfClosingTag = $selfClosingTag;
+
+        if ($selfClosingTag) {
+            $this->endTag = false;
+        }
     }
 }

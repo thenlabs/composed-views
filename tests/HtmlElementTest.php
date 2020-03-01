@@ -147,6 +147,10 @@ testCase('HtmlElementTest.php', function () {
                 $this->assertTrue($this->element->hasSelfClosingTag());
             });
 
+            test('$element->hasEndTag() === false', function () {
+                $this->assertFalse($this->element->hasEndTag());
+            });
+
             test('has the expected view', function () {
                 $this->assertEquals(
                     '<div />',
