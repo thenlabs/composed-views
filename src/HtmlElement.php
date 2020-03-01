@@ -81,6 +81,11 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
         return $this->attributes[$attribute] ?? null;
     }
 
+    public function setAttribute(string $name, $value): void
+    {
+        $this->attributes[$name] = $value;
+    }
+
     public function hasAttribute(string $attribute): bool
     {
         return array_key_exists($attribute, $this->attributes);

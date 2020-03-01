@@ -119,6 +119,19 @@ testCase('HtmlElementTest.php', function () {
             });
         });
 
+        testCase('$element->setAttribute($name, $value)', function () {
+            setUp(function () {
+                $this->name = uniqid('attr');
+                $this->value = uniqid();
+
+                $this->element->setAttribute($this->name, $this->value);
+            });
+
+            test('$element->getAttribute($name) === $value', function () {
+                $this->assertSame($this->value, $this->element->getAttribute($this->name));
+            });
+        });
+
         testCase('$element->setInnerHtml($innerHtml)', function () {
             setUp(function () {
                 $this->innerHtml = uniqid();
