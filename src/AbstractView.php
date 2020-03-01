@@ -17,9 +17,7 @@ use BadMethodCallException;
  */
 abstract class AbstractView implements ComponentInterface
 {
-    use ComponentTrait, AdditionalDependenciesFromSidebars {
-        AdditionalDependenciesFromSidebars::getAdditionalDependencies insteadof ComponentTrait;
-    }
+    use ComponentTrait;
 
     protected $sidebars = [];
 

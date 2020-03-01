@@ -13,9 +13,7 @@ use ThenLabs\Components\CompositeComponentTrait;
  */
 abstract class AbstractCompositeView extends AbstractView implements CompositeComponentInterface
 {
-    use CompositeComponentTrait, AdditionalDependenciesFromSidebars {
-        AdditionalDependenciesFromSidebars::getAdditionalDependencies insteadof CompositeComponentTrait;
-    }
+    use CompositeComponentTrait;
 
     public function validateChild(ComponentInterface $child): bool
     {
@@ -31,5 +29,16 @@ abstract class AbstractCompositeView extends AbstractView implements CompositeCo
         }
 
         return $result;
+    }
+
+    public function getAdditionalDependencies(): array
+    {
+        $dependencies = [];
+
+        foreach ($this->sidebars as $sidebar) {
+            $dependencies = array_merge($dependencies, $sidebar->getDependencies());
+        }
+
+        return $dependencies;
     }
 }
