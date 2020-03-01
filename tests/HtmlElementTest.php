@@ -130,6 +130,13 @@ testCase('HtmlElementTest.php', function () {
             test('$element->getAttribute($name) === $value', function () {
                 $this->assertSame($this->value, $this->element->getAttribute($this->name));
             });
+
+            test('has the expected view', function () {
+                $this->assertEquals(
+                    "<div {$this->name}=\"{$this->value}\"></div>",
+                    $this->element->render()
+                );
+            });
         });
 
         testCase('$element->setInnerHtml($innerHtml)', function () {
