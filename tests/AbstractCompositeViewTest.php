@@ -46,6 +46,12 @@ testCase('AbstractCompositeViewTest.php', function () {
         $this->assertEquals($result1.$result2, $parentView->renderChildren());
     });
 
+    test('getSidebars() returns an empty array', function () {
+        $view = $this->createMock($this->getViewClass());
+
+        $this->assertEmpty($view->getSidebars());
+    });
+
     testCase('throws an ThenLabs\Components\Exception\InvalidChildException when attempt insert a child that is not a view', function () {
         setUp(function () {
             $this->expectException(InvalidChildException::class);

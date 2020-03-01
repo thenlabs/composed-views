@@ -90,35 +90,4 @@ abstract class AbstractView implements ComponentInterface
 
         return compact('properties');
     }
-
-    public function getSidebars(): array
-    {
-        return $this->sidebars;
-    }
-
-    public function getSidebar(string $name): ?Sidebar
-    {
-        return $this->sidebars[$name] ?? null;
-    }
-
-    public function setSidebar(string $name, Sidebar $sidebar): void
-    {
-        $this->sidebars[$name] = $sidebar;
-    }
-
-    protected function createSidebar(string $name): void
-    {
-        $this->sidebars[$name] = new Sidebar;
-    }
-
-    public function renderSidebar(string $name): string
-    {
-        $sidebar = $this->sidebars[$name] ?? null;
-
-        if (! $sidebar) {
-            throw new Exception\UnexistentSidebarException($name);
-        }
-
-        return $sidebar->render();
-    }
 }

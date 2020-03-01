@@ -88,10 +88,6 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->newInstance();
         });
 
-        test('getSidebars() returns an empty array', function () {
-            $this->assertEmpty($this->view->getSidebars());
-        });
-
         test('throwns an BadMethodCallException when the called method not exists', function () {
             $method = uniqid('method');
             $this->expectException(BadMethodCallException::class);
