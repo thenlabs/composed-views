@@ -138,13 +138,20 @@ testCase('HtmlElementTest.php', function () {
             });
         });
 
-        testCase('$element->setSelfClosingTag(false)', function () {
+        testCase('$element->setSelfClosingTag(true)', function () {
             setUp(function () {
-                $this->element->setSelfClosingTag(false);
+                $this->element->setSelfClosingTag(true);
             });
 
-            test('$element->hasSelfClosingTag() === false', function () {
-                $this->assertFalse($this->element->hasSelfClosingTag());
+            test('$element->hasSelfClosingTag() === true', function () {
+                $this->assertTrue($this->element->hasSelfClosingTag());
+            });
+
+            test('has the expected view', function () {
+                $this->assertEquals(
+                    '<div />',
+                    $this->element->render()
+                );
             });
         });
     });

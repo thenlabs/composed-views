@@ -34,12 +34,16 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
                 $startTag .= "=\"{$value}\"";
             }
         }
-        $startTag .= '>';
+        $startTag .= $this->selfClosingTag ? ' />' : '>';
 
         $innerHtml = $this->innerHtml;
-
         $endTag = "</{$this->tagName}>";
+
         if (! $this->endTag) {
+            $endTag = '';
+        }
+
+        if ($this->selfClosingTag) {
             $endTag = '';
         }
 
