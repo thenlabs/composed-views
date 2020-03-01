@@ -23,7 +23,7 @@ abstract class AbstractView implements ComponentInterface
 
     abstract protected function getView(array $data = []): string;
 
-    public function render(array $data = []): string
+    public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
         $ownData = [];
         foreach ($this->getModel()['properties'] as $propertyName => $propertyInfo) {
@@ -33,10 +33,14 @@ abstract class AbstractView implements ComponentInterface
         $data = array_merge($ownData, $data);
         $content = $this->getView($data);
 
-        $renderEvent = new RenderEvent($content);
-        $this->dispatchEvent('render', $renderEvent);
+        if ($dispatchRenderEvent) {
+            $renderEvent = new RenderEvent($content);
+            $this->dispatchEvent('render', $renderEvent);
 
-        return $renderEvent->getView();
+            return $renderEvent->getView();
+        } else {
+            return $content;
+        }
     }
 
     public function __toString()

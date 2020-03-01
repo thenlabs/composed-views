@@ -137,6 +137,10 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             test('the render result contains filter changes', function () {
                 $this->assertSame($this->expectedView, $this->view->render());
             });
+
+            test('the result not contains the changes when render it is called with false as second argument', function () {
+                $this->assertNotEquals($this->expectedView, $this->view->render([], false));
+            });
         });
 
         testCase('it is applied a filter using the page dom interface', function () {

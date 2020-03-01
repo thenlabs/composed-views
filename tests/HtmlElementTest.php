@@ -43,6 +43,10 @@ testCase('HtmlElementTest.php', function () {
             $this->assertFalse($this->element->hasSelfClosingTag());
         });
 
+        test('has the expected view', function () {
+            $this->assertEquals('<div></div>', $this->element->render());
+        });
+
         testCase('$element->setName($name)', function () {
             setUp(function () {
                 $this->name = uniqid();
@@ -63,16 +67,39 @@ testCase('HtmlElementTest.php', function () {
             test('$element->getTagName() === $tagName', function () {
                 $this->assertEquals($this->tagName, $this->element->getTagName());
             });
+
+            test('has the expected view', function () {
+                $this->assertEquals(
+                    "<{$this->tagName}></{$this->tagName}>",
+                    $this->element->render()
+                );
+            });
         });
 
-        testCase('$element->setAttributes($array)', function () {
+        testCase('$element->setAttributes($attributes)', function () {
             setUp(function () {
-                $this->array = range(0, mt_rand(0, 10));
-                $this->element->setAttributes($this->array);
+                $this->attr1 = uniqid('attr');
+                $this->value1 = uniqid();
+
+                $this->attr2 = uniqid('attr');
+
+                $this->attributes = [
+                    $this->attr1 => $this->value1,
+                    $this->attr2 => null,
+                ];
+
+                $this->element->setAttributes($this->attributes);
             });
 
-            test('$element->getAttributes() === $array', function () {
-                $this->assertSame($this->array, $this->element->getAttributes());
+            test('$element->getAttributes() === $attributes', function () {
+                $this->assertSame($this->attributes, $this->element->getAttributes());
+            });
+
+            test('has the expected view', function () {
+                $this->assertEquals(
+                    "<div {$this->attr1}=\"{$this->value1}\" {$this->attr2}></div>",
+                    $this->element->render()
+                );
             });
         });
 
@@ -85,6 +112,13 @@ testCase('HtmlElementTest.php', function () {
             test('$element->getInnerHtml() === $innerHtml', function () {
                 $this->assertSame($this->innerHtml, $this->element->getInnerHtml());
             });
+
+            test('has the expected view', function () {
+                $this->assertEquals(
+                    "<div>{$this->innerHtml}</div>",
+                    $this->element->render()
+                );
+            });
         });
 
         testCase('$element->setEndTag(false)', function () {
@@ -94,6 +128,13 @@ testCase('HtmlElementTest.php', function () {
 
             test('$element->hasEndTag() === false', function () {
                 $this->assertFalse($this->element->hasEndTag());
+            });
+
+            test('has the expected view', function () {
+                $this->assertEquals(
+                    '<div>',
+                    $this->element->render()
+                );
             });
         });
 

@@ -26,7 +26,29 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
 
     public function getView(array $data = []): string
     {
-        // return $this->content;
+        $startTag = "<{$this->tagName}";
+        foreach ($this->attributes as $attribute => $value) {
+            $startTag .= " {$attribute}";
+
+            if ($value) {
+                $startTag .= "=\"{$value}\"";
+            }
+        }
+        $startTag .= '>';
+
+        $innerHtml = $this->innerHtml;
+
+        $endTag = "</{$this->tagName}>";
+        if (! $this->endTag) {
+            $endTag = '';
+        }
+
+        return $startTag . $innerHtml . $endTag;
+    }
+
+    public function render(array $data = [], bool $dispatchRenderEvent = false): string
+    {
+        return parent::render($data, $dispatchRenderEvent);
     }
 
     public function getTagName(): string
