@@ -44,6 +44,7 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
         }
 
         if ($this->selfClosingTag) {
+            $innerHtml = '';
             $endTag = '';
         }
 

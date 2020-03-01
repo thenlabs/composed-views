@@ -143,6 +143,15 @@ testCase('HtmlElementTest.php', function () {
                 $this->element->setSelfClosingTag(true);
             });
 
+            createMacro('has the expected view', function () {
+                test('has the expected view', function () {
+                    $this->assertEquals(
+                        '<div />',
+                        $this->element->render()
+                    );
+                });
+            });
+
             test('$element->hasSelfClosingTag() === true', function () {
                 $this->assertTrue($this->element->hasSelfClosingTag());
             });
@@ -151,11 +160,14 @@ testCase('HtmlElementTest.php', function () {
                 $this->assertFalse($this->element->hasEndTag());
             });
 
-            test('has the expected view', function () {
-                $this->assertEquals(
-                    '<div />',
-                    $this->element->render()
-                );
+            useMacro('has the expected view');
+
+            testCase('$element->setInnerHtml($innerHtml)', function () {
+                setUp(function () {
+                    $this->element->setInnerHtml(uniqid());
+                });
+
+                useMacro('has the expected view');
             });
         });
     });
