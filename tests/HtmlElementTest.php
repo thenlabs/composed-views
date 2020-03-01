@@ -31,6 +31,29 @@ testCase('HtmlElementTest.php', function () {
             $this->assertSame([], $this->element->getAttributes());
         });
 
+        test('$element->getInnerHtml() === ""', function () {
+            $this->assertSame('', $this->element->getInnerHtml());
+        });
+
+        test('$element->hasEndTag() === true', function () {
+            $this->assertTrue($this->element->hasEndTag());
+        });
+
+        test('$element->hasSelfClosingTag() === false', function () {
+            $this->assertFalse($this->element->hasSelfClosingTag());
+        });
+
+        testCase('$element->setName($name)', function () {
+            setUp(function () {
+                $this->name = uniqid();
+                $this->element->setName($this->name);
+            });
+
+            test('$element->getName() === $name', function () {
+                $this->assertEquals($this->name, $this->element->getName());
+            });
+        });
+
         testCase('$element->setTagName($tagName)', function () {
             setUp(function () {
                 $this->tagName = uniqid('tag');
@@ -53,14 +76,14 @@ testCase('HtmlElementTest.php', function () {
             });
         });
 
-        testCase('$element->setName($name)', function () {
+        testCase('$element->setInnerHtml($innerHtml)', function () {
             setUp(function () {
-                $this->name = uniqid();
-                $this->element->setName($this->name);
+                $this->innerHtml = uniqid();
+                $this->element->setInnerHtml($this->innerHtml);
             });
 
-            test('$element->getName() === $name', function () {
-                $this->assertEquals($this->name, $this->element->getName());
+            test('$element->getInnerHtml() === $innerHtml', function () {
+                $this->assertSame($this->innerHtml, $this->element->getInnerHtml());
             });
         });
     });
