@@ -43,6 +43,14 @@ testCase('HtmlElementTest.php', function () {
             $this->assertFalse($this->element->hasSelfClosingTag());
         });
 
+        test('getAttribute($attribute) === null', function () {
+            $this->assertNull($this->element->getAttribute(uniqid()));
+        });
+
+        test('hasAttribute($attribute) === false', function () {
+            $this->assertFalse($this->element->hasAttribute(uniqid()));
+        });
+
         test('has the expected view', function () {
             $this->assertEquals('<div></div>', $this->element->render());
         });
@@ -100,6 +108,14 @@ testCase('HtmlElementTest.php', function () {
                     "<div {$this->attr1}=\"{$this->value1}\" {$this->attr2}></div>",
                     $this->element->render()
                 );
+            });
+
+            test('hasAttribute($attr1) === true', function () {
+                $this->assertTrue($this->element->hasAttribute($this->attr1));
+            });
+
+            test('getAttribute($attr1) === $attr1', function () {
+                $this->assertEquals($this->value1, $this->element->getAttribute($this->attr1));
             });
         });
 

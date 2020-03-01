@@ -76,6 +76,16 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
         $this->attributes = $attributes;
     }
 
+    public function getAttribute(string $attribute)
+    {
+        return $this->attributes[$attribute] ?? null;
+    }
+
+    public function hasAttribute(string $attribute): bool
+    {
+        return array_key_exists($attribute, $this->attributes);
+    }
+
     public function getInnerHtml(): string
     {
         return $this->innerHtml;
