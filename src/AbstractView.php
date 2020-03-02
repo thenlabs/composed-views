@@ -35,7 +35,7 @@ abstract class AbstractView implements ComponentInterface
         $content = $this->getView($data);
 
         if ($dispatchRenderEvent) {
-            $renderEvent = new RenderEvent($content);
+            $renderEvent = new RenderEvent($content, $data);
             $this->dispatchEvent('render', $renderEvent);
 
             return $renderEvent->getView();

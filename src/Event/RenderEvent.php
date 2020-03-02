@@ -22,9 +22,15 @@ class RenderEvent extends Event
      */
     protected $crawler;
 
-    public function __construct(string $view)
+    /**
+     * @var array
+     */
+    protected $data;
+
+    public function __construct(string $view, array $data)
     {
         $this->crawler = new HtmlPageCrawler($view);
+        $this->data = $data;
     }
 
     public function getView(): string
@@ -35,6 +41,11 @@ class RenderEvent extends Event
     public function setView(?string $view): void
     {
         $this->view = $view;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
     }
 
     public function __call($method, $arguments)

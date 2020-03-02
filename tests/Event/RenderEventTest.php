@@ -25,7 +25,7 @@ testCase('RenderEventTest.php', function () {
             ->with($this->equalTo($argument))
             ->willReturn($result);
 
-        $event = new RenderEvent('');
+        $event = new RenderEvent('', []);
 
         // install the crawler inside event.
         (function () use ($crawler) {
@@ -40,7 +40,7 @@ testCase('RenderEventTest.php', function () {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage("Unknow method '{$method}'.");
 
-        $event = new RenderEvent('');
+        $event = new RenderEvent('', []);
         $event->{$method}();
     });
 });

@@ -28,5 +28,12 @@ testCase('LinkAssetTest.php', function () {
         test('$link->getUri() === $uri', function () {
             $this->assertSame($this->uri, $this->link->getUri());
         });
+
+        test('render() returns the expected view', function () {
+            $basePath = uniqid('http://localhost:8080/');
+            $expected = "<link rel=\"stylesheet\" href=\"{$basePath}{$this->uri}\">";
+
+            $this->assertEquals($expected, $this->link->render(compact('basePath')));
+        });
     });
 });

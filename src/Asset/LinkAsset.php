@@ -10,6 +10,11 @@ use ThenLabs\ComposedViews\HtmlElement;
  */
 class LinkAsset extends HtmlElement
 {
+    protected $tagName = 'link';
+    protected $attributes = ['rel' => 'stylesheet', 'href' => ''];
+    protected $innerHtml = '';
+    protected $endTag = false;
+    protected $selfClosingTag = false;
     protected $uri;
 
     public function __construct(string $name, ?string $version, string $uri)
@@ -17,6 +22,11 @@ class LinkAsset extends HtmlElement
         $this->name = $name;
         $this->version = $version;
         $this->uri = $uri;
+
+        $this->addFilter(function ($event) {
+            $basePath = $event->getData()['basePath'];
+            $event->setAttribute('href', $basePath . $this->uri);
+        });
     }
 
     public function getUri(): string
