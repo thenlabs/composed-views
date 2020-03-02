@@ -20,5 +20,13 @@ testCase('LinkAssetTest.php', function () {
         test('$link->getName() === $name', function () {
             $this->assertSame($this->name, $this->link->getName());
         });
+
+        test('$link->getVersion() === $version', function () {
+            $this->assertSame($this->version, $this->link->getVersion());
+        });
+
+        test('$link->getUri() === $uri', function () {
+            $this->assertSame($this->uri, $this->link->getUri());
+        });
     });
 });

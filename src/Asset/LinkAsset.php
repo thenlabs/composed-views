@@ -10,8 +10,17 @@ use ThenLabs\ComposedViews\HtmlElement;
  */
 class LinkAsset extends HtmlElement
 {
+    protected $uri;
+
     public function __construct(string $name, ?string $version, string $uri)
     {
         $this->name = $name;
+        $this->version = $version;
+        $this->uri = $uri;
+    }
+
+    public function getUri(): string
+    {
+        return $this->uri;
     }
 }
