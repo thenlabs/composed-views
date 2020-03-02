@@ -7,6 +7,7 @@ use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Annotation\ViewData;
+use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use ReflectionClass;
 use BadMethodCallException;
@@ -103,5 +104,10 @@ abstract class AbstractView implements ComponentInterface
     public function getBasePath(): ?string
     {
         return $this->getTopData('basePath');
+    }
+
+    protected function renderPropertyView(string $property): string
+    {
+        throw new UnexistentPropertyException($property);
     }
 }

@@ -7,6 +7,7 @@ use ThenLabs\Components\DependencyInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\ComposedViews\Sidebar;
 use ThenLabs\ComposedViews\Exception\UnexistentSidebarException;
+use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
@@ -283,6 +284,27 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 "<label data-{$this->attrName}=\"{$newValue}\">{$this->content}</label>",
                 $this->view->render(['value' => $newValue])
             );
+        });
+    });
+
+    testCase('the renderPropertyView() method', function () {
+        test('throwns an UnexistentPropertyException when the specified property not exists', function () {
+            $property = uniqid('property');
+
+            $this->expectException(UnexistentPropertyException::class);
+            $this->expectExceptionMessage("The property '{$property}' not exists.");
+
+            $view = (new ClassBuilder)->extends($this->getViewClass())
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []) use ($property): string {
+                        $this->renderPropertyView($property); // throwns exception.
+                    })
+                ->end()
+                ->newInstance()
+            ;
+
+            $view->render();
         });
     });
 });
