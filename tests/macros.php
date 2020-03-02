@@ -307,7 +307,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $view->render();
         });
 
-        test('returns an empty string when the property not contains a view', function () {
+        test('returns an empty string when the property not contains a view component', function () {
             $property = uniqid('property');
 
             $view = (new ClassBuilder)->extends($this->getViewClass())
@@ -324,6 +324,41 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             ;
 
             $this->assertEmpty($view->render());
+        });
+
+        test('returns view of the view component in property', function () {
+            $property = uniqid('property');
+            $expectedResult = uniqid();
+            $data = range(1, mt_rand(1, 10));
+            $dispatchRenderEvent = boolval(mt_rand(0, 1));
+
+            $otherView = $this->getMockBuilder($this->getViewClass())
+                ->setMethods(['render'])
+                ->getMockForAbstractClass();
+            $otherView->expects($this->once())
+                ->method('render')
+                ->with(
+                    $this->equalTo($data),
+                    $this->equalTo($dispatchRenderEvent)
+                )
+                ->willReturn($expectedResult)
+            ;
+
+            $view = (new ClassBuilder)->extends($this->getViewClass())
+                ->addProperty($property)
+                ->end()
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $argData = [], bool $dispatchArg = true) use ($property, $data, $dispatchRenderEvent): string {
+                        return $this->renderPropertyView($property, $data, $dispatchRenderEvent);
+                    })
+                ->end()
+                ->newInstance()
+            ;
+
+            $view->{$property} = $otherView;
+
+            $this->assertEquals($expectedResult, $view->render($data, $dispatchRenderEvent));
         });
     });
 });

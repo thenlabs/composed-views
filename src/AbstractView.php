@@ -106,12 +106,16 @@ abstract class AbstractView implements ComponentInterface
         return $this->getTopData('basePath');
     }
 
-    protected function renderPropertyView(string $property): string
+    protected function renderPropertyView(string $property, array $data = [], bool $dispatchRenderEvent = true): string
     {
         if (! property_exists($this, $property)) {
             throw new UnexistentPropertyException($property);
         }
 
-        return '';
+        if ($this->{$property} instanceof self) {
+            return $this->{$property}->render($data, $dispatchRenderEvent);
+        } else {
+            return '';
+        }
     }
 }
