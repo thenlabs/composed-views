@@ -6,7 +6,7 @@ namespace ThenLabs\ComposedViews\Asset;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class LinkAsset extends AbstractAsset
+class Stylesheet extends AbstractAsset
 {
     protected $tagName = 'link';
     protected $attributes = ['rel' => 'stylesheet', 'href' => ''];
