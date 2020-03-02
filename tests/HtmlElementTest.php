@@ -169,7 +169,7 @@ testCase('HtmlElementTest.php', function () {
             test('has the expected view', function () {
                 $this->assertEquals(
                     '<div>',
-                    $this->element->render()
+                    $this->element->render([], false)
                 );
             });
         });
@@ -183,7 +183,7 @@ testCase('HtmlElementTest.php', function () {
                 test('has the expected view', function () {
                     $this->assertEquals(
                         '<div />',
-                        $this->element->render()
+                        $this->element->render([], false)
                     );
                 });
             });

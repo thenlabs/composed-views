@@ -51,11 +51,6 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
         return $startTag . $innerHtml . $endTag;
     }
 
-    public function render(array $data = [], bool $dispatchRenderEvent = false): string
-    {
-        return parent::render($data, $dispatchRenderEvent);
-    }
-
     public function getTagName(): string
     {
         return $this->tagName;
