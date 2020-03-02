@@ -3,10 +3,7 @@
 namespace ThenLabs\ComposedViews\Tests;
 
 use ThenLabs\Components\ComponentInterface;
-use ThenLabs\Components\DependencyInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
-use ThenLabs\ComposedViews\Sidebar;
-use ThenLabs\ComposedViews\Exception\UnexistentSidebarException;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
