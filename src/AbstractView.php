@@ -108,6 +108,10 @@ abstract class AbstractView implements ComponentInterface
 
     protected function renderPropertyView(string $property): string
     {
-        throw new UnexistentPropertyException($property);
+        if (! property_exists($this, $property)) {
+            throw new UnexistentPropertyException($property);
+        }
+
+        return '';
     }
 }

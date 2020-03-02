@@ -306,5 +306,24 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             $view->render();
         });
+
+        test('returns an empty string when the property not contains a view', function () {
+            $property = uniqid('property');
+
+            $view = (new ClassBuilder)->extends($this->getViewClass())
+                ->addProperty($property)
+                    ->setAccess('protected')
+                ->end()
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []) use ($property): string {
+                        return $this->renderPropertyView($property);
+                    })
+                ->end()
+                ->newInstance()
+            ;
+
+            $this->assertEmpty($view->render());
+        });
     });
 });
