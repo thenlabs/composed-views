@@ -5,6 +5,7 @@ namespace ThenLabs\ComposedViews\Tests;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
+use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
@@ -73,6 +74,23 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         $view->expects($this->once())
             ->method('getTopData')
             ->with($this->equalTo('basePath'))
+            ->willReturn(uniqid())
+        ;
+
+        $view->getBasePath();
+    });
+
+    test('getBasePath() throwns an UndefinedBasePathException when it is not defined', function () {
+        $this->expectException(UndefinedBasePathException::class);
+        $this->expectExceptionMessage('The base path should be defined.');
+
+        $view = $this->getMockBuilder($this->getViewClass())
+            ->setMethods(['getTopData'])
+            ->getMockForAbstractClass();
+        $view->expects($this->once())
+            ->method('getTopData')
+            ->with($this->equalTo('basePath'))
+            ->willReturn(null)
         ;
 
         $view->getBasePath();
