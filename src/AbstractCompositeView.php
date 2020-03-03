@@ -15,6 +15,8 @@ abstract class AbstractCompositeView extends AbstractView implements CompositeCo
 {
     use CompositeComponentTrait;
 
+    protected $sidebars = [];
+
     public function validateChild(ComponentInterface $child): bool
     {
         return $child instanceof AbstractView ? true : false;

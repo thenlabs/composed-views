@@ -21,8 +21,6 @@ abstract class AbstractView implements ComponentInterface
 {
     use ComponentTrait;
 
-    protected $sidebars = [];
-
     abstract protected function getView(array $data = []): string;
 
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
