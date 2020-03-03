@@ -2,7 +2,6 @@
 
 namespace ThenLabs\ComposedViews\Tests\Asset;
 
-use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Tests\TestCase;
 use ThenLabs\ClassBuilder\ClassBuilder;

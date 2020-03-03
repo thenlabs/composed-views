@@ -4,6 +4,9 @@ namespace ThenLabs\ComposedViews\Tests;
 
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\ComposedViews\Asset\Script;
+use ThenLabs\ComposedViews\Asset\Style;
+use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
@@ -173,6 +176,56 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $crawler = new HtmlPageCrawler($this->view->render());
 
                 $this->assertCount(1, $crawler->filter("div[{$this->attrName}=\"{$this->attrValue}\"]"));
+            });
+        });
+
+        testCase('testing filterStyles() and filterScripts() methods', function () {
+            setUp(function () {
+                $this->style1 = $this->createMock(Style::class);
+                $this->style2 = $this->createMock(Style::class);
+
+                $this->script1 = $this->createMock(Script::class);
+                $this->script2 = $this->createMock(Script::class);
+                $this->script3 = $this->createMock(Script::class);
+
+                $this->stylesheet1 = $this->createMock(Stylesheet::class);
+
+                $this->assets = [
+                    $this->style1,
+                    $this->style2,
+                    $this->script1,
+                    $this->script2,
+                    $this->script3,
+                    $this->stylesheet1,
+                ];
+            });
+
+            test('filterStyles(array $assets) returns array with instances of Stylesheet and Style', function () {
+                // do public the filterStyles method
+                $class = new \ReflectionClass($this->view);
+                $method = $class->getMethod('filterStyles');
+                $method->setAccessible(true);
+
+                $result = $method->invoke($this->view, $this->assets);
+
+                $this->assertCount(3, $result);
+                $this->assertContains($this->style1, $result);
+                $this->assertContains($this->style2, $result);
+                $this->assertContains($this->stylesheet1, $result);
+            });
+
+            test('filterScripts(array $assets) returns array with instances of Script', function () {
+                // do public the filterScripts method
+                $class = new \ReflectionClass($this->view);
+                $method = $class->getMethod('filterScripts');
+                $method->setAccessible(true);
+
+                $result = $method->invoke($this->view, $this->assets);
+
+                $this->assertCount(3, $result);
+                $this->assertContains($this->script1, $result);
+                $this->assertContains($this->script2, $result);
+                $this->assertContains($this->script3, $result);
             });
         });
     });

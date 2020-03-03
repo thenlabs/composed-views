@@ -6,6 +6,9 @@ namespace ThenLabs\ComposedViews;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
 use ThenLabs\ComposedViews\Asset\AbstractAsset;
+use ThenLabs\ComposedViews\Asset\Script;
+use ThenLabs\ComposedViews\Asset\Style;
+use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Annotation\ViewData;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
@@ -139,5 +142,19 @@ abstract class AbstractView implements ComponentInterface
         }
 
         return $result;
+    }
+
+    protected function filterStyles(array $assets): array
+    {
+        return array_filter($assets, function ($asset) {
+            return ($asset instanceof Style || $asset instanceof Stylesheet);
+        });
+    }
+
+    protected function filterScripts(array $assets): array
+    {
+        return array_filter($assets, function ($asset) {
+            return $asset instanceof Script;
+        });
     }
 }
