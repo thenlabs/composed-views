@@ -5,6 +5,7 @@ namespace ThenLabs\ComposedViews;
 
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
+use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Annotation\ViewData;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
@@ -122,5 +123,10 @@ abstract class AbstractView implements ComponentInterface
         } else {
             return '';
         }
+    }
+
+    protected function renderAsset(string $basePath, AbstractAsset $asset): string
+    {
+        return $asset->render(compact('basePath'));
     }
 }

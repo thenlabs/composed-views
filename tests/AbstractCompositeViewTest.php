@@ -5,6 +5,7 @@ namespace ThenLabs\ComposedViews\Tests;
 use ThenLabs\ComposedViews\Sidebar;
 use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\AbstractCompositeView;
+use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Exception\UnexistentSidebarException;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
@@ -161,6 +162,49 @@ testCase('AbstractCompositeViewTest.php', function () {
                 [$dependencyName1 => $dependency1, $dependencyName2 => $dependency2],
                 $this->view->getAdditionalDependencies()
             );
+        });
+    });
+
+    testCase(function () {
+        test(function () {
+            $result = uniqid();
+            $basePath = uniqid('http://localhost/');
+
+            $asset = $this->getMockBuilder(AbstractAsset::class)
+                ->disableOriginalConstructor()
+                ->setMethods(['render'])
+                ->getMockForAbstractClass();
+            $asset->expects($this->once())
+                ->method('render')
+                ->with(
+                    $this->callback(function ($data) use ($basePath) {
+                        return $data['basePath'] === $basePath;
+                    })
+                )
+                ->willReturn($result)
+            ;
+
+            $view = (new ClassBuilder)->extends($this->getViewClass())
+                ->addMethod('getDependencies', function () use ($asset): array {
+                    return [$asset];
+                })->end()
+
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []) use ($basePath): string {
+                        $assets = $this->getDependencies();
+                        $asset = array_pop($assets);
+
+                        return $this->renderAsset($basePath, $asset);
+                    })
+                ->end()
+
+                ->newInstance()
+            ;
+
+            $view->setBasePath($basePath);
+
+            $view->render();
         });
     });
 });
