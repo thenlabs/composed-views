@@ -21,6 +21,12 @@ class Script extends AbstractAsset
         $this->addFilter(function ($event) {
             $basePath = $event->getData()['basePath'];
             $event->setAttribute('src', $basePath . $this->uri);
+            $event->setInnerHtml($this->getSource());
         });
+    }
+
+    public function getSource(): ?string
+    {
+        return null;
     }
 }
