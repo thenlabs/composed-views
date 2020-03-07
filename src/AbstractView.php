@@ -13,6 +13,7 @@ use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Annotation\ViewData;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
+use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use ReflectionClass;
 use BadMethodCallException;
@@ -31,7 +32,7 @@ abstract class AbstractView implements ComponentInterface
     {
         $ownData = [];
         foreach ($this->getModel()['properties'] as $propertyName => $propertyInfo) {
-            $ownData[$propertyName] = $propertyInfo['value'];
+            $ownData[$propertyName] = $propertyInfo['currentValue'];
         }
 
         $data = array_merge($ownData, $data);
@@ -65,7 +66,13 @@ abstract class AbstractView implements ComponentInterface
             }
 
             if ($method == $propertyInfo['setter']) {
-                $this->{$propertyName} = $arguments[0];
+                $value = $arguments[0];
+
+                if (is_array($propertyInfo['values']) && ! in_array($value, $propertyInfo['values'])) {
+                    throw new InvalidPropertyValueException($propertyName, $value);
+                }
+
+                $this->{$propertyName} = $value;
                 return;
             }
         }
@@ -88,9 +95,10 @@ abstract class AbstractView implements ComponentInterface
                     $propertyName = $property->getName();
 
                     $properties[$propertyName] = [
-                        'getter' => $annotation->getter ?? 'get'.ucfirst($propertyName),
-                        'setter' => $annotation->setter ?? 'set'.ucfirst($propertyName),
-                        'value' => $this->{$propertyName},
+                        'getter'       => $annotation->getter ?? 'get'.ucfirst($propertyName),
+                        'setter'       => $annotation->setter ?? 'set'.ucfirst($propertyName),
+                        'values'       => $annotation->values,
+                        'currentValue' => $this->{$propertyName},
                     ];
                 }
             }

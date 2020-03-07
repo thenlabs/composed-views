@@ -9,6 +9,7 @@ use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
+use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
@@ -302,6 +303,39 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             });
 
             useMacro('getter and setter tests');
+        });
+
+        testCase('annotation specifying values', function () {
+            setUp(function () {
+                $this->propertyName = uniqid('property');
+
+                $this->classBuilder
+                    ->addProperty($this->propertyName)
+                        ->setAccess('protected')
+                        ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData(values={"value1", "value2"})')
+                    ->end()
+                ;
+
+                $this->view = $this->classBuilder->newInstance();
+            });
+
+            test('throwns an InvalidPropertyValueException when sets an non specified value', function () {
+                $value = uniqid();
+
+                $this->expectException(InvalidPropertyValueException::class);
+                $this->expectExceptionMessage("The value '{$value}' is invalid for the property '{$this->propertyName}'.");
+
+                call_user_func([$this->view, 'set'.ucfirst($this->propertyName)], $value);
+            });
+
+            test('', function () {
+                $this->view->{'set'.ucfirst($this->propertyName)}('value2');
+
+                $this->assertEquals(
+                    'value2',
+                    call_user_func([$this->view, 'get'.ucfirst($this->propertyName)])
+                );
+            });
         });
     });
 

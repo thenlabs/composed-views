@@ -11,4 +11,6 @@ class ViewData
     public $getter;
 
     public $setter;
+
+    public $values;
 }
