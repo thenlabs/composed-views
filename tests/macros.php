@@ -4,6 +4,7 @@ namespace ThenLabs\ComposedViews\Tests;
 
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Asset\Script;
 use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
@@ -124,6 +125,102 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             $this->expectOutputString($this->result);
         });
+    });
+
+    test('renderAsset($basePath, $asset) returns result of $asset->render(["basePath" => $basePath])', function () {
+        $result = uniqid();
+        $basePath = uniqid('http://localhost/');
+
+        $asset = $this->getMockBuilder(AbstractAsset::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['render'])
+            ->getMockForAbstractClass();
+        $asset->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->callback(function ($data) use ($basePath) {
+                    return $data['basePath'] === $basePath;
+                })
+            )
+            ->willReturn($result)
+        ;
+
+        $view = (new ClassBuilder)->extends($this->getViewClass())
+            ->addMethod('getDependencies', function () use ($asset): array {
+                return [$asset];
+            })->end()
+
+            ->addMethod('getView')
+                ->setAccess('protected')
+                ->setClosure(function (array $data = []) use ($basePath): string {
+                    $assets = $this->getDependencies();
+                    $asset = array_pop($assets);
+
+                    return $this->renderAsset($basePath, $asset);
+                })
+            ->end()
+
+            ->newInstance()
+        ;
+
+        $view->setBasePath($basePath);
+
+        $this->assertEquals($result, $view->render());
+    });
+
+    test('renderAssets($basePath, [$asset1, $asset2]) returns result of $asset1->render(["basePath" => $basePath]), $asset2->render(["basePath" => $basePath]), ....', function () {
+        $result1 = uniqid();
+        $result2 = uniqid();
+        $basePath = uniqid('http://localhost/');
+
+        $asset1 = $this->getMockBuilder(AbstractAsset::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['render'])
+            ->getMockForAbstractClass();
+        $asset1->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->callback(function ($data) use ($basePath) {
+                    return $data['basePath'] === $basePath;
+                })
+            )
+            ->willReturn($result1)
+        ;
+
+        $asset2 = $this->getMockBuilder(AbstractAsset::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['render'])
+            ->getMockForAbstractClass();
+        $asset2->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->callback(function ($data) use ($basePath) {
+                    return $data['basePath'] === $basePath;
+                })
+            )
+            ->willReturn($result2)
+        ;
+
+        $view = (new ClassBuilder)->extends($this->getViewClass())
+            ->addMethod('getDependencies', function () use ($asset1, $asset2): array {
+                return [$asset1, $asset2];
+            })->end()
+
+            ->addMethod('getView')
+                ->setAccess('protected')
+                ->setClosure(function (array $data = []) use ($basePath): string {
+                    $assets = $this->getDependencies();
+
+                    return $this->renderAssets($basePath, $assets);
+                })
+            ->end()
+
+            ->newInstance()
+        ;
+
+        $view->setBasePath($basePath);
+
+        $this->assertEquals($result1.$result2, $view->render());
     });
 
     testCase('exists a view', function () {

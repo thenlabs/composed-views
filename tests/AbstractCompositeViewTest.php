@@ -5,8 +5,6 @@ namespace ThenLabs\ComposedViews\Tests;
 use ThenLabs\ComposedViews\Sidebar;
 use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\AbstractCompositeView;
-use ThenLabs\ComposedViews\Asset\AbstractAsset;
-use ThenLabs\ComposedViews\Exception\UnexistentSidebarException;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
 use ThenLabs\Components\CompositeComponentInterface;
@@ -47,106 +45,52 @@ testCase('AbstractCompositeViewTest.php', function () {
         $this->assertEquals($result1.$result2, $parentView->renderChildren());
     });
 
-    test('getSidebars() returns an empty array', function () {
-        $view = $this->createMock($this->getViewClass());
+    test('getAdditionalDependencies() includes the sidebars dependencies', function () {
+        $dependencyName1 = uniqid('dep');
+        $dependencyName2 = uniqid('dep');
 
-        $this->assertEmpty($view->getSidebars());
-    });
+        $dependency1 = $this->createMock(DependencyInterface::class);
+        $dependency1->method('getName')->willReturn($dependencyName1);
 
-    test('renderAsset($basePath, $asset) returns result of $asset->render(["basePath" => $basePath])', function () {
-        $result = uniqid();
-        $basePath = uniqid('http://localhost/');
+        $dependency2 = $this->createMock(DependencyInterface::class);
+        $dependency2->method('getName')->willReturn($dependencyName2);
 
-        $asset = $this->getMockBuilder(AbstractAsset::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['render'])
-            ->getMockForAbstractClass();
-        $asset->expects($this->once())
-            ->method('render')
-            ->with(
-                $this->callback(function ($data) use ($basePath) {
-                    return $data['basePath'] === $basePath;
-                })
-            )
-            ->willReturn($result)
-        ;
+        $child1 = $this->createMock($this->getViewClass());
+        $child1->method('getId')->willReturn('child1');
+        $child1->method('getDependencies')->willReturn([$dependency1]);
 
-        $view = (new ClassBuilder)->extends($this->getViewClass())
-            ->addMethod('getDependencies', function () use ($asset): array {
-                return [$asset];
-            })->end()
+        $child2 = $this->createMock($this->getViewClass());
+        $child2->method('getId')->willReturn('child2');
+        $child2->method('getDependencies')->willReturn([$dependency2]);
 
+        $property1 = uniqid('property');
+        $property2 = uniqid('property');
+
+        $view = (new ClassBuilder)->extends(AbstractCompositeView::class)
             ->addMethod('getView')
                 ->setAccess('protected')
-                ->setClosure(function (array $data = []) use ($basePath): string {
-                    $assets = $this->getDependencies();
-                    $asset = array_pop($assets);
-
-                    return $this->renderAsset($basePath, $asset);
+                ->setClosure(function (array $data = []): string {
+                    return '';
                 })
             ->end()
-
+            ->addProperty($property1)
+                ->setAccess('protected')
+                ->addComment('@ThenLabs\ComposedViews\Annotation\Sidebar')
+            ->end()
+            ->addProperty($property2)
+                ->setAccess('protected')
+                ->addComment('@ThenLabs\ComposedViews\Annotation\Sidebar')
+            ->end()
             ->newInstance()
         ;
 
-        $view->setBasePath($basePath);
+        $view->{$property1}->addChild($child1);
+        $view->{$property2}->addChild($child2);
 
-        $this->assertEquals($result, $view->render());
-    });
-
-    test('renderAssets($basePath, [$asset1, $asset2]) returns result of $asset1->render(["basePath" => $basePath]), $asset2->render(["basePath" => $basePath]), ....', function () {
-        $result1 = uniqid();
-        $result2 = uniqid();
-        $basePath = uniqid('http://localhost/');
-
-        $asset1 = $this->getMockBuilder(AbstractAsset::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['render'])
-            ->getMockForAbstractClass();
-        $asset1->expects($this->once())
-            ->method('render')
-            ->with(
-                $this->callback(function ($data) use ($basePath) {
-                    return $data['basePath'] === $basePath;
-                })
-            )
-            ->willReturn($result1)
-        ;
-
-        $asset2 = $this->getMockBuilder(AbstractAsset::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['render'])
-            ->getMockForAbstractClass();
-        $asset2->expects($this->once())
-            ->method('render')
-            ->with(
-                $this->callback(function ($data) use ($basePath) {
-                    return $data['basePath'] === $basePath;
-                })
-            )
-            ->willReturn($result2)
-        ;
-
-        $view = (new ClassBuilder)->extends($this->getViewClass())
-            ->addMethod('getDependencies', function () use ($asset1, $asset2): array {
-                return [$asset1, $asset2];
-            })->end()
-
-            ->addMethod('getView')
-                ->setAccess('protected')
-                ->setClosure(function (array $data = []) use ($basePath): string {
-                    $assets = $this->getDependencies();
-
-                    return $this->renderAssets($basePath, $assets);
-                })
-            ->end()
-
-            ->newInstance()
-        ;
-
-        $view->setBasePath($basePath);
-
-        $this->assertEquals($result1.$result2, $view->render());
+        $this->assertEquals(
+            [$dependencyName1 => $dependency1, $dependencyName2 => $dependency2],
+            $view->getAdditionalDependencies()
+        );
     });
 
     testCase('throws an ThenLabs\Components\Exception\InvalidChildException when attempt insert a child that is not a view', function () {

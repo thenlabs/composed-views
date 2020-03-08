@@ -31,14 +31,18 @@ abstract class AbstractCompositeView extends AbstractView implements CompositeCo
         return $result;
     }
 
-    // public function getAdditionalDependencies(): array
-    // {
-    //     $dependencies = [];
+    public function getAdditionalDependencies(): array
+    {
+        $model = $this->getModel();
+        $dependencies = [];
 
-    //     foreach ($this->sidebars as $sidebar) {
-    //         $dependencies = array_merge($dependencies, $sidebar->getDependencies());
-    //     }
+        foreach ($this->getModel()['sidebars'] as $propertyName => $sidebarData) {
+            $dependencies = array_merge(
+                $dependencies,
+                $this->{$propertyName}->getDependencies()
+            );
+        }
 
-    //     return $dependencies;
-    // }
+        return $dependencies;
+    }
 }
