@@ -99,8 +99,8 @@ abstract class AbstractView implements ComponentInterface
 
         if (! $model) {
             $model = [
-                'data'     => [],
-                'views'    => [],
+                'data' => [],
+                'views' => [],
                 'sidebars' => [],
             ];
 
