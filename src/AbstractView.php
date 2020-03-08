@@ -31,8 +31,8 @@ abstract class AbstractView implements ComponentInterface
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
         $ownData = [];
-        foreach ($this->getModel()['properties'] as $propertyName => $propertyInfo) {
-            $ownData[$propertyName] = $propertyInfo['currentValue'];
+        foreach (static::getModel()['properties'] as $propertyName => $propertyInfo) {
+            $ownData[$propertyName] = $this->{$propertyName};
         }
 
         $data = array_merge($ownData, $data);
@@ -60,7 +60,7 @@ abstract class AbstractView implements ComponentInterface
 
     public function __call($method, $arguments)
     {
-        foreach ($this->getModel()['properties'] as $propertyName => $propertyInfo) {
+        foreach (static::getModel()['properties'] as $propertyName => $propertyInfo) {
             if ($method == $propertyInfo['getter']) {
                 return $this->{$propertyName};
             }
@@ -80,31 +80,40 @@ abstract class AbstractView implements ComponentInterface
         throw new BadMethodCallException("Unknow method '{$method}'.");
     }
 
-    private function getModel(): array
+    /**
+     * @static
+     */
+    private static function getModel(): array
     {
-        $properties = [];
+        static $model = null;
 
-        $class = new ReflectionClass($this);
-        $reader = new AnnotationReader();
-        // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
-        new DataAnnotation;
+        if (! $model) {
+            $model = [];
+            $properties = [];
 
-        foreach ($class->getProperties() as $property) {
-            foreach ($reader->getPropertyAnnotations($property) as $annotation) {
-                if ($annotation instanceof DataAnnotation) {
-                    $propertyName = $property->getName();
+            $class = new ReflectionClass(static::class);
+            $reader = new AnnotationReader();
+            // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
+            new DataAnnotation;
 
-                    $properties[$propertyName] = [
-                        'getter'       => $annotation->getter ?? 'get'.ucfirst($propertyName),
-                        'setter'       => $annotation->setter ?? 'set'.ucfirst($propertyName),
-                        'values'       => $annotation->values,
-                        'currentValue' => $this->{$propertyName},
-                    ];
+            foreach ($class->getProperties() as $property) {
+                foreach ($reader->getPropertyAnnotations($property) as $annotation) {
+                    if ($annotation instanceof DataAnnotation) {
+                        $propertyName = $property->getName();
+
+                        $properties[$propertyName] = [
+                            'getter'       => $annotation->getter ?? 'get'.ucfirst($propertyName),
+                            'setter'       => $annotation->setter ?? 'set'.ucfirst($propertyName),
+                            'values'       => $annotation->values,
+                        ];
+                    }
                 }
             }
+
+            $model['properties'] = $properties;
         }
 
-        return compact('properties');
+        return $model;
     }
 
     public function setBasePath(string $basePath): void
