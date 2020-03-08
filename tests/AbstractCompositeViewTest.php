@@ -171,93 +171,28 @@ testCase('AbstractCompositeViewTest.php', function () {
         });
     });
 
-    testCase('exists a view with two sidebars', function () {
+    testCase('exists a view with a property with the sidebar annotation', function () {
         setUp(function () {
-            $this->sidebarName1 = $sidebarName1 = uniqid('sidebar');
-            $this->sidebarName2 = $sidebarName2 = uniqid('sidebar');
+            $this->propertyName = uniqid('property');
 
-            $this->view = (new ClassBuilder)->extends($this->getViewClass())
-                ->addMethod('__construct')
-                    ->setClosure(function () use ($sidebarName1, $sidebarName2) {
-                        $this->createSidebar($sidebarName1);
-                        $this->createSidebar($sidebarName2);
-                    })
-                ->end()
+            $this->classBuilder = (new ClassBuilder)->extends($this->getViewClass())
                 ->addMethod('getView')
                     ->setAccess('protected')
                     ->setClosure(function (array $data = []): string {
-                        return '<div>'.uniqid().'</div>';
+                        return '';
                     })
                 ->end()
-                ->newInstance();
+                ->addProperty($this->propertyName)
+                    ->setAccess('protected')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\Sidebar')
+                ->end();
+            ;
+
+            $this->view = $this->classBuilder->newInstance();
         });
 
-        test('getSidebars() returns an array with two instances of Sidebar', function () {
-            $sidebars = $this->view->getSidebars();
-
-            $this->assertCount(2, $sidebars);
-            $this->assertInstanceOf(Sidebar::class, $sidebars[$this->sidebarName1]);
-            $this->assertInstanceOf(Sidebar::class, $sidebars[$this->sidebarName2]);
-        });
-
-        test('getSidebar($name) returns null when the searched sidebar not exists', function () {
-            $this->assertNull($this->view->getSidebar(uniqid()));
-        });
-
-        test('getSidebar($name) returns the expected sidebar', function () {
-            $this->assertInstanceOf(Sidebar::class, $this->view->getSidebar($this->sidebarName1));
-        });
-
-        test('renderSidebar($name) throwns an UnexistentSidebarException when searched not exists', function () {
-            $sidebar = uniqid();
-
-            $this->expectException(UnexistentSidebarException::class);
-            $this->expectExceptionMessage("The sidebar '{$sidebar}' not exists.");
-
-            $this->view->renderSidebar($sidebar);
-        });
-
-        test('renderSidebar($name) returns the sidebar view', function () {
-            $result = uniqid();
-            $sidebarName = uniqid('sidebar');
-
-            $sidebar = $this->getMockBuilder(Sidebar::class)
-                ->setMethods(['render'])
-                ->getMock();
-            $sidebar->expects($this->once())
-                ->method('render')
-                ->willReturn($result);
-
-            $this->view->setSidebar($sidebarName, $sidebar);
-
-            $this->assertEquals($result, $this->view->renderSidebar($sidebarName));
-        });
-
-        test('getAdditionalDependencies() includes the sidebars dependencies', function () {
-            $dependencyName1 = uniqid('dep');
-            $dependencyName2 = uniqid('dep');
-
-            $dependency1 = $this->createMock(DependencyInterface::class);
-            $dependency1->method('getName')->willReturn($dependencyName1);
-
-            $dependency2 = $this->createMock(DependencyInterface::class);
-            $dependency2->method('getName')->willReturn($dependencyName2);
-
-            $child1 = $this->createMock($this->getViewClass());
-            $child1->method('getId')->willReturn('child1');
-            $child1->method('getDependencies')->willReturn([$dependency1]);
-
-            $child2 = $this->createMock($this->getViewClass());
-            $child2->method('getId')->willReturn('child2');
-            $child2->method('getDependencies')->willReturn([$dependency2]);
-
-            $this->view->getSidebar($this->sidebarName1)->addChild($child1);
-            $this->view->getSidebar($this->sidebarName2)->addChild($child2);
-
-            $this->assertEquals(
-                [$dependencyName1 => $dependency1, $dependencyName2 => $dependency2],
-                $this->view->getAdditionalDependencies()
-            );
+        test('the view instance has a public sidebar instance', function () {
+            $this->assertInstanceOf(Sidebar::class, $this->view->{$this->propertyName});
         });
     });
 });

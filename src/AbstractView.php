@@ -12,6 +12,7 @@ use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Annotation\Data as DataAnnotation;
 use ThenLabs\ComposedViews\Annotation\ViewComponent as ViewComponentAnnotation;
+use ThenLabs\ComposedViews\Annotation\Sidebar as SidebarAnnotation;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
 use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
@@ -32,7 +33,7 @@ abstract class AbstractView implements ComponentInterface
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
         $ownData = [];
-        foreach (static::getModel()['data'] as $propertyName => $propertyInfo) {
+        foreach ($this->getModel()['data'] as $propertyName => $propertyInfo) {
             $ownData[$propertyName] = $this->{$propertyName};
         }
 
@@ -61,7 +62,7 @@ abstract class AbstractView implements ComponentInterface
 
     public function __call($method, $arguments)
     {
-        foreach (static::getModel()['data'] as $propertyName => $propertyInfo) {
+        foreach ($this->getModel()['data'] as $propertyName => $propertyInfo) {
             if ($method == $propertyInfo['getter']) {
                 return $this->{$propertyName};
             }
@@ -92,10 +93,7 @@ abstract class AbstractView implements ComponentInterface
         return $this->{$name};
     }
 
-    /**
-     * @static
-     */
-    private static function getModel(): array
+    public function getModel(): array
     {
         static $model = null;
 
@@ -105,11 +103,12 @@ abstract class AbstractView implements ComponentInterface
                 'views' => [],
             ];
 
-            $class = new ReflectionClass(static::class);
+            $class = new ReflectionClass($this);
             $reader = new AnnotationReader();
             // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
             new DataAnnotation;
             new ViewComponentAnnotation;
+            new SidebarAnnotation;
 
             foreach ($class->getProperties() as $property) {
                 foreach ($reader->getPropertyAnnotations($property) as $annotation) {
@@ -125,6 +124,12 @@ abstract class AbstractView implements ComponentInterface
 
                     if ($annotation instanceof ViewComponentAnnotation) {
                         $model['views'][$propertyName] = [];
+                    }
+
+                    if ($annotation instanceof SidebarAnnotation &&
+                        ! $this->{$propertyName} instanceof Sidebar
+                    ) {
+                        $this->{$propertyName} = new Sidebar;
                     }
                 }
             }
