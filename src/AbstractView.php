@@ -32,12 +32,12 @@ abstract class AbstractView implements ComponentInterface
 
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
-        $ownData = [];
+        $currentData = [];
         foreach ($this->getModel()['data'] as $propertyName => $propertyInfo) {
-            $ownData[$propertyName] = $this->{$propertyName};
+            $currentData[$propertyName] = $this->{$propertyName};
         }
 
-        $data = array_merge($ownData, $data);
+        $data = array_merge($currentData, $data);
         $content = $this->getView($data);
 
         if ($dispatchRenderEvent) {
