@@ -10,7 +10,7 @@ use ThenLabs\ComposedViews\Asset\Script;
 use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Event\RenderEvent;
-use ThenLabs\ComposedViews\Annotation\ViewData;
+use ThenLabs\ComposedViews\Annotation\Data as DataAnnotation;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
 use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
@@ -87,11 +87,11 @@ abstract class AbstractView implements ComponentInterface
         $class = new ReflectionClass($this);
         $reader = new AnnotationReader();
         // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
-        new ViewData;
+        new DataAnnotation;
 
         foreach ($class->getProperties() as $property) {
             foreach ($reader->getPropertyAnnotations($property) as $annotation) {
-                if ($annotation instanceof ViewData) {
+                if ($annotation instanceof DataAnnotation) {
                     $propertyName = $property->getName();
 
                     $properties[$propertyName] = [

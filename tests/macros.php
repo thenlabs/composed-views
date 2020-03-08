@@ -274,7 +274,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $this->classBuilder
                     ->addProperty($this->propertyName)
                         ->setAccess('protected')
-                        ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
+                        ->addComment('@ThenLabs\ComposedViews\Annotation\Data')
                         ->setValue($this->propertyValue)
                     ->end();
 
@@ -295,7 +295,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $this->classBuilder
                     ->addProperty($this->propertyName)
                         ->setAccess('protected')
-                        ->addComment("@ThenLabs\ComposedViews\Annotation\ViewData(getter=\"{$this->getterName}\", setter=\"{$this->setterName}\")")
+                        ->addComment("@ThenLabs\ComposedViews\Annotation\Data(getter=\"{$this->getterName}\", setter=\"{$this->setterName}\")")
                         ->setValue($this->propertyValue)
                     ->end();
 
@@ -312,7 +312,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $this->classBuilder
                     ->addProperty($this->propertyName)
                         ->setAccess('protected')
-                        ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData(values={"value1", "value2"})')
+                        ->addComment('@ThenLabs\ComposedViews\Annotation\Data(values={"value1", "value2"})')
                     ->end()
                 ;
 
@@ -344,15 +344,15 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->view = (new ClassBuilder)->extends($this->getViewClass())
                 ->addProperty('attrName')
                     ->setAccess('protected')
-                    ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\Data')
                 ->end()
                 ->addProperty('value')
                     ->setAccess('protected')
-                    ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\Data')
                 ->end()
                 ->addProperty('content')
                     ->setAccess('protected')
-                    ->addComment('@ThenLabs\ComposedViews\Annotation\ViewData')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\Data')
                 ->end()
                 ->addMethod('getView')
                     ->setAccess('protected')

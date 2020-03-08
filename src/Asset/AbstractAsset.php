@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ThenLabs\ComposedViews\Asset;
 
 use ThenLabs\ComposedViews\HtmlElement;
-use ThenLabs\ComposedViews\Annotation\ViewData;
+use ThenLabs\ComposedViews\Annotation\Data;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -13,7 +13,7 @@ use ThenLabs\ComposedViews\Annotation\ViewData;
 abstract class AbstractAsset extends HtmlElement
 {
     /**
-     * @ViewData
+     * @Data
      */
     protected $uri;
 

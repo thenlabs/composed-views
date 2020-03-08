@@ -6,7 +6,7 @@ namespace ThenLabs\ComposedViews\Annotation;
 /**
  * @Annotation
  */
-class ViewData
+class Data
 {
     public $getter;
 
