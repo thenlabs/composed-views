@@ -123,7 +123,7 @@ abstract class AbstractView implements ComponentInterface
         return $basePath;
     }
 
-    protected function renderPropertyView(string $property, array $data = [], bool $dispatchRenderEvent = true): string
+    protected function renderProperty(string $property, array $data = [], bool $dispatchRenderEvent = true): string
     {
         if (! property_exists($this, $property)) {
             throw new UnexistentPropertyException($property);

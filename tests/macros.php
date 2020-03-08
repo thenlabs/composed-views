@@ -389,7 +389,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         });
     });
 
-    testCase('the renderPropertyView() method', function () {
+    testCase('the renderProperty() method', function () {
         test('throwns an UnexistentPropertyException when the specified property not exists', function () {
             $property = uniqid('property');
 
@@ -400,7 +400,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->addMethod('getView')
                     ->setAccess('protected')
                     ->setClosure(function (array $data = []) use ($property): string {
-                        $this->renderPropertyView($property); // throwns exception.
+                        $this->renderProperty($property); // throwns exception.
                     })
                 ->end()
                 ->newInstance()
@@ -419,7 +419,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->addMethod('getView')
                     ->setAccess('protected')
                     ->setClosure(function (array $data = []) use ($property): string {
-                        return $this->renderPropertyView($property);
+                        return $this->renderProperty($property);
                     })
                 ->end()
                 ->newInstance()
@@ -452,7 +452,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->addMethod('getView')
                     ->setAccess('protected')
                     ->setClosure(function (array $argData = [], bool $dispatchArg = true) use ($property, $data, $dispatchRenderEvent): string {
-                        return $this->renderPropertyView($property, $data, $dispatchRenderEvent);
+                        return $this->renderProperty($property, $data, $dispatchRenderEvent);
                     })
                 ->end()
                 ->newInstance()
