@@ -11,6 +11,7 @@ use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Annotation\Data as DataAnnotation;
+use ThenLabs\ComposedViews\Annotation\ViewComponent as ViewComponentAnnotation;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
 use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
@@ -31,7 +32,7 @@ abstract class AbstractView implements ComponentInterface
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
         $ownData = [];
-        foreach (static::getModel()['properties'] as $propertyName => $propertyInfo) {
+        foreach (static::getModel()['data'] as $propertyName => $propertyInfo) {
             $ownData[$propertyName] = $this->{$propertyName};
         }
 
@@ -60,7 +61,7 @@ abstract class AbstractView implements ComponentInterface
 
     public function __call($method, $arguments)
     {
-        foreach (static::getModel()['properties'] as $propertyName => $propertyInfo) {
+        foreach (static::getModel()['data'] as $propertyName => $propertyInfo) {
             if ($method == $propertyInfo['getter']) {
                 return $this->{$propertyName};
             }
@@ -80,6 +81,17 @@ abstract class AbstractView implements ComponentInterface
         throw new BadMethodCallException("Unknow method '{$method}'.");
     }
 
+    public function __get($name)
+    {
+        $model = static::getModel();
+
+        if (! isset($model['views'][$name])) {
+            throw new UnexistentPropertyException($name);
+        }
+
+        return $this->{$name};
+    }
+
     /**
      * @static
      */
@@ -88,29 +100,34 @@ abstract class AbstractView implements ComponentInterface
         static $model = null;
 
         if (! $model) {
-            $model = [];
-            $properties = [];
+            $model = [
+                'data' => [],
+                'views' => [],
+            ];
 
             $class = new ReflectionClass(static::class);
             $reader = new AnnotationReader();
             // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
             new DataAnnotation;
+            new ViewComponentAnnotation;
 
             foreach ($class->getProperties() as $property) {
                 foreach ($reader->getPropertyAnnotations($property) as $annotation) {
-                    if ($annotation instanceof DataAnnotation) {
-                        $propertyName = $property->getName();
+                    $propertyName = $property->getName();
 
-                        $properties[$propertyName] = [
-                            'getter'       => $annotation->getter ?? 'get'.ucfirst($propertyName),
-                            'setter'       => $annotation->setter ?? 'set'.ucfirst($propertyName),
-                            'values'       => $annotation->values,
+                    if ($annotation instanceof DataAnnotation) {
+                        $model['data'][$propertyName] = [
+                            'getter' => $annotation->getter ?? 'get'.ucfirst($propertyName),
+                            'setter' => $annotation->setter ?? 'set'.ucfirst($propertyName),
+                            'values' => $annotation->values,
                         ];
+                    }
+
+                    if ($annotation instanceof ViewComponentAnnotation) {
+                        $model['views'][$propertyName] = [];
                     }
                 }
             }
-
-            $model['properties'] = $properties;
         }
 
         return $model;

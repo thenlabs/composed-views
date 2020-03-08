@@ -13,6 +13,7 @@ use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
+use stdClass;
 
 createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php', function () {
     test('the view is instance of ThenLabs\Components\ComponentInterface', function () {
@@ -143,6 +144,14 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->expectExceptionMessage("Unknow method '{$method}'.");
 
             $this->view->{$method}();
+        });
+
+        test('throwns an UnexistentPropertyException when attempts access to an unaccesible property', function () {
+            $property = uniqid('property');
+            $this->expectException(UnexistentPropertyException::class);
+            $this->expectExceptionMessage("The property '{$property}' not exists.");
+
+            $this->view->{$property};
         });
 
         testCase('it is applied a filter where all content is assigned', function () {
@@ -386,6 +395,38 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 "<label data-{$this->attrName}=\"{$newValue}\">{$this->content}</label>",
                 $this->view->render(['value' => $newValue])
             );
+        });
+    });
+
+    testCase('exists a view with a component view property', function () {
+        setUp(function () {
+            $this->propertyName = uniqid('property');
+
+            $this->classBuilder = (new ClassBuilder)->extends($this->getViewClass())
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []): string {
+                        return '';
+                    })
+                ->end()
+                ->addProperty($this->propertyName)
+                    ->setAccess('protected')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\ViewComponent')
+                ->end();
+            ;
+
+            $this->view = $this->classBuilder->newInstance();
+        });
+
+        test('the annotated component view properties have public access', function () {
+            $instance = new stdClass;
+
+            // inject the instance inside the view.
+            (function ($propertyName, $instance) {
+                $this->{$propertyName} = $instance;
+            })->call($this->view, $this->propertyName, $instance);
+
+            $this->assertSame($instance, $this->view->{$this->propertyName});
         });
     });
 
