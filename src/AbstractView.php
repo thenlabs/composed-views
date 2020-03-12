@@ -28,10 +28,14 @@ abstract class AbstractView implements ComponentInterface
 {
     use ComponentTrait;
 
+    private $_basePath;
+
     abstract protected function getView(array $data = []): string;
 
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
+        $this->_basePath = $this->getBasePath();
+
         $currentData = [];
         foreach ($this->getModel()['data'] as $propertyName => $propertyInfo) {
             $currentData[$propertyName] = $this->{$propertyName};
@@ -149,9 +153,9 @@ abstract class AbstractView implements ComponentInterface
     {
         $basePath = $this->getTopData('basePath');
 
-        if ($basePath === null) {
-            throw new UndefinedBasePathException;
-        }
+        // if ($basePath === null) {
+        //     throw new UndefinedBasePathException;
+        // }
 
         return $basePath;
     }
@@ -169,9 +173,9 @@ abstract class AbstractView implements ComponentInterface
         }
     }
 
-    protected function renderAsset(string $basePath, AbstractAsset $asset): string
+    protected function renderAsset(AbstractAsset $asset): string
     {
-        return $asset->render(compact('basePath'));
+        return $asset->render(['basePath' => $this->_basePath]);
     }
 
     protected function renderAssets(string $basePath, array $assets): string
@@ -179,7 +183,7 @@ abstract class AbstractView implements ComponentInterface
         $result = '';
 
         foreach ($assets as $asset) {
-            $result .= $this->renderAsset($basePath, $asset);
+            $result .= $this->renderAsset($asset);
         }
 
         return $result;

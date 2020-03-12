@@ -86,21 +86,21 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         $view->getBasePath();
     });
 
-    test('getBasePath() throwns an UndefinedBasePathException when it is not defined', function () {
-        $this->expectException(UndefinedBasePathException::class);
-        $this->expectExceptionMessage('The base path should be defined.');
+    // test('getBasePath() throwns an UndefinedBasePathException when it is not defined', function () {
+    //     $this->expectException(UndefinedBasePathException::class);
+    //     $this->expectExceptionMessage('The base path should be defined.');
 
-        $view = $this->getMockBuilder($this->getViewClass())
-            ->setMethods(['getTopData'])
-            ->getMockForAbstractClass();
-        $view->expects($this->once())
-            ->method('getTopData')
-            ->with($this->equalTo('basePath'))
-            ->willReturn(null)
-        ;
+    //     $view = $this->getMockBuilder($this->getViewClass())
+    //         ->setMethods(['getTopData'])
+    //         ->getMockForAbstractClass();
+    //     $view->expects($this->once())
+    //         ->method('getTopData')
+    //         ->with($this->equalTo('basePath'))
+    //         ->willReturn(null)
+    //     ;
 
-        $view->getBasePath();
-    });
+    //     $view->getBasePath();
+    // });
 
     testCase('__toString() returns result of the render() method', function () {
         setUp(function () {
@@ -127,7 +127,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         });
     });
 
-    test('renderAsset($basePath, $asset) returns result of $asset->render(["basePath" => $basePath])', function () {
+    test('renderAsset($asset) returns result of $asset->render(["basePath" => $basePath])', function () {
         $result = uniqid();
         $basePath = uniqid('http://localhost/');
 
@@ -152,11 +152,11 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             ->addMethod('getView')
                 ->setAccess('protected')
-                ->setClosure(function (array $data = []) use ($basePath): string {
+                ->setClosure(function (array $data = []): string {
                     $assets = $this->getDependencies();
                     $asset = array_pop($assets);
 
-                    return $this->renderAsset($basePath, $asset);
+                    return $this->renderAsset($asset);
                 })
             ->end()
 
