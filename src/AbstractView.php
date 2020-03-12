@@ -178,7 +178,7 @@ abstract class AbstractView implements ComponentInterface
         return $asset->render(['basePath' => $this->_basePath]);
     }
 
-    protected function renderAssets(string $basePath, array $assets): string
+    protected function renderAssets(array $assets): string
     {
         $result = '';
 

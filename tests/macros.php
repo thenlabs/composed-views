@@ -168,7 +168,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         $this->assertEquals($result, $view->render());
     });
 
-    test('renderAssets($basePath, [$asset1, $asset2]) returns result of $asset1->render(["basePath" => $basePath]), $asset2->render(["basePath" => $basePath]), ....', function () {
+    test('$view->renderAssets([$asset1, $asset2, ...]) returns result of invoke each $view->renderAsset($asset1), $view->renderAsset($asset2), ...', function () {
         $result1 = uniqid();
         $result2 = uniqid();
         $basePath = uniqid('http://localhost/');
@@ -208,10 +208,8 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             ->addMethod('getView')
                 ->setAccess('protected')
-                ->setClosure(function (array $data = []) use ($basePath): string {
-                    $assets = $this->getDependencies();
-
-                    return $this->renderAssets($basePath, $assets);
+                ->setClosure(function (array $data = []): string {
+                    return $this->renderAssets($this->getDependencies());
                 })
             ->end()
 
