@@ -86,22 +86,6 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         $view->getBasePath();
     });
 
-    // test('getBasePath() throwns an UndefinedBasePathException when it is not defined', function () {
-    //     $this->expectException(UndefinedBasePathException::class);
-    //     $this->expectExceptionMessage('The base path should be defined.');
-
-    //     $view = $this->getMockBuilder($this->getViewClass())
-    //         ->setMethods(['getTopData'])
-    //         ->getMockForAbstractClass();
-    //     $view->expects($this->once())
-    //         ->method('getTopData')
-    //         ->with($this->equalTo('basePath'))
-    //         ->willReturn(null)
-    //     ;
-
-    //     $view->getBasePath();
-    // });
-
     testCase('__toString() returns result of the render() method', function () {
         setUp(function () {
             $this->result = uniqid();

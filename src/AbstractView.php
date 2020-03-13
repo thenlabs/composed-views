@@ -153,10 +153,6 @@ abstract class AbstractView implements ComponentInterface
     {
         $basePath = $this->getTopData('basePath');
 
-        // if ($basePath === null) {
-        //     throw new UndefinedBasePathException;
-        // }
-
         return $basePath;
     }
 
