@@ -29,12 +29,14 @@ abstract class AbstractView implements ComponentInterface
     use ComponentTrait;
 
     private $_basePath;
+    private $_dependencies = [];
 
     abstract protected function getView(array $data = []): string;
 
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
         $this->_basePath = $this->getBasePath();
+        $this->_dependencies = $this->getDependencies();
 
         $currentData = [];
         foreach ($this->getModel()['data'] as $propertyName => $propertyInfo) {
@@ -185,16 +187,16 @@ abstract class AbstractView implements ComponentInterface
         return $result;
     }
 
-    protected function getStyles(array $assets): array
+    protected function getStyles(): array
     {
-        return array_filter($assets, function ($asset) {
+        return array_filter($this->_dependencies, function ($asset) {
             return ($asset instanceof Style || $asset instanceof Stylesheet);
         });
     }
 
-    protected function getScripts(array $assets): array
+    protected function getScripts(): array
     {
-        return array_filter($assets, function ($asset) {
+        return array_filter($this->_dependencies, function ($asset) {
             return $asset instanceof Script;
         });
     }

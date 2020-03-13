@@ -290,12 +290,23 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             });
 
             test('getStyles(array $assets) returns array with instances of Stylesheet and Style', function () {
-                // do public the getStyles method
-                $class = new \ReflectionClass($this->view);
-                $method = $class->getMethod('getStyles');
-                $method->setAccessible(true);
+                $assets = $this->assets;
+                $result = [];
 
-                $result = $method->invoke($this->view, $this->assets);
+                $view = (new ClassBuilder)->extends($this->getViewClass())
+                    ->addMethod('getView', function (array $data = []) use (&$result): string {
+                        $result = $this->getStyles();
+                        return '';
+                    })->end()
+
+                    ->addMethod('getDependencies', function () use ($assets): array {
+                        return $assets;
+                    })->end()
+
+                    ->newInstance()
+                ;
+
+                $view->render();
 
                 $this->assertCount(3, $result);
                 $this->assertContains($this->style1, $result);
@@ -304,12 +315,23 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             });
 
             test('getScripts(array $assets) returns array with instances of Script', function () {
-                // do public the getScripts method
-                $class = new \ReflectionClass($this->view);
-                $method = $class->getMethod('getScripts');
-                $method->setAccessible(true);
+                $assets = $this->assets;
+                $result = [];
 
-                $result = $method->invoke($this->view, $this->assets);
+                $view = (new ClassBuilder)->extends($this->getViewClass())
+                    ->addMethod('getView', function (array $data = []) use (&$result): string {
+                        $result = $this->getScripts();
+                        return '';
+                    })->end()
+
+                    ->addMethod('getDependencies', function () use ($assets): array {
+                        return $assets;
+                    })->end()
+
+                    ->newInstance()
+                ;
+
+                $view->render();
 
                 $this->assertCount(3, $result);
                 $this->assertContains($this->script1, $result);
