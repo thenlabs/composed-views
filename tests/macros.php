@@ -338,6 +338,66 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $this->assertContains($this->script2, $result);
                 $this->assertContains($this->script3, $result);
             });
+
+            test('renderStyles()', function () {
+                $result1 = uniqid();
+                $result2 = uniqid();
+
+                $style1 = $this->createMock(Style::class);
+                $style1->method('render')->willReturn($result1);
+
+                $style2 = $this->createMock(Style::class);
+                $style2->method('render')->willReturn($result2);
+
+                $assets = [$style1, $style2];
+
+                $view = (new ClassBuilder)->extends($this->getViewClass())
+                    ->addMethod('getView', function (array $data = []): string {
+                        return $this->renderStyles();
+                    })->end()
+
+                    ->addMethod('getDependencies', function () use ($assets): array {
+                        return $assets;
+                    })->end()
+
+                    ->newInstance()
+                ;
+
+                $result = $view->render();
+
+                $this->assertContains($result1, $result);
+                $this->assertContains($result2, $result);
+            });
+
+            test('renderScripts()', function () {
+                $result1 = uniqid();
+                $result2 = uniqid();
+
+                $script1 = $this->createMock(Script::class);
+                $script1->method('render')->willReturn($result1);
+
+                $script2 = $this->createMock(Script::class);
+                $script2->method('render')->willReturn($result2);
+
+                $assets = [$script1, $script2];
+
+                $view = (new ClassBuilder)->extends($this->getViewClass())
+                    ->addMethod('getView', function (array $data = []): string {
+                        return $this->renderScripts();
+                    })->end()
+
+                    ->addMethod('getDependencies', function () use ($assets): array {
+                        return $assets;
+                    })->end()
+
+                    ->newInstance()
+                ;
+
+                $result = $view->render();
+
+                $this->assertContains($result1, $result);
+                $this->assertContains($result2, $result);
+            });
         });
     });
 

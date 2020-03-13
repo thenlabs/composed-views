@@ -187,6 +187,28 @@ abstract class AbstractView implements ComponentInterface
         return $result;
     }
 
+    protected function renderStyles(): string
+    {
+        $result = '';
+
+        foreach ($this->getStyles() as $style) {
+            $result .= $this->renderAsset($style);
+        }
+
+        return $result;
+    }
+
+    protected function renderScripts(): string
+    {
+        $result = '';
+
+        foreach ($this->getScripts() as $script) {
+            $result .= $this->renderAsset($script);
+        }
+
+        return $result;
+    }
+
     protected function getStyles(): array
     {
         return array_filter($this->_dependencies, function ($asset) {
