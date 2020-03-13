@@ -572,7 +572,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->end()
                 ->addProperty($this->propertyName)
                     ->setAccess('protected')
-                    ->addComment('@ThenLabs\ComposedViews\Annotation\Component')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\View')
                 ->end();
             ;
 

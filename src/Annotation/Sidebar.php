@@ -6,6 +6,6 @@ namespace ThenLabs\ComposedViews\Annotation;
 /**
  * @Annotation
  */
-class Sidebar extends Component
+class Sidebar extends View
 {
 }
