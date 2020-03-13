@@ -497,7 +497,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->view = $this->classBuilder->newInstance();
         });
 
-        test('the annotated component view properties have public access', function () {
+        test('the annotated component view properties has public access', function () {
             $instance = new stdClass;
 
             // inject the instance inside the view.
