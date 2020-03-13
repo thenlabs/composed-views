@@ -6,6 +6,6 @@ namespace ThenLabs\ComposedViews\Annotation;
 /**
  * @Annotation
  */
-class ViewComponent
+class Component
 {
 }

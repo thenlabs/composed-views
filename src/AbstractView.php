@@ -11,7 +11,7 @@ use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Annotation\Data as DataAnnotation;
-use ThenLabs\ComposedViews\Annotation\ViewComponent as ViewComponentAnnotation;
+use ThenLabs\ComposedViews\Annotation\Component as ComponentAnnotation;
 use ThenLabs\ComposedViews\Annotation\Sidebar as SidebarAnnotation;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
@@ -112,7 +112,7 @@ abstract class AbstractView implements ComponentInterface
             $reader = new AnnotationReader();
             // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
             new DataAnnotation;
-            new ViewComponentAnnotation;
+            new ComponentAnnotation;
             new SidebarAnnotation;
 
             foreach ($class->getProperties() as $property) {
@@ -127,7 +127,7 @@ abstract class AbstractView implements ComponentInterface
                         ];
                     }
 
-                    if ($annotation instanceof ViewComponentAnnotation) {
+                    if ($annotation instanceof ComponentAnnotation) {
                         $model['views'][$propertyName] = [];
                     }
 
