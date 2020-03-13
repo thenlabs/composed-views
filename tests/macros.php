@@ -284,7 +284,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             });
         });
 
-        testCase('testing filterStyles() and filterScripts() methods', function () {
+        testCase('testing getStyles() and getScripts() methods', function () {
             setUp(function () {
                 $this->style1 = $this->createMock(Style::class);
                 $this->style2 = $this->createMock(Style::class);
@@ -305,10 +305,10 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ];
             });
 
-            test('filterStyles(array $assets) returns array with instances of Stylesheet and Style', function () {
-                // do public the filterStyles method
+            test('getStyles(array $assets) returns array with instances of Stylesheet and Style', function () {
+                // do public the getStyles method
                 $class = new \ReflectionClass($this->view);
-                $method = $class->getMethod('filterStyles');
+                $method = $class->getMethod('getStyles');
                 $method->setAccessible(true);
 
                 $result = $method->invoke($this->view, $this->assets);
@@ -319,10 +319,10 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $this->assertContains($this->stylesheet1, $result);
             });
 
-            test('filterScripts(array $assets) returns array with instances of Script', function () {
-                // do public the filterScripts method
+            test('getScripts(array $assets) returns array with instances of Script', function () {
+                // do public the getScripts method
                 $class = new \ReflectionClass($this->view);
-                $method = $class->getMethod('filterScripts');
+                $method = $class->getMethod('getScripts');
                 $method->setAccessible(true);
 
                 $result = $method->invoke($this->view, $this->assets);

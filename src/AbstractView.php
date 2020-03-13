@@ -189,14 +189,14 @@ abstract class AbstractView implements ComponentInterface
         return $result;
     }
 
-    protected function filterStyles(array $assets): array
+    protected function getStyles(array $assets): array
     {
         return array_filter($assets, function ($asset) {
             return ($asset instanceof Style || $asset instanceof Stylesheet);
         });
     }
 
-    protected function filterScripts(array $assets): array
+    protected function getScripts(array $assets): array
     {
         return array_filter($assets, function ($asset) {
             return $asset instanceof Script;
