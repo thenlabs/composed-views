@@ -118,6 +118,7 @@ abstract class AbstractView implements ComponentInterface
 
             $class = new ReflectionClass($this);
             $reader = new AnnotationReader();
+
             // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
             new DataAnnotation;
             new ViewAnnotation;
@@ -163,21 +164,6 @@ abstract class AbstractView implements ComponentInterface
 
         return $basePath;
     }
-
-    // public function getAdditionalDependencies(): array
-    // {
-    //     $model = $this->getModel();
-    //     $dependencies = [];
-
-    //     foreach ($model['sidebars'] as $propertyName => $sidebarData) {
-    //         $dependencies = array_merge(
-    //             $dependencies,
-    //             $this->{$propertyName}->getDependencies()
-    //         );
-    //     }
-
-    //     return $dependencies;
-    // }
 
     protected function renderProperty(string $property, array $data = [], bool $dispatchRenderEvent = true): string
     {
