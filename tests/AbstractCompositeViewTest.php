@@ -8,7 +8,6 @@ use ThenLabs\ComposedViews\AbstractCompositeView;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
 use ThenLabs\Components\CompositeComponentInterface;
-use ThenLabs\Components\DependencyInterface;
 use ThenLabs\Components\Exception\InvalidChildException;
 use ThenLabs\ClassBuilder\ClassBuilder;
 

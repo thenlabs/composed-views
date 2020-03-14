@@ -15,7 +15,6 @@ use ThenLabs\ComposedViews\Annotation\Data as DataAnnotation;
 use ThenLabs\ComposedViews\Annotation\View as ViewAnnotation;
 use ThenLabs\ComposedViews\Annotation\Sidebar as SidebarAnnotation;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
-use ThenLabs\ComposedViews\Exception\UndefinedBasePathException;
 use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use ReflectionClass;
