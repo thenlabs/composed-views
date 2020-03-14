@@ -45,54 +45,6 @@ testCase('AbstractCompositeViewTest.php', function () {
         $this->assertEquals($result1.$result2, $parentView->renderChildren());
     });
 
-    test('getAdditionalDependencies() includes the sidebars dependencies', function () {
-        $dependencyName1 = uniqid('dep');
-        $dependencyName2 = uniqid('dep');
-
-        $dependency1 = $this->createMock(DependencyInterface::class);
-        $dependency1->method('getName')->willReturn($dependencyName1);
-
-        $dependency2 = $this->createMock(DependencyInterface::class);
-        $dependency2->method('getName')->willReturn($dependencyName2);
-
-        $child1 = $this->createMock($this->getViewClass());
-        $child1->method('getId')->willReturn('child1');
-        $child1->method('getDependencies')->willReturn([$dependency1]);
-
-        $child2 = $this->createMock($this->getViewClass());
-        $child2->method('getId')->willReturn('child2');
-        $child2->method('getDependencies')->willReturn([$dependency2]);
-
-        $property1 = uniqid('property');
-        $property2 = uniqid('property');
-
-        $view = (new ClassBuilder)->extends(AbstractCompositeView::class)
-            ->addMethod('getView')
-                ->setAccess('protected')
-                ->setClosure(function (array $data = []): string {
-                    return '';
-                })
-            ->end()
-            ->addProperty($property1)
-                ->setAccess('protected')
-                ->addComment('@ThenLabs\ComposedViews\Annotation\Sidebar')
-            ->end()
-            ->addProperty($property2)
-                ->setAccess('protected')
-                ->addComment('@ThenLabs\ComposedViews\Annotation\Sidebar')
-            ->end()
-            ->newInstance()
-        ;
-
-        $view->{$property1}->addChild($child1);
-        $view->{$property2}->addChild($child2);
-
-        $this->assertEquals(
-            [$dependencyName1 => $dependency1, $dependencyName2 => $dependency2],
-            $view->getAdditionalDependencies()
-        );
-    });
-
     testCase('throws an ThenLabs\Components\Exception\InvalidChildException when attempt insert a child that is not a view', function () {
         setUp(function () {
             $this->expectException(InvalidChildException::class);

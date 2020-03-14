@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace ThenLabs\ComposedViews\Annotation;
 
+use ThenLabs\Components\Annotation\Component;
+
 /**
  * @Annotation
  */
-class View
+class View extends Component
 {
 }

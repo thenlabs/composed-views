@@ -5,6 +5,7 @@ namespace ThenLabs\ComposedViews;
 
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
+use ThenLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
 use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Asset\Script;
 use ThenLabs\ComposedViews\Asset\Style;
@@ -26,7 +27,9 @@ use BadMethodCallException;
  */
 abstract class AbstractView implements ComponentInterface
 {
-    use ComponentTrait;
+    use ComponentTrait, AdditionalDependenciesFromAnnotationsTrait {
+        AdditionalDependenciesFromAnnotationsTrait::getAdditionalDependencies insteadof ComponentTrait;
+    }
 
     private $_basePath;
     private $_dependencies = [];
@@ -45,6 +48,9 @@ abstract class AbstractView implements ComponentInterface
 
         $data = array_merge($currentData, $data);
         $content = $this->getView($data);
+
+        $this->_basePath = [];
+        $this->_dependencies = [];
 
         if ($dispatchRenderEvent) {
             $renderEvent = new RenderEvent($content, $data);
@@ -157,6 +163,21 @@ abstract class AbstractView implements ComponentInterface
 
         return $basePath;
     }
+
+    // public function getAdditionalDependencies(): array
+    // {
+    //     $model = $this->getModel();
+    //     $dependencies = [];
+
+    //     foreach ($model['sidebars'] as $propertyName => $sidebarData) {
+    //         $dependencies = array_merge(
+    //             $dependencies,
+    //             $this->{$propertyName}->getDependencies()
+    //         );
+    //     }
+
+    //     return $dependencies;
+    // }
 
     protected function renderProperty(string $property, array $data = [], bool $dispatchRenderEvent = true): string
     {

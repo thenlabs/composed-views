@@ -6,6 +6,7 @@ namespace ThenLabs\ComposedViews;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\CompositeComponentInterface;
 use ThenLabs\Components\CompositeComponentTrait;
+use ThenLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -13,7 +14,9 @@ use ThenLabs\Components\CompositeComponentTrait;
  */
 abstract class AbstractCompositeView extends AbstractView implements CompositeComponentInterface
 {
-    use CompositeComponentTrait;
+    use CompositeComponentTrait, AdditionalDependenciesFromAnnotationsTrait {
+        AdditionalDependenciesFromAnnotationsTrait::getAdditionalDependencies insteadof CompositeComponentTrait;
+    }
 
     public function validateChild(ComponentInterface $child): bool
     {
@@ -29,20 +32,5 @@ abstract class AbstractCompositeView extends AbstractView implements CompositeCo
         }
 
         return $result;
-    }
-
-    public function getAdditionalDependencies(): array
-    {
-        $model = $this->getModel();
-        $dependencies = [];
-
-        foreach ($this->getModel()['sidebars'] as $propertyName => $sidebarData) {
-            $dependencies = array_merge(
-                $dependencies,
-                $this->{$propertyName}->getDependencies()
-            );
-        }
-
-        return $dependencies;
     }
 }
