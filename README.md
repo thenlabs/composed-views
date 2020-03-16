@@ -1,9 +1,18 @@
 
 # ComposedViews
 
-## Instalación.
+## Documentation.
 
-Cree un archivo `composer.json` con al menos las siguientes opciones:
+1. English (Pending)
+2. [Español](docs/es/00-home.md)
+
+## Licencia.
+
+- [MIT](https://es.wikipedia.org/wiki/Licencia_MIT)
+
+## Installation.
+
+Define in your `composer.json` file the next options:
 
 ```JSON
 {
@@ -15,6 +24,7 @@ Cree un archivo `composer.json` con al menos las siguientes opciones:
 }
 ```
 
-Seguidamente, ejecute el comando:
+Then, run the command:
 
     $ composer update
+
