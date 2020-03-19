@@ -1,16 +1,18 @@
 
 # ComposedViews
 
+Welcome to ComposedViews, a PHP framework for build redistribuibles views and compiled from objects.
+
 ## Documentation.
 
 1. English (Pending)
-2. [Español](docs/es/00-home.md)
+2. [Español](docs/es/index.md)
 
 ## Licencia.
 
 - [MIT](https://es.wikipedia.org/wiki/Licencia_MIT)
 
-## Installation.
+## Manual installation.
 
 Define in your `composer.json` file the next options:
 
