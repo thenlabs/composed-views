@@ -7,7 +7,5 @@ Aunque realizar esta tarea no resulta algo complicado, en muchos casos puede res
 
 Con el objetivo de dar una solución a lo antes mencionado es que fue creado ComposedViews. Entre otras cosas, dicho *framework* propone crear vistas independientes y reutilizables que puedan ser instaladas en cualquier aplicación PHP y que se puedan emplear con el menor esfuerzo posible.
 
-Un proyecto ComposedViews es un paquete [Composer](https://getcomposer.org) cuyo tipo es `then-package` entre otras personalizaciones que más adelante comentaremos. De esta forma, se garantiza que las vistas puedan ser reutilizadas entre diferentes aplicaciones ya que además, por cada vista que exista en el proyecto existirá una clase PHP diseñada de tal manera que sus instancias serán capaces de producir fragmentos de código HTML con solo especificarles los datos más relevantes.
-
-Por lo antes mencionado, se puede decir que ComposedViews se usa en dos situaciones principales. Por una parte se empleará a la hora de crear un proyecto, mientras que la otra será cuando se use uno de ellos.
+Por lo antes mencionado, se puede decir que ComposedViews se usa en dos situaciones principales. Por una parte se empleará a la hora de crear un nuevo proyecto, mientras que la otra será cuando se trabaje con uno de ellos. Por tales motivos, en la presente guía abordaremos en un primer capítulo los aspectos que se deben tener en cuenta en la creación de proyectos, y más adelante, se abordarán temas relacionados con su uso.
 
