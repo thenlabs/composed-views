@@ -11,21 +11,46 @@ Una vez finalizado dicho capítulo habremos construido un proyecto PHP instalabl
 
 Un proyecto ComposedViews es un paquete [Composer][Composer] de tipo `then-package`. A los paquetes de este tipo se les define como *then packages* y se gestionan además con la herramienta [ThenLabs CLI](https://github.com/thenlabs/cli).
 
-Es muy recomendable que lea la documentación de esta herramienta dado que en la misma se define más profundamente lo que es un *then package* entre otros conceptos relacionados los cuales necesitará conocer para la comprensión de esta guía.
+Es importante que lea la documentación de esta herramienta dado que en la misma se define más profundamente lo que es un *then package* entre otros conceptos adicionales que necesitará conocer para la comprensión de esta guía.
 
 ## 2. Creando el nuevo proyecto.
 
-Para crear un nuevo proyecto se debe ejecutar el siguiente comando:
+### 2.1. Sistemas Unix.
+
+Ejecute el siguiente comando:
 
     $ composer create-project thenlabs/kit-template composed-admin-lte dev-master
 
->Debe sustituir `composed-admin-lte` por el nombre del directorio donde desea crear su proyecto.
+>Puede sustituir `composed-admin-lte` por el nombre del directorio donde desea crear su proyecto.
 
->Para finalizar la instalación, [Composer][Composer] le preguntará si desea eliminar el repositorio actual. Recomendamos que inique sí ya que no tiene ningún objetivo que su proyecto contenga esos *commits*. En futuras versiones, este paso será automatizado.
+En determinado momento [Composer][Composer] le preguntará si desea eliminar el repositorio actual. Recomendamos que inique sí ya que no tiene ningún sentido que su proyecto contenga esos *commits*.
+
+Se le preguntará además sobre ciertos datos del proyecto donde podrá especificar los valores que desee **excepto en el tipo y las dependencias donde deberá mantener los valores por defecto**.
+
+### 2.2. Windows.
+
+Ejecute el siguiente comando:
+
+    $ composer create-project thenlabs/kit-template composed-admin-lte dev-master --no-scripts
+
+>Puede sustituir `composed-admin-lte` por el nombre del directorio donde desea crear su proyecto.
+
+En determinado momento [Composer][Composer] le preguntará si desea eliminar el repositorio actual. Recomendamos que inique sí ya que no tiene ningún sentido que su proyecto contenga esos *commits*.
+
+Seguidamente ejecute:
+
+    $ cd composed-admin-lte
+    $ composer init --type=then-package --stability=dev --require=thenlabs/composed-views:dev-master --require-dev=thenlabs/cli:dev-master --ansi
+
+Se le preguntará sobre ciertos datos del proyecto donde podrá especificar los valores que desee **excepto en el tipo y las dependencias donde deberá mantener los valores por defecto**.
+
+Por último ejecute:
+
+    $ composer update
 
 ## 3. Conociendo la estructura del proyecto.
 
-Una vez que la instalación ha finalizado podremos encontrar la siguiente estructura de archivos dentro del directorio del proyecto.
+Una vez que se ha creado el proyecto podremos encontrar la siguiente estructura de archivos dentro del directorio del mismo.
 
 ```
 ├── assets/
