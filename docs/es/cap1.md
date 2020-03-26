@@ -67,7 +67,7 @@ Por otra parte, En el directorio `examples/pages` se encontrará el archivo `mai
 
 ## 4. Definiendo el espacio de nombres para las clases del proyecto.
 
-Como se comentó anteriormente las vistas se crean con clases PHP. Es recomendable que las mismas se creen bajo determinados espacios de nombres y dado que en el proyecto recién creado no viene especificado ninguno, lo primero que haremos será definir uno nuevo.
+Como se comentó anteriormente las vistas se crean con clases PHP. Es recomendable que las mismas se creen bajo determinados espacios de nombres y dado que en el proyecto recién creado no existe ninguno, lo primero que haremos será definir uno nuevo.
 
 Para ello agregue al archivo `composer.json` los siguientes datos:
 
@@ -88,7 +88,7 @@ Seguidamente ejecute el comando:
 ## 5. Definiendo los *assets* del proyecto e instalándolos para los ejemplos.
 
 Cuando analizamos la [estructura del proyecto AdminLTE](https://github.com/ColorlibHQ/AdminLTE/tree/v2) vemos que existen los archivos [package.json][adminlte-package.json] y [bower.json][adminlte-bower.json]. Esto significa que este proyecto depende de *assets* que se tienen que instalar con [NPM](
-https://www.npmjs.com/) y [Bower](https://bower.io/). Además de esto conocemos que en el directorio [dist][adminlte-dist] existen otros que son propios del proyecto.
+https://www.npmjs.com/) y [Bower](https://bower.io/). Además de esto conocemos que en el directorio [dist][adminlte-dist] existen otros que son propios de dicho proyecto.
 
 Para lograr que nuestro *then package* contenga todos esos recursos, vamos a copiar dentro del directorio `assets`, los archivos [package.json][adminlte-package.json], [bower.json][adminlte-bower.json] y el contenido del directorio [dist][adminlte-dist]. Nuestro directorio `assets` nos debe quedar de la siguiente manera:
 
@@ -121,9 +121,9 @@ Para lograr que los archivos `package.json` y `bower.json` sean correctamente tr
 }
 ```
 
-Para lograr que los ejemplos tengan disponibles los recursos que acabamos de copiar en el directorio `assets`, debemos ejecutar la herramienta `php serve`. Es importante mencionar que si la misma ya se encontraba iniciada será necesario reiniciarla para que la misma incluya las actualizaciones del directorio `assets`. En futuras versiones esto no será necesario.
+Para lograr que los ejemplos tengan disponibles los recursos que acabamos de copiar en el directorio `assets`, debemos ejecutar la herramienta `php serve`. Es importante mencionar que si la misma ya se encontraba iniciada será necesario reiniciarla para que se incluyan las actualizaciones del directorio `assets`. En futuras versiones esto no será necesario.
 
-Una vez que hayamos realizado el paso debemos descargar para los ejemplos las dependencias de los archivos `bower.json` y `package.json`. Para ello accedemos ejecutamos lo siguiente:
+Una vez que hayamos realizado el paso anterior debemos descargar para los ejemplos las dependencias de los archivos `bower.json` y `package.json`. Para ello accedemos ejecutamos lo siguiente:
 
     $ cd examples/assets
     $ npm install
@@ -135,7 +135,7 @@ Para crear vistas existen dos clases fundamentales, ellas son `ThenLabs\Composed
 
 >Estas clases traen las implementaciones de componentes del proyecto [Components](https://github.com/thenlabs/components/).
 
-Para crear una nueva vista se deberá crear una clase que herede de alguna de las anteriores. En la nueva clase será obligatorio que se defina el método `getView(): string` el cual deberá devolver en una cadena de texto el contenido de la vista.
+Para crear una nueva vista se deberá crear una clase hija de alguna de las anteriores y que como requisito mínimo defina el método `getView(): string` el cual deberá devolver el contenido de la vista.
 
 [Composer]: https://getcomposer.org/
 [adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
