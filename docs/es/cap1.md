@@ -1,5 +1,5 @@
 
-# Capítulo 1. Creando un nuevo proyecto.
+# Capítulo 1. Creando un proyecto.
 
 En el presente capítulo abordaremos de forma práctica la manera de crear un proyecto ComposedViews basado de la popular plantilla de administración [AdminLTE](https://adminlte.io/). Hemos decidido escoger dicha plantilla dado que entre otras bondades la misma ofrece una [página básica](https://adminlte.io/themes/AdminLTE/starter.html) la cual nos servirá para mostrar de forma clara los conceptos que se deben tener en cuenta sobre ComposedViews.
 
@@ -45,8 +45,6 @@ Una vez que se ha creado el proyecto podremos encontrar la siguiente estructura 
 └── then-package.json
 ```
 
-[Composer]: https://getcomposer.org/
-
 Como se puede suponer, en el directorio `assets` se deberán almacenar todos los recursos web de las vistas a los que popularmente se les conoce como *assets*.
 
 Dado que las vistas son elementos apreciables visualmente, se hace necesario que estos proyectos contengan páginas de ejemplos con el objetivo de que cuenten con algún mecanismo de visualización.
@@ -87,6 +85,60 @@ Seguidamente ejecute el comando:
 
     $ composer dump
 
-## 5. Conociendo las clases base de las vistas.
+## 5. Definiendo los *assets* del proyecto e instalándolos para los ejemplos.
 
-Para crear vistas se tienen las clases `ThenLabs\ComposedViews\AbstractView` y `ThenLabs\ComposedViews\AbstractCompositeView`. La única diferencia entre ambas es que la segunda está pensada para vistas que pueden contener
+Cuando analizamos la [estructura del proyecto AdminLTE](https://github.com/ColorlibHQ/AdminLTE/tree/v2) vemos que existen los archivos [package.json][adminlte-package.json] y [bower.json][adminlte-bower.json]. Esto significa que este proyecto depende de *assets* que se tienen que instalar con [NPM](
+https://www.npmjs.com/) y [Bower](https://bower.io/). Además de esto conocemos que en el directorio [dist][adminlte-dist] existen otros que son propios del proyecto.
+
+Para lograr que nuestro *then package* contenga todos esos recursos, vamos a copiar dentro del directorio `assets`, los archivos [package.json][adminlte-package.json], [bower.json][adminlte-bower.json] y el contenido del directorio [dist][adminlte-dist]. Nuestro directorio `assets` nos debe quedar de la siguiente manera:
+
+```
+├── assets/
+│   ├── css/
+│   ├── js/
+│   ├── img/
+│   └── package.json
+│   └── bower.json
+```
+
+Para lograr que los archivos `package.json` y `bower.json` sean correctamente tratados, debemos especificar que los mismos deberán ser combinados con otros de igual nombre que pueden pertenecer tanto a otros *then packages* como a la propia aplicación PHP donde se haya instalado el *then package* que estamos desarrollando. Para ello, vamos a editar el archivo `then-package.json` de la siguiente manera:
+
+```JSON
+{
+    "assets": {
+        "assets/*": ""
+    },
+    "mergeJson": {
+        "assets/bower.json": {
+            "target": "bower.json",
+            "keys": ["dependencies", "devDependencies", "name"]
+        },
+        "assets/package.json": {
+            "target": "package.json",
+            "keys": ["dependencies", "devDependencies"]
+        }
+    }
+}
+```
+
+Para lograr que los ejemplos tengan disponibles los recursos que acabamos de copiar en el directorio `assets`, debemos ejecutar la herramienta `php serve`. Es importante mencionar que si la misma ya se encontraba iniciada será necesario reiniciarla para que la misma incluya las actualizaciones del directorio `assets`. En futuras versiones esto no será necesario.
+
+Una vez que hayamos realizado el paso debemos descargar para los ejemplos las dependencias de los archivos `bower.json` y `package.json`. Para ello accedemos ejecutamos lo siguiente:
+
+    $ cd examples/assets
+    $ npm install
+    $ bower install
+
+## 6. Creando la vista de la página.
+
+Para crear vistas existen dos clases fundamentales, ellas son `ThenLabs\ComposedViews\AbstractView` y `ThenLabs\ComposedViews\AbstractCompositeView`. La única diferencia entre ambas es que la segunda está pensada para vistas que puedan contener otras vistas.
+
+>Estas clases traen las implementaciones de componentes del proyecto [Components](https://github.com/thenlabs/components/).
+
+Para crear una nueva vista se deberá crear una clase que herede de alguna de las anteriores. En la nueva clase será obligatorio que se defina el método `getView(): string` el cual deberá devolver en una cadena de texto el contenido de la vista.
+
+[Composer]: https://getcomposer.org/
+[adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
+[adminlte-bower.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/bower.json
+[adminlte-dist]: https://github.com/ColorlibHQ/AdminLTE/tree/v2/dist
+
