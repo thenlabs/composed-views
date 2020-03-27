@@ -1,7 +1,7 @@
 
 # Capítulo 1. Creando un proyecto.
 
-En el presente capítulo abordaremos de forma práctica la manera de crear un proyecto ComposedViews basado de la popular plantilla de administración [AdminLTE](https://adminlte.io/). Hemos decidido escoger dicha plantilla dado que entre otras bondades la misma ofrece una [página básica](https://adminlte.io/themes/AdminLTE/starter.html) la cual nos servirá para mostrar de forma clara los conceptos que se deben tener en cuenta sobre ComposedViews.
+En el presente capítulo abordaremos de forma práctica la manera de crear un proyecto ComposedViews basado de la popular plantilla de administración [AdminLTE](https://adminlte.io/). Hemos decidido escoger dicha plantilla dado que entre otras bondades la misma ofrece una [página básica][starter.html] la cual nos servirá para mostrar de forma clara los conceptos que se deben tener en cuenta sobre ComposedViews.
 
 Una vez finalizado dicho capítulo habremos construido un proyecto PHP instalable por [Composer][Composer] el cual contendrá clases cuyas instancias serán capaces de generar el código HTML de la página así como de sus componentes. Además de ello, el proyecto contendrá los recursos de la maqueta los cuales estarán correctamente referenciados desde el HTML generado y además podrán ser instalados en cualquier aplicación PHP con solo ejecutar un comando.
 
@@ -15,6 +15,8 @@ Es importante que lea la documentación de esta herramienta dado que en la misma
 
 ## 2. Creando el nuevo proyecto.
 
+### Linux y Mac.
+
 Ejecute el siguiente comando:
 
     $ composer create-project thenlabs/kit-template composed-admin-lte dev-master
@@ -24,6 +26,10 @@ Ejecute el siguiente comando:
 En determinado momento [Composer][Composer] le preguntará si desea eliminar el repositorio actual. Recomendamos que inique sí ya que no tiene ningún sentido que su proyecto contenga esos *commits*. Este paso será automatizado en futuras versiones.
 
 Se le preguntará además sobre ciertos datos del proyecto donde podrá especificar los valores que desee **excepto en el tipo y las dependencias donde deberá mantener los valores por defecto**.
+
+### Windows.
+
+En el caso de los usuarios Windows deberán [seguir estos pasos](win.md).
 
 ## 3. Conociendo la estructura del proyecto.
 
@@ -121,9 +127,9 @@ Para lograr que los archivos `package.json` y `bower.json` sean correctamente tr
 }
 ```
 
-Para lograr que los ejemplos tengan disponibles los recursos que acabamos de copiar en el directorio `assets`, debemos ejecutar la herramienta `php serve`. Es importante mencionar que si la misma ya se encontraba iniciada será necesario reiniciarla para que se incluyan las actualizaciones del directorio `assets`. En futuras versiones esto no será necesario.
+Para lograr que los ejemplos tengan disponibles los recursos que acabamos de copiar en el directorio `assets`, debemos ejecutar la herramienta `php serve`. Es importante mencionar que si la misma ya se encontraba iniciada será necesario reiniciarla para que se incluyan las actualizaciones del directorio `assets`. En futuras versiones esto será corregido.
 
-Una vez que hayamos realizado el paso anterior debemos descargar para los ejemplos las dependencias de los archivos `bower.json` y `package.json`. Para ello accedemos ejecutamos lo siguiente:
+Una vez que hayamos realizado el paso anterior debemos descargar para los ejemplos las dependencias de los archivos `bower.json` y `package.json`. Para ello ejecutamos lo siguiente:
 
     $ cd examples/assets
     $ npm install
@@ -133,12 +139,55 @@ Una vez que hayamos realizado el paso anterior debemos descargar para los ejempl
 
 Para crear vistas existen dos clases fundamentales, ellas son `ThenLabs\ComposedViews\AbstractView` y `ThenLabs\ComposedViews\AbstractCompositeView`. La única diferencia entre ambas es que la segunda está pensada para vistas que puedan contener otras vistas.
 
->Estas clases traen las implementaciones de componentes del proyecto [Components](https://github.com/thenlabs/components/).
+>Estas clases traen las implementaciones de componentes del proyecto [Components](https://github.com/thenlabs/components/) por lo que se recomienda leer su documentación.
 
-Para crear una nueva vista se deberá crear una clase hija de alguna de las anteriores y que como requisito mínimo defina el método `getView(): string` el cual deberá devolver el contenido de la vista.
+Las clases de las vistas como requisito mínimo deberán definir el método `getView(array $data = []): string` el cual deberá devolver en cadena de texto el contenido de la vista.
+
+Para el caso de la página creamos el archivo `src/Layout.php` con el siguiente contenido:
+
+```PHP
+<?php
+// src/Layout.php
+
+namespace ThenLabs\Demo\ComposedAdminLte;
+
+use ThenLabs\ComposedViews\AbstractView;
+
+class Layout extends AbstractView
+{
+    public function getView(array $data = []): string
+    {
+        return <<<HTML
+...
+HTML;
+    }
+}
+```
+
+>La cadena *heredoc* antes mostrada debe contener el contenido del archivo [starter.html][starter.html]. Por razones de espacio en el ejemplo lo representamos con los tres puntos.
+
+Seguidamente editaremos el archivo `examples/pages/main.php` para que el ejemplo muestre la vista de la página.
+
+```PHP
+<?php
+// examples/pages/main.php
+
+use ThenLabs\Demo\ComposedAdminLte\Layout;
+
+$page = new Layout;
+
+echo $page;
+```
+
+Una vez realizado lo anterior, si visitamos la página de ejemplo comprobaremos que se mostrará el contenido especificado pero existirán errores en las referencias de los *assets*. La siguiente imagen muestra esta situación.
+
+![](img/2.png)
+
+En los casos donde la respectiva vista dependa de ciertos *assets*, se deberá entonces implementar el método `getOwnDependencies(): array` el que deberá devolver en un *array* dichas dependencias.
 
 [Composer]: https://getcomposer.org/
 [adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
 [adminlte-bower.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/bower.json
 [adminlte-dist]: https://github.com/ColorlibHQ/AdminLTE/tree/v2/dist
+[starter.html]: https://adminlte.io/themes/AdminLTE/starter.html
 
