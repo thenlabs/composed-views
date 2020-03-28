@@ -222,7 +222,7 @@ Como puede ver las dependencias de *assets* se definen con instancias de clases 
 
 Los nombres de los recursos deben ser valores que representen en la mayor medida posible al recurso. Es recomendable que contengan solo caracteres en minúsculas y que se usen un guiones en vez de espacios. Se recomienda además que se usen sufijos con el tipo del recurso como por ejemplo `bootstrap-css` y `bootstrap-js`.
 
-Respecto a las [URIs][URI] de los recursos deben ser valores relativos ya que es importante tener en cuenta que esos *assets* serán copiados dentro del directorio público de la aplicación donde se instale el *then package* que estamos desarrollando. Como puede ver, en el caso de los *assets* que son descargados con [Bower][Bower], su [URI][URI] debe comenzar por `bower_components` dado que el mismo crea ese directorio para sus descargas. De igual manera ocurre con [NPM][NPM] donde en ese caso su directorio es `node_modues`, pero en el caso de los que son propios del proyecto, serán copiados dentro de un directorio que se creará teniendo en cuenta el valor `name` del archivo `composer.json` del *then package*. Recordemos que el nombre que le dimos al mismo fue `thenlabs/demo-composed-adminlte`.
+Respecto a las [URIs][URI] de los recursos deben ser valores relativos ya que es importante tener en cuenta que esos *assets* serán copiados dentro del directorio público de la aplicación donde se encuentre instalado el *then package* que estamos desarrollando. Como puede ver, en el caso de los *assets* que son descargados con [Bower][Bower], su [URI][URI] debe comenzar por `bower_components` dado que el mismo crea ese directorio para sus descargas. De igual manera ocurre con [NPM][NPM] donde en ese caso su directorio es `node_modues`, pero en el caso de los que son propios del proyecto, serán copiados dentro de un directorio que se creará teniendo en cuenta el valor `name` del archivo `composer.json` del *then package*. Recordemos que el nombre que le dimos al mismo fue `thenlabs/demo-composed-adminlte`.
 
 Seguidamente debemos editar la vista para hacer que los *assets* se muestren correctamente. Para el caso de los estilos reemplazamos [estas líneas](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) por `{$this->renderStyles()}` y de igual forma lo hacemos con los *scripts* modificando [estas otras](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403) por `{$this->renderScripts()}` tal y como se muestra en el siguiente ejemplo:
 
@@ -281,7 +281,26 @@ HTML;
 }
 ```
 
-Después de haberse realizado los pasos anteriores ya el *then package* podría ser utilizado dentro de alguna aplicación PHP y la vista `Layout` se mostraría con sus *assets* referenciados correctamente.
+Después de haberse realizado los pasos anteriores ya el *then package* podría ser utilizado dentro de una aplicación PHP y la vista `Layout` se mostraría con los *assets* que antes especificamos. El único detalle que faltaría sería especificarle a la vista la ruta base del directorio público donde se encontrarán instalados los archivos de los *assets*. Esto último se hace llamando al método `setBasePath(string $basePath): void` sobre la vista. Dado que también en las páginas de ejemplos debemos especificar este valor modificamos el archivo `examples/pages/main.php` de la siguiente manera:
+
+```PHP
+<?php
+
+use ThenLabs\Demo\ComposedAdminLte\Layout;
+
+$page = new Layout;
+$page->setBasePath('/assets/');
+
+echo $page->render();
+```
+
+>En las páginas de ejemplo siempre se debe especificar el valor `/assets/` como ruta base, a menos que por alguna razón se modifique el contenido del directorio `examples`.
+
+Una vez que hayamos realizado todos los pasos anteriores podremos nuevamente recargar la página de ejemplos y comprobar que la misma ahora se muestra con sus *scripts* y estilos cargados correctamente:
+
+![](img/3.png)
+
+>Usted puede notar que las imágenes no se muestran correctamente, y es que anteriormente solo ajustamos las hojas de estilo y los *scripts*. Dado que estamos desarrollando un proyecto de demostración y ya explicamos la manera en que se deben referenciar los *assets* no nos vamos a centrar en ese detalle, no obstante, queremos comentarle que las vistas cuentan con el método `getBasePath(): string` el cual devolverá el valor de la ruta base que se le haya especificado a la vista. Usted puede emplear este método para corregir manualmente ciertas referencias.
 
 [Composer]: https://getcomposer.org/
 [Bower]: https://bower.io/
@@ -289,4 +308,5 @@ Después de haberse realizado los pasos anteriores ya el *then package* podría 
 [adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
 [adminlte-bower.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/bower.json
 [adminlte-dist]: https://github.com/ColorlibHQ/AdminLTE/tree/v2/dist
+[URI]: https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme
 [URI]: https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme
