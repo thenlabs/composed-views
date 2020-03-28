@@ -1,7 +1,7 @@
 
 # Capítulo 1. Creando un proyecto.
 
-En el presente capítulo abordaremos de forma práctica la manera de crear un proyecto ComposedViews basado de la popular plantilla de administración [AdminLTE](https://adminlte.io/). Hemos decidido escoger dicha plantilla dado que entre otras bondades la misma ofrece una [página básica][starter.html] la cual nos servirá para mostrar de forma clara los conceptos que se deben tener en cuenta sobre ComposedViews.
+En el presente capítulo abordaremos de forma práctica la manera de crear un proyecto ComposedViews basado de la popular plantilla de administración [AdminLTE](https://adminlte.io/). Hemos decidido escoger dicha plantilla dado que entre otras bondades la misma ofrece una [página básica](https://adminlte.io/themes/AdminLTE/starter.html) la cual nos servirá para mostrar de forma clara los conceptos que se deben tener en cuenta sobre ComposedViews.
 
 Una vez finalizado dicho capítulo habremos construido un proyecto PHP instalable por [Composer][Composer] el cual contendrá clases cuyas instancias serán capaces de generar el código HTML de la página así como de sus componentes. Además de ello, el proyecto contendrá los recursos de la maqueta los cuales estarán correctamente referenciados desde el HTML generado y además podrán ser instalados en cualquier aplicación PHP con solo ejecutar un comando.
 
@@ -164,7 +164,7 @@ HTML;
 }
 ```
 
->La cadena *heredoc* antes mostrada debe contener el contenido del archivo [starter.html][starter.html]. Por razones de espacio en el ejemplo lo representamos con los tres puntos.
+>La cadena *heredoc* antes mostrada debe contener el contenido del archivo [starter.html](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html). Por razones de espacio en el ejemplo lo representamos con los tres puntos.
 
 Seguidamente editaremos el archivo `examples/pages/main.php` para que el ejemplo muestre la vista de la página.
 
@@ -183,11 +183,44 @@ Una vez realizado lo anterior, si visitamos la página de ejemplo comprobaremos 
 
 ![](img/2.png)
 
-En los casos donde la respectiva vista dependa de ciertos *assets*, se deberá entonces implementar el método `getOwnDependencies(): array` el que deberá devolver en un *array* dichas dependencias.
+En los casos de las vistas que dependen de determinados *assets* se deberán implementar en sus clases el método `getOwnDependencies(): array` el cual deberá devolver un *array* con las instancias de dichas dependencias. Cuando analizamos el HTML de la página vemos que depende de [estas hojas de estilo](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) y de [estos scripts](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403), por lo que hacemos la siguiente implementación.
+
+```PHP
+<?php
+
+namespace ThenLabs\Demo\ComposedAdminLte;
+
+// ...
+use ThenLabs\ComposedViews\Asset\Stylesheet;
+use ThenLabs\ComposedViews\Asset\Script;
+
+class Layout extends AbstractView
+{
+    public function getOwnDependencies(): array
+    {
+        return [
+            // styles
+            new Stylesheet('bootstrap-css', null, 'bower_components/bootstrap/dist/css/bootstrap.min.css'),
+            new Stylesheet('fontAwesome-css', null, 'bower_components/font-awesome/css/font-awesome.min.css'),
+            new Stylesheet('ionicons-css', null, 'bower_components/Ionicons/css/ionicons.min.css'),
+            new Stylesheet('adminlte-css', null, 'thenlabs/demo-composed-adminlte/css/AdminLTE.min.css'),
+            new Stylesheet('adminlte-skin-css', null, 'thenlabs/demo-composed-adminlte/css/skins/skin-blue.min.css'),
+
+            // scripts
+            new Script('jquery', null, 'bower_components/jquery/dist/jquery.min.js'),
+            new Script('bootstrap-js', null, 'bower_components/bootstrap/dist/js/bootstrap.min.js'),
+            new Script('adminlte-js', null, 'thenlabs/demo-composed-adminlte/js/adminlte.min.js'),
+        ];
+    }
+
+    // ...
+}
+```
+
+Como puede verse las dependencias se definen con instancias de clases del espacio de nombres `ThenLabs\ComposedViews\Asset`. A estas clases se les especifica como su primer argumento el nombre del recurso, como segundo un valor opcional de versión en formato [semver](https://semver.org/) y como tercero la [URI](https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme) del recurso.
 
 [Composer]: https://getcomposer.org/
 [adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
 [adminlte-bower.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/bower.json
 [adminlte-dist]: https://github.com/ColorlibHQ/AdminLTE/tree/v2/dist
-[starter.html]: https://adminlte.io/themes/AdminLTE/starter.html
 
