@@ -14,6 +14,8 @@ En determinado momento [Composer][Composer] le preguntará si desea eliminar el 
 
 Se le preguntará sobre ciertos datos del proyecto donde podrá especificar los valores que desee **excepto en el tipo y las dependencias donde deberá mantener los valores por defecto**.
 
+>En nuestro caso especificaremos `thenlabs/demo-composed-adminlte` como nombre del proyecto.
+
     $ composer update -vvv
 
 Por último recomendamos que elimine o edite el archivo `README.md`.

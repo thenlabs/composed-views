@@ -27,6 +27,8 @@ En determinado momento [Composer][Composer] le preguntará si desea eliminar el 
 
 Se le preguntará además sobre ciertos datos del proyecto donde podrá especificar los valores que desee **excepto en el tipo y las dependencias donde deberá mantener los valores por defecto**.
 
+>En nuestro caso especificaremos `thenlabs/demo-composed-adminlte` como nombre del proyecto.
+
 ### Windows.
 
 En el caso de los usuarios Windows deberán [seguir estos pasos](win.md).
@@ -93,8 +95,7 @@ Seguidamente ejecute el comando:
 
 ## 5. Definiendo los *assets* del proyecto e instalándolos para los ejemplos.
 
-Cuando analizamos la [estructura del proyecto AdminLTE](https://github.com/ColorlibHQ/AdminLTE/tree/v2) vemos que existen los archivos [package.json][adminlte-package.json] y [bower.json][adminlte-bower.json]. Esto significa que este proyecto depende de *assets* que se tienen que instalar con [NPM](
-https://www.npmjs.com/) y [Bower](https://bower.io/). Además de esto conocemos que en el directorio [dist][adminlte-dist] existen otros que son propios de dicho proyecto.
+Cuando analizamos la [estructura del proyecto AdminLTE](https://github.com/ColorlibHQ/AdminLTE/tree/v2) vemos que existen los archivos [package.json][adminlte-package.json] y [bower.json][adminlte-bower.json]. Esto significa que este proyecto depende de *assets* que se tienen que instalar con [NPM][NPM] y [Bower][Bower]. Además de esto conocemos que en el directorio [dist][adminlte-dist] existen otros que son propios de dicho proyecto.
 
 Para lograr que nuestro *then package* contenga todos esos recursos, vamos a copiar dentro del directorio `assets`, los archivos [package.json][adminlte-package.json], [bower.json][adminlte-bower.json] y el contenido del directorio [dist][adminlte-dist]. Nuestro directorio `assets` nos debe quedar de la siguiente manera:
 
@@ -217,12 +218,75 @@ class Layout extends AbstractView
 }
 ```
 
-Como puede ver las dependencias de *assets* se definen con instancias de clases del espacio de nombres `ThenLabs\ComposedViews\Asset`. A estas clases se les deberá especificar como su primer argumento el nombre del recurso, como segundo un valor opcional en formato [semver](https://semver.org/) y como tercero la [URI](https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme) del recurso.
+Como puede ver las dependencias de *assets* se definen con instancias de clases del espacio de nombres `ThenLabs\ComposedViews\Asset`. A estas clases se les deberá especificar como su primer argumento el nombre del recurso, como segundo un valor opcional en formato [semver](https://semver.org/) y como tercero la [URI][URI] del recurso.
 
-Los nombres de los recursos deben ser
+Los nombres de los recursos deben ser valores que representen en la mayor medida posible al recurso. Es recomendable que contengan solo caracteres en minúsculas y que se usen un guiones en vez de espacios. Se recomienda además que se usen sufijos con el tipo del recurso como por ejemplo `bootstrap-css` y `bootstrap-js`.
+
+Respecto a las [URIs][URI] de los recursos deben ser valores relativos ya que es importante tener en cuenta que esos *assets* serán copiados dentro del directorio público de la aplicación donde se instale el *then package* que estamos desarrollando. Como puede ver, en el caso de los *assets* que son descargados con [Bower][Bower], su [URI][URI] debe comenzar por `bower_components` dado que el mismo crea ese directorio para sus descargas. De igual manera ocurre con [NPM][NPM] donde en ese caso su directorio es `node_modues`, pero en el caso de los que son propios del proyecto, serán copiados dentro de un directorio que se creará teniendo en cuenta el valor `name` del archivo `composer.json` del *then package*. Recordemos que el nombre que le dimos al mismo fue `thenlabs/demo-composed-adminlte`.
+
+Seguidamente debemos editar la vista para hacer que los *assets* se muestren correctamente. Para el caso de los estilos reemplazamos [estas líneas](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) por `{$this->renderStyles()}` y de igual forma lo hacemos con los *scripts* modificando [estas otras](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403) por `{$this->renderScripts()}` tal y como se muestra en el siguiente ejemplo:
+
+```PHP
+<?php
+
+namespace ThenLabs\Demo\ComposedAdminLte;
+
+class Layout extends AbstractView
+{
+    // ...
+
+    public function getView(array $data = []): string
+    {
+        return <<<HTML
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Starter</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  {$this->renderStyles()}
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+
+...
+
+<!-- REQUIRED JS SCRIPTS -->
+
+{$this->renderScripts()}
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+</body>
+</html>
+HTML;
+    }
+}
+```
+
+Después de haberse realizado los pasos anteriores ya el *then package* podría ser utilizado dentro de alguna aplicación PHP y la vista `Layout` se mostraría con sus *assets* referenciados correctamente.
 
 [Composer]: https://getcomposer.org/
+[Bower]: https://bower.io/
+[NPM]: https://www.npmjs.com/
 [adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
 [adminlte-bower.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/bower.json
 [adminlte-dist]: https://github.com/ColorlibHQ/AdminLTE/tree/v2/dist
-
+[URI]: https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme
