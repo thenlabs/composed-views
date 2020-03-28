@@ -107,7 +107,7 @@ Para lograr que nuestro *then package* contenga todos esos recursos, vamos a cop
 │   └── bower.json
 ```
 
-Para lograr que los archivos `package.json` y `bower.json` sean correctamente tratados, debemos especificar que los mismos deberán ser combinados con otros de igual nombre que pueden pertenecer tanto a otros *then packages* como a la propia aplicación PHP donde se haya instalado el *then package* que estamos desarrollando. Para ello, vamos a editar el archivo `then-package.json` de la siguiente manera:
+Para lograr que los archivos `package.json` y `bower.json` sean correctamente tratados, debemos especificar que los mismos deberán ser combinados con otros de igual nombre que pueden pertenecer tanto a otros *then packages* como a la propia aplicación PHP donde esté instalado el *then package* que estamos desarrollando. Para ello, vamos a editar el archivo `then-package.json` de la siguiente manera:
 
 ```JSON
 {
@@ -127,7 +127,7 @@ Para lograr que los archivos `package.json` y `bower.json` sean correctamente tr
 }
 ```
 
-Para lograr que los ejemplos tengan disponibles los recursos que acabamos de copiar en el directorio `assets`, debemos ejecutar la herramienta `php serve`. Es importante mencionar que si la misma ya se encontraba iniciada será necesario reiniciarla para que se incluyan las actualizaciones del directorio `assets`. En futuras versiones esto será corregido.
+Para lograr que los ejemplos tengan disponibles los recursos que acabamos de copiar en el directorio `assets`, debemos ejecutar la herramienta `php serve`. Es importante mencionar que si la misma ya se encontraba iniciada será necesario reiniciarla para que se incluyan las actualizaciones. En futuras versiones esto será corregido.
 
 Una vez que hayamos realizado el paso anterior debemos descargar para los ejemplos las dependencias de los archivos `bower.json` y `package.json`. Para ello ejecutamos lo siguiente:
 
@@ -139,11 +139,11 @@ Una vez que hayamos realizado el paso anterior debemos descargar para los ejempl
 
 Para crear vistas existen dos clases fundamentales, ellas son `ThenLabs\ComposedViews\AbstractView` y `ThenLabs\ComposedViews\AbstractCompositeView`. La única diferencia entre ambas es que la segunda está pensada para vistas que puedan contener otras vistas.
 
->Estas clases traen las implementaciones de componentes del proyecto [Components](https://github.com/thenlabs/components/) por lo que se recomienda leer su documentación.
+>Estas clases están implementadas con el proyecto [Components](https://github.com/thenlabs/components/) por lo que se recomienda leer la documentación del mismo para entender algunos de sus métodos así como otros conceptos en general.
 
-Las clases de las vistas como requisito mínimo deberán definir el método `getView(array $data = []): string` el cual deberá devolver en cadena de texto el contenido de la vista.
+Las clases de las vistas como requisito mínimo deberán definir el método `getView(array $data = []): string` el cual deberá devolver en una cadena de texto el contenido de la vista.
 
-Para el caso de la página creamos el archivo `src/Layout.php` con el siguiente contenido:
+Para el caso de la página crearemos el archivo `src/Layout.php` con el siguiente contenido:
 
 ```PHP
 <?php
@@ -164,9 +164,9 @@ HTML;
 }
 ```
 
->La cadena *heredoc* antes mostrada debe contener el contenido del archivo [starter.html](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html). Por razones de espacio en el ejemplo lo representamos con los tres puntos.
+>La cadena *heredoc* anterior debe contener el contenido del archivo [starter.html](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html). Por razones de espacio en el ejemplo lo representamos solo con tres puntos.
 
-Seguidamente editaremos el archivo `examples/pages/main.php` para que el ejemplo muestre la vista de la página.
+Seguidamente editaremos el archivo `examples/pages/main.php` de la siguiente manera:
 
 ```PHP
 <?php
@@ -179,11 +179,11 @@ $page = new Layout;
 echo $page;
 ```
 
-Una vez realizado lo anterior, si visitamos la página de ejemplo comprobaremos que se mostrará el contenido especificado pero existirán errores en las referencias de los *assets*. La siguiente imagen muestra esta situación.
+Una vez realizado lo anterior, si visitamos la página de ejemplo comprobaremos que se mostrará el contenido especificado pero existirán errores en las referencias de los *assets*. La siguiente imagen muestra esta situación:
 
 ![](img/2.png)
 
-En los casos de las vistas que dependen de determinados *assets* se deberán implementar en sus clases el método `getOwnDependencies(): array` el cual deberá devolver un *array* con las instancias de dichas dependencias. Cuando analizamos el HTML de la página vemos que depende de [estas hojas de estilo](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) y de [estos scripts](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403), por lo que hacemos la siguiente implementación.
+En los casos de las vistas que dependen de determinados *assets* deberán implementar en sus clases el método `getOwnDependencies(): array` el cual deberá devolver un *array* con las instancias de dichas dependencias. Cuando analizamos el HTML de la página vemos que depende de [estas hojas de estilo](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) y de [estos scripts](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403), por lo que hacemos la siguiente implementación:
 
 ```PHP
 <?php
@@ -217,7 +217,9 @@ class Layout extends AbstractView
 }
 ```
 
-Como puede verse las dependencias se definen con instancias de clases del espacio de nombres `ThenLabs\ComposedViews\Asset`. A estas clases se les especifica como su primer argumento el nombre del recurso, como segundo un valor opcional de versión en formato [semver](https://semver.org/) y como tercero la [URI](https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme) del recurso.
+Como puede ver las dependencias de *assets* se definen con instancias de clases del espacio de nombres `ThenLabs\ComposedViews\Asset`. A estas clases se les deberá especificar como su primer argumento el nombre del recurso, como segundo un valor opcional en formato [semver](https://semver.org/) y como tercero la [URI](https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme) del recurso.
+
+Los nombres de los recursos deben ser
 
 [Composer]: https://getcomposer.org/
 [adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
