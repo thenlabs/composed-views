@@ -17,6 +17,7 @@ use ThenLabs\ComposedViews\Annotation\Sidebar as SidebarAnnotation;
 use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use ReflectionClass;
 use BadMethodCallException;
 
@@ -115,13 +116,12 @@ abstract class AbstractView implements ComponentInterface
                 'sidebars' => [],
             ];
 
+            AnnotationRegistry::registerFile(__DIR__.'/Annotation/Data.php');
+            AnnotationRegistry::registerFile(__DIR__.'/Annotation/Sidebar.php');
+            AnnotationRegistry::registerFile(__DIR__.'/Annotation/View.php');
+
             $class = new ReflectionClass($this);
             $reader = new AnnotationReader();
-
-            // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
-            new DataAnnotation;
-            new ViewAnnotation;
-            new SidebarAnnotation;
 
             foreach ($class->getProperties() as $property) {
                 foreach ($reader->getPropertyAnnotations($property) as $annotation) {
