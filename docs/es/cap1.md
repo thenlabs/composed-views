@@ -177,7 +177,7 @@ use ThenLabs\Demo\ComposedAdminLte\Layout;
 
 $page = new Layout;
 
-echo $page;
+echo $page->render();
 ```
 
 Una vez realizado lo anterior, si visitamos la página de ejemplo comprobaremos que se mostrará el contenido especificado pero existirán errores en las referencias de los *assets*. La siguiente imagen muestra esta situación:
@@ -222,7 +222,7 @@ Como puede ver las dependencias de *assets* se definen con instancias de clases 
 
 Los nombres de los recursos deben ser valores que representen en la mayor medida posible al recurso. Es recomendable que contengan solo caracteres en minúsculas y que se usen un guiones en vez de espacios. Se recomienda además que se usen sufijos con el tipo del recurso como por ejemplo `bootstrap-css` y `bootstrap-js`.
 
-Respecto a las [URIs][URI] de los recursos deben ser valores relativos ya que es importante tener en cuenta que esos *assets* serán copiados dentro del directorio público de la aplicación donde se encuentre instalado el *then package* que estamos desarrollando. Como puede ver, en el caso de los *assets* que son descargados con [Bower][Bower], su [URI][URI] debe comenzar por `bower_components` dado que el mismo crea ese directorio para sus descargas. De igual manera ocurre con [NPM][NPM] donde en ese caso su directorio es `node_modues`, pero en el caso de los que son propios del proyecto, serán copiados dentro de un directorio que se creará teniendo en cuenta el valor `name` del archivo `composer.json` del *then package*. Recordemos que el nombre que le dimos al mismo fue `thenlabs/demo-composed-adminlte`.
+Respecto a las [URIs][URI] de los recursos deben ser valores relativos ya que recordemos que esos *assets* serán copiados dentro del directorio público de la aplicación donde se encuentre instalado el *then package* que estamos desarrollando. Como puede ver, en el caso de los *assets* que son descargados con [Bower][Bower], su [URI][URI] debe comenzar por `bower_components` dado que el mismo crea ese directorio para sus descargas. De igual manera ocurre con [NPM][NPM] donde en ese caso su directorio es `node_modues`, pero en el caso de los que son propios del proyecto, serán copiados dentro de un directorio que se creará teniendo en cuenta el valor `name` del archivo `composer.json` del *then package*. Recordemos que el nombre que le dimos al mismo fue `thenlabs/demo-composed-adminlte`.
 
 Seguidamente debemos editar la vista para hacer que los *assets* se muestren correctamente. Para el caso de los estilos reemplazamos [estas líneas](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) por `{$this->renderStyles()}` y de igual forma lo hacemos con los *scripts* modificando [estas otras](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403) por `{$this->renderScripts()}` tal y como se muestra en el siguiente ejemplo:
 
@@ -302,11 +302,75 @@ Una vez que hayamos realizado todos los pasos anteriores podremos nuevamente rec
 
 >Usted puede notar que las imágenes no se muestran correctamente, y es que anteriormente solo ajustamos las hojas de estilo y los *scripts*. Dado que estamos desarrollando un proyecto de demostración y ya explicamos la manera en que se deben referenciar los *assets* no nos vamos a centrar en ese detalle, no obstante, queremos comentarle que las vistas cuentan con el método `getBasePath(): string` el cual devolverá el valor de la ruta base que se le haya especificado a la vista. Usted puede emplear este método para corregir manualmente ciertas referencias.
 
+## 7. Dinamizando datos en las vistas.
+
+Hasta este momento hemos sido capaces de crear la vista de la página con los *assets* referenciados correctamente, sin embargo el resto del HTML es estático y dado que estamos desarrollando un proyecto pensado para que sea usado en otras aplicaciones, necesitaremos dinamizar ciertas partes para que el mismo se pueda generar lo más personalizado posible.
+
+Para la dinamización de ciertos datos de la vista, es posible declarar propiedades y especificarles la anotación `ThenLabs\ComposedViews\Annotation\Data`. En nuestro ejemplo, vamos a dinamizar el título de la página, y el título del contenido y su descripción. Para ello definimos las tres propiedades siguientes a la clase:
+
+```PHP
+<?php
+
+// ...
+use ThenLabs\ComposedViews\Annotation\Data;
+
+class Layout extends AbstractView
+{
+    /**
+     * @Data
+     */
+    protected $title;
+
+    /**
+     * @Data
+     */
+    protected $contentTitle;
+
+    /**
+     * @Data
+     */
+    protected $contentDescription;
+
+    // ...
+}
+```
+
+De manera automática las propiedades que poseen esta anotación contarán con métodos dinámicos para las operaciones *getters* y *setters*. Por defecto los nombres de estos métodos comienzan por `get` o `set` según sea el caso y continúan con el nombre de la propiedad en formato *camelCase*. Por ejemplo, en el caso de la propiedad `title` los métodos serían `getTitle()` y `setTitle()`.
+
+>Si por algún motivo se desea modificar los nombres de estos métodos se debe especificar la anotación de la manera `@Data(getter="getMyTitle", setter="setMyTitle")`.
+
+Como hemos visto hasta ahora, es con el método `render(): string` con el que se obtiene el contenido de la vista, sin embargo, el que implementamos para ello es `getView(array $data = []): string`. De este puede llamar la atención la presencia de su argumento `array $data = []` el cual recibirá los valores de las propiedades que posean la anotación antes comentada. Aunque no lo hemos mencionado hasta ahora, al método `render(): string` es posible llamarlo especificándole también un *array* de datos. El objetivo de esto, es que ciertas vistas pueden depender de datos que solo se especificarán al momento de generar su contenido. Una vez aclarado esto usted debe tener en cuenta que los datos que se pasen de esta manera tendrán prioridades sobre los de las propiedades en caso de que existan coincidencias.
+
+Seguidamente pasamos a hacer las modificaciones al código de la vista y para ello hacemos las siguientes modificaciones:
+
+```PHP
+<?php
+
+// ...
+
+class Layout extends AbstractView
+{
+    // ...
+
+    public function getView(array $data = []): string
+    {
+        return <<<HTML
+  <head>
+  ...
+    <title>{$data['title']}</title>
+  ...
+  </head>
+  <body>
+  </body>
+HTML;
+    }
+}
+```
+
 [Composer]: https://getcomposer.org/
 [Bower]: https://bower.io/
 [NPM]: https://www.npmjs.com/
 [adminlte-package.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/package.json
 [adminlte-bower.json]: https://github.com/ColorlibHQ/AdminLTE/blob/v2/bower.json
 [adminlte-dist]: https://github.com/ColorlibHQ/AdminLTE/tree/v2/dist
-[URI]: https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme
 [URI]: https://es.wikipedia.org/wiki/Identificador_de_recursos_uniforme
