@@ -253,16 +253,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   {$this->renderStyles()}
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  ...
 </head>
 
 ...
@@ -341,7 +332,7 @@ De manera automática las propiedades que poseen esta anotación contarán con m
 
 Como hemos visto hasta ahora, es con el método `render(): string` con el que se obtiene el contenido de la vista, sin embargo, el que implementamos para ello es `getView(array $data = []): string`. De este puede llamar la atención la presencia de su argumento `array $data = []` el cual recibirá los valores de las propiedades que posean la anotación antes comentada. Aunque no lo hemos mencionado hasta ahora, al método `render(): string` es posible llamarlo especificándole también un *array* de datos. El objetivo de esto, es que ciertas vistas pueden depender de datos que solo se especificarán al momento de generar su contenido. Una vez aclarado esto usted debe tener en cuenta que los datos que se pasen de esta manera tendrán prioridades sobre los de las propiedades en caso de que existan coincidencias.
 
-Seguidamente pasamos a hacer las modificaciones al código de la vista y para ello hacemos las siguientes modificaciones:
+Seguidamente pasamos a hacer las modificaciones al código de la vista de la siguiente manera:
 
 ```PHP
 <?php
@@ -361,11 +352,43 @@ class Layout extends AbstractView
   ...
   </head>
   <body>
+  ...
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        {$data['contentTitle']}
+        <small>{$data['contentDescription']}</small>
+      </h1>
+      ...
+    </section>
+  ...
   </body>
 HTML;
     }
 }
 ```
+
+Tal y como mostramos en el ejemplo, la forma recomendada de acceder a los datos dentro del método `getView` es a través de su argumento `$data`, no obstante, también es posible usar `$this`.
+
+Una vez hecho lo anterior, en nuestra página de ejemplos vamos especificarle valores a esas propiedades:
+
+```PHP
+<?php
+
+use ThenLabs\Demo\ComposedAdminLte\Layout;
+
+$page = new Layout;
+$page->setBasePath('/assets/');
+$page->setTitle('My Title');
+$page->setContentTitle('My Content Title');
+$page->setContentDescription('My Content Description');
+
+echo $page->render();
+```
+
+De esta manera una vez que recarguemos la página podremos ver que la misma mostrará los valores esperados:
+
+![](img/4.png)
 
 [Composer]: https://getcomposer.org/
 [Bower]: https://bower.io/
