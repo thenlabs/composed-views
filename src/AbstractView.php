@@ -21,6 +21,10 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use ReflectionClass;
 use BadMethodCallException;
 
+AnnotationRegistry::registerFile(__DIR__.'/Annotation/Data.php');
+AnnotationRegistry::registerFile(__DIR__.'/Annotation/Sidebar.php');
+AnnotationRegistry::registerFile(__DIR__.'/Annotation/View.php');
+
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  * @abstract
@@ -115,10 +119,6 @@ abstract class AbstractView implements ComponentInterface
                 'views' => [],
                 'sidebars' => [],
             ];
-
-            AnnotationRegistry::registerFile(__DIR__.'/Annotation/Data.php');
-            AnnotationRegistry::registerFile(__DIR__.'/Annotation/Sidebar.php');
-            AnnotationRegistry::registerFile(__DIR__.'/Annotation/View.php');
 
             $class = new ReflectionClass($this);
             $reader = new AnnotationReader();
