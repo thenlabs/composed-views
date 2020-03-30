@@ -9,7 +9,7 @@ Una vez finalizado dicho capítulo habremos construido un proyecto PHP instalabl
 
 ## 1. Consideraciones sobre los proyectos.
 
-Un proyecto ComposedViews es un paquete [Composer][Composer] de tipo `then-package`. A los paquetes de este tipo se les define como *then packages* y se gestionan además con la herramienta [ThenLabs CLI](https://github.com/thenlabs/cli).
+Un proyecto ComposedViews es un paquete [Composer][Composer] de tipo `then-package`. A los paquetes de este tipo los definimos como *then packages* y se gestionan además con la herramienta [ThenLabs CLI](https://github.com/thenlabs/cli).
 
 Es importante que lea la documentación de esta herramienta dado que en la misma se define más profundamente lo que es un *then package* entre otros conceptos adicionales que necesitará conocer para la comprensión de esta guía.
 
@@ -389,6 +389,74 @@ echo $page->render();
 De esta manera una vez que recarguemos la página podremos ver que la misma mostrará los valores esperados:
 
 ![](img/4.png)
+
+Con la anotación `@Data` es posible declararle los valores que podría tener la propiedad. De esta forma, si a la misma se le intenta asignar un valor no declarado a través de su método *setter* se produciría una excepción del tipo `ThenLabs\ComposedViews\Exception\InvalidPropertyValueException`. Si examinamos nuevamente el código HTML de la página podemos ver que sobre el `body` se muestra [esta información](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L36-L56) sobre las clases que podría tener este elemento. Conociendo esto vamos a declararle nuevos datos a nuestra vista para dinamizar estas opciones:
+
+```PHP
+<?php
+
+class Layout extends AbstractView
+{
+    // ...
+
+    /**
+     * @Data(values={"blue", "black", "purple", "yellow", "red", "green"})
+     */
+    protected $skin = 'blue';
+
+    /**
+     * @Data(values={"fixed", "layout-boxed", "layout-top-nav", "sidebar-collapse", "sidebar-mini"})
+     */
+    protected $layoutType = 'sidebar-mini';
+
+    public function getView(array $data = []): string
+    {
+        return <<<HTML
+  ...
+  <body class="hold-transition skin-{$data['skin']} {$data['layoutType']}">
+  ...
+HTML;
+    }
+}
+```
+
+Después de que realizamos lo anterior podríamos comprobar que estos valores han quedado dinamizados correctamente. Sin embargo, notamos que al cambiar de *skin* la página no muestra el color que debería. El motivo se debe a que para que esto ocurra se debe usar la correspondiente hoja de estilos, y cuando definimos las dependencias especificamos que siempre se mostrara la del color azul. Para conseguir lo deseado se tienen varias alternativas pero en nuestro caso vamos a optar por modificar dentro del método `getView()` la [URI][URI] del estilo dependiendo del valor que tenga el dato `skin`:
+
+```PHP
+<?php
+
+class Layout extends AbstractView
+{
+    // ...
+
+    public function getView(array $data = []): string
+    {
+        $styles = $this->getStyles();
+        $skinCss = $styles['adminlte-skin-css'];
+        $skinCss->setUri("thenlabs/demo-composed-adminlte/css/skins/skin-{$data['skin']}.min.css");
+
+        return <<<HTML
+...
+HTML;
+    }
+}
+```
+
+De esta forma, si en la página de ejemplos especificáramos lo siguiente:
+
+```PHP
+<?php
+
+// ...
+$page->setSkin('green');
+$page->setLayoutType('layout-boxed');
+
+echo $page->render();
+```
+
+Este sería el resultado:
+
+![](img/5.png)
 
 [Composer]: https://getcomposer.org/
 [Bower]: https://bower.io/

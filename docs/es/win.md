@@ -10,7 +10,7 @@ Ejecute los siguientes comandos en el orden mostrado.
 En determinado momento [Composer][Composer] le preguntará si desea eliminar el repositorio actual. Recomendamos que inique sí ya que no tiene ningún sentido que su proyecto contenga esos *commits*. Este paso será automatizado en futuras versiones.
 
     $ cd <directory>
-    $composer init --type=then-package --stability=dev --require=thenlabs/composed-views:dev-master --require-dev=thenlabs/cli:dev-master
+    $ composer init --type=then-package --stability=dev --require=thenlabs/composed-views:dev-master --require-dev=thenlabs/cli:dev-master
 
 Se le preguntará sobre ciertos datos del proyecto donde podrá especificar los valores que desee **excepto en el tipo y las dependencias donde deberá mantener los valores por defecto**.
 
