@@ -5,7 +5,7 @@ En el presente capítulo abordaremos de forma práctica la manera de crear un pr
 
 Una vez finalizado dicho capítulo habremos construido un proyecto PHP instalable por [Composer][Composer] el cual contendrá clases cuyas instancias serán capaces de generar el código HTML de la página así como de sus componentes. Además de ello, el proyecto contendrá los recursos de la maqueta los cuales estarán correctamente referenciados desde el HTML generado y además podrán ser instalados en cualquier aplicación PHP con solo ejecutar un comando.
 
->En [este enlace](#) se puede encontrar el proyecto realizado en el capítulo.
+>En [este enlace](https://github.com/thenlabs/demo-composed-adminlte) se puede encontrar el proyecto realizado en el capítulo.
 
 ## 1. Consideraciones sobre los proyectos.
 
