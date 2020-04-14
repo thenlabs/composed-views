@@ -79,7 +79,7 @@ Como se comentó anteriormente las vistas se crean con clases PHP. Es recomendab
 
 Para ello agregue al archivo `composer.json` los siguientes datos:
 
-```JSON
+```json
 {
     "autoload": {
         "psr-4": {
@@ -110,7 +110,7 @@ Para lograr que nuestro *then package* contenga todos esos recursos, vamos a cop
 
 Para lograr que los archivos `package.json` y `bower.json` sean correctamente tratados, debemos especificar que los mismos deberán ser combinados con otros de igual nombre que pueden pertenecer tanto a otros *then packages* como a la propia aplicación PHP donde esté instalado el *then package* que estamos desarrollando. Para ello, vamos a editar el archivo `then-package.json` de la siguiente manera:
 
-```JSON
+```json
 {
     "assets": {
         "assets/*": ""
@@ -146,7 +146,7 @@ Las clases de las vistas como requisito mínimo deberán definir el método `get
 
 Para el caso de la página crearemos el archivo `src/Layout.php` con el siguiente contenido:
 
-```PHP
+```php
 <?php
 // src/Layout.php
 
@@ -169,7 +169,7 @@ HTML;
 
 Seguidamente editaremos el archivo `examples/pages/main.php` de la siguiente manera:
 
-```PHP
+```php
 <?php
 // examples/pages/main.php
 
@@ -186,7 +186,7 @@ Una vez realizado lo anterior, si visitamos la página de ejemplo comprobaremos 
 
 En los casos de las vistas que dependen de determinados *assets* deberán implementar en sus clases el método `getOwnDependencies(): array` el cual deberá devolver un *array* con las instancias de dichas dependencias. Cuando analizamos el HTML de la página vemos que depende de [estas hojas de estilo](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) y de [estos scripts](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403), por lo que hacemos la siguiente implementación:
 
-```PHP
+```php
 <?php
 
 namespace ThenLabs\Demo\ComposedAdminLte;
@@ -226,7 +226,7 @@ Respecto a las [URIs][URI] de los recursos deben ser valores relativos ya que re
 
 Seguidamente debemos editar la vista para hacer que los *assets* se muestren correctamente. Para el caso de los estilos reemplazamos [estas líneas](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L13-L23) por `{$this->renderStyles()}` y de igual forma lo hacemos con los *scripts* modificando [estas otras](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L399-L403) por `{$this->renderScripts()}` tal y como se muestra en el siguiente ejemplo:
 
-```PHP
+```php
 <?php
 
 namespace ThenLabs\Demo\ComposedAdminLte;
@@ -274,7 +274,7 @@ HTML;
 
 Después de haberse realizado los pasos anteriores ya el *then package* podría ser utilizado dentro de una aplicación PHP y la vista `Layout` se mostraría con los *assets* que antes especificamos. El único detalle que faltaría sería especificarle a la vista la ruta base del directorio público donde se encontrarán instalados los archivos de los *assets*. Esto último se hace llamando al método `setBasePath(string $basePath): void` sobre la vista. Dado que también en las páginas de ejemplos debemos especificar este valor modificamos el archivo `examples/pages/main.php` de la siguiente manera:
 
-```PHP
+```php
 <?php
 
 use ThenLabs\Demo\ComposedAdminLte\Layout;
@@ -299,7 +299,7 @@ Hasta este momento hemos sido capaces de crear la vista de la página con los *a
 
 Para la dinamización de ciertos datos de la vista, es posible declarar propiedades y especificarles la anotación `ThenLabs\ComposedViews\Annotation\Data`. En nuestro ejemplo, vamos a dinamizar el título de la página, y el título del contenido y su descripción. Para ello definimos las tres propiedades siguientes a la clase:
 
-```PHP
+```php
 <?php
 
 // ...
@@ -334,7 +334,7 @@ Como hemos visto hasta ahora, es con el método `render(): string` con el que se
 
 Seguidamente pasamos a hacer las modificaciones al código de la vista de la siguiente manera:
 
-```PHP
+```php
 <?php
 
 // ...
@@ -372,7 +372,7 @@ Tal y como mostramos en el ejemplo, la forma recomendada de acceder a los datos 
 
 Una vez hecho lo anterior, en nuestra página de ejemplos vamos especificarle valores a esas propiedades:
 
-```PHP
+```php
 <?php
 
 use ThenLabs\Demo\ComposedAdminLte\Layout;
@@ -392,7 +392,7 @@ De esta manera una vez que recarguemos la página podremos ver que la misma most
 
 Con la anotación `@Data` es posible declararle los valores que podría tener la propiedad. De esta forma, si a la misma se le intenta asignar un valor no declarado a través de su método *setter* se produciría una excepción del tipo `ThenLabs\ComposedViews\Exception\InvalidPropertyValueException`. Si examinamos nuevamente el código HTML de la página podemos ver que sobre el `body` se muestra [esta información](https://github.com/ColorlibHQ/AdminLTE/blob/v2/starter.html#L36-L56) sobre las clases que podría tener este elemento. Conociendo esto vamos a declararle nuevos datos a nuestra vista para dinamizar estas opciones:
 
-```PHP
+```php
 <?php
 
 class Layout extends AbstractView
@@ -422,7 +422,7 @@ HTML;
 
 Después de que realizamos lo anterior podríamos comprobar que estos valores han quedado dinamizados correctamente. Sin embargo, notamos que al cambiar de *skin* la página no muestra el color que debería. El motivo se debe a que para que esto ocurra se debe usar la correspondiente hoja de estilos, y cuando definimos las dependencias especificamos que siempre se mostrara la del color azul. Para conseguir lo deseado se tienen varias alternativas pero en nuestro caso vamos a optar por modificar dentro del método `getView()` la [URI][URI] del estilo dependiendo del valor que tenga el dato `skin`:
 
-```PHP
+```php
 <?php
 
 class Layout extends AbstractView
@@ -444,7 +444,7 @@ HTML;
 
 De esta forma, si en la página de ejemplos especificáramos lo siguiente:
 
-```PHP
+```php
 <?php
 
 // ...
