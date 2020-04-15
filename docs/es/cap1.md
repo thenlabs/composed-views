@@ -7,13 +7,13 @@ Una vez finalizado dicho capítulo habremos construido un proyecto PHP instalabl
 
 >En [este enlace](https://github.com/thenlabs/demo-composed-adminlte) se puede encontrar el proyecto realizado en el capítulo.
 
-## 1. Consideraciones sobre los proyectos.
+## Consideraciones sobre los proyectos.
 
 Un proyecto ComposedViews es un paquete [Composer][Composer] de tipo `then-package`. A los paquetes de este tipo los definimos como *then packages* y se gestionan además con la herramienta [ThenLabs CLI](https://github.com/thenlabs/cli).
 
 Es importante que lea la documentación de esta herramienta dado que en la misma se define más profundamente lo que es un *then package* entre otros conceptos adicionales que necesitará conocer para la comprensión de esta guía.
 
-## 2. Creando el nuevo proyecto.
+## Creando el nuevo proyecto.
 
 ### Linux y Mac.
 
@@ -33,7 +33,7 @@ Se le preguntará además sobre ciertos datos del proyecto donde podrá especifi
 
 En el caso de los usuarios Windows deberán [seguir estos pasos](win.md).
 
-## 3. Conociendo la estructura del proyecto.
+## Conociendo la estructura del proyecto.
 
 Una vez que se ha creado el proyecto podremos encontrar la siguiente estructura de archivos dentro del directorio del mismo.
 
@@ -73,7 +73,7 @@ En el directorio `examples` puede encontrarse esta aplicación la que puede ser 
 
 Por otra parte, En el directorio `examples/pages` se encontrará el archivo `main.php` donde se encuentra creada la vista que muestra el saludo anterior. Este archivo puede ser editado o eliminado si lo desea, pero será en este directorio donde se deberán alojar todas las páginas de ejemplos del proyecto.
 
-## 4. Definiendo el espacio de nombres para las clases del proyecto.
+## Definiendo el espacio de nombres para las clases del proyecto.
 
 Como se comentó anteriormente las vistas se crean con clases PHP. Es recomendable que las mismas se creen bajo determinados espacios de nombres y dado que en el proyecto recién creado no existe ninguno, lo primero que haremos será definir uno nuevo.
 
@@ -93,7 +93,7 @@ Seguidamente ejecute el comando:
 
     $ composer dump
 
-## 5. Definiendo los *assets* del proyecto e instalándolos para los ejemplos.
+## Definiendo los assets del proyecto e instalándolos para los ejemplos.
 
 Cuando analizamos la [estructura del proyecto AdminLTE](https://github.com/ColorlibHQ/AdminLTE/tree/v2) vemos que existen los archivos [package.json][adminlte-package.json] y [bower.json][adminlte-bower.json]. Esto significa que este proyecto depende de *assets* que se tienen que instalar con [NPM][NPM] y [Bower][Bower]. Además de esto conocemos que en el directorio [dist][adminlte-dist] existen otros que son propios de dicho proyecto.
 
@@ -136,7 +136,7 @@ Una vez que hayamos realizado el paso anterior debemos descargar para los ejempl
     $ npm install
     $ bower install
 
-## 6. Creando la vista de la página.
+## Creando la vista de la página.
 
 Para crear vistas existen dos clases fundamentales, ellas son `ThenLabs\ComposedViews\AbstractView` y `ThenLabs\ComposedViews\AbstractCompositeView`. La única diferencia entre ambas es que la segunda está pensada para vistas que puedan contener otras vistas.
 
@@ -293,7 +293,7 @@ Una vez que hayamos realizado todos los pasos anteriores podremos nuevamente rec
 
 >Usted puede notar que las imágenes no se muestran correctamente, y es que anteriormente solo ajustamos las hojas de estilo y los *scripts*. Dado que estamos desarrollando un proyecto de demostración y ya explicamos la manera en que se deben referenciar los *assets* no nos vamos a centrar en ese detalle, no obstante, queremos comentarle que las vistas cuentan con el método `getBasePath(): string` el cual devolverá el valor de la ruta base que se le haya especificado a la vista. Usted puede emplear este método para corregir manualmente ciertas referencias.
 
-## 7. Dinamizando datos en las vistas.
+## Dinamizando datos en las vistas.
 
 Hasta este momento hemos sido capaces de crear la vista de la página con los *assets* referenciados correctamente, sin embargo el resto del HTML es estático y dado que estamos desarrollando un proyecto pensado para que sea usado en otras aplicaciones, necesitaremos dinamizar ciertas partes para que el mismo se pueda generar lo más personalizado posible.
 
