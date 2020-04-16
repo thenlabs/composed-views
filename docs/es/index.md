@@ -1,8 +1,6 @@
 
 # ComposedViews
 
-## Introducción.
-
 Cuando se desarrolla una aplicación web resulta imprescindible llevar a cabo la implementación de la vista. Por lo general, las vistas se crean a partir de maquetas HTML copiando sus recursos en el directorio público del proyecto *backend* y dinamizando sus códigos HTML. Esto último implica la creación de las plantillas con la respectiva tecnología que en el proyecto se emplee para ello, y garantizando que los recursos sean correctamente referenciados desde las mismas.
 
 Aunque realizar esta tarea no resulta algo complicado, en muchos casos puede resultar trabajoso y por tanto, implicará determinados tiempos y esfuerzos para los desarrolladores. Teniendo en cuenta además, que muchas maquetas se suelen emplear en más de una aplicación, se puede decir entonces que crear determinadas vistas puede resultar también una tarea repetitiva.
