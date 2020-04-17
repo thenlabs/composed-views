@@ -9,7 +9,7 @@ Una vez finalizado dicho capítulo habremos construido un proyecto PHP instalabl
 
 ## Consideraciones sobre los proyectos.
 
-Un proyecto ComposedViews es un paquete [Composer][Composer] de tipo `then-package`. A los paquetes de este tipo los definimos como *then packages* y se gestionan además con la herramienta [ThenLabs CLI](https://github.com/thenlabs/cli).
+Un proyecto ComposedViews es un paquete [Composer][Composer] de tipo `then-package`. A los paquetes de este tipo los definimos como *then packages* y se gestionan además con la herramienta [ThenLabs CLI](http://thenlabs.org/docs/cli/master/es/index.html).
 
 Es importante que lea la documentación de esta herramienta dado que en la misma se define más profundamente lo que es un *then package* entre otros conceptos adicionales que necesitará conocer para la comprensión de esta guía.
 
