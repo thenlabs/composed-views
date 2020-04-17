@@ -348,7 +348,7 @@ class Layout extends AbstractView
         return <<<HTML
   <head>
   ...
-    <title>{$data['title']}</title>
+    <title>{$this->title}</title>
   ...
   </head>
   <body>
@@ -356,8 +356,8 @@ class Layout extends AbstractView
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        {$data['contentTitle']}
-        <small>{$data['contentDescription']}</small>
+        {$this->contentTitle}
+        <small>{$this->contentDescription}</small>
       </h1>
       ...
     </section>
@@ -367,8 +367,6 @@ HTML;
     }
 }
 ```
-
-Tal y como mostramos en el ejemplo, la forma recomendada de acceder a los datos dentro del método `getView` es a través de su argumento `$data`, no obstante, también es posible usar `$this`.
 
 Una vez hecho lo anterior, en nuestra página de ejemplos vamos especificarle valores a esas propiedades:
 
@@ -420,7 +418,7 @@ HTML;
 }
 ```
 
-Después de que realizamos lo anterior podríamos comprobar que estos valores han quedado dinamizados correctamente. Sin embargo, notamos que al cambiar de *skin* la página no muestra el color que debería. El motivo se debe a que para que esto ocurra se debe usar la correspondiente hoja de estilos, y cuando definimos las dependencias especificamos que siempre se mostrara la del color azul. Para conseguir lo deseado se tienen varias alternativas pero en nuestro caso vamos a optar por modificar dentro del método `getView()` la [URI][URI] del estilo dependiendo del valor que tenga el dato `skin`:
+Después de que realizamos lo anterior podríamos comprobar que estos valores han quedado dinamizados correctamente. Sin embargo, notamos que al cambiar de *skin* la página no muestra el color que debería. El motivo se debe a que para que esto ocurra se debe usar la correspondiente hoja de estilos, y cuando definimos las dependencias especificamos que siempre se mostrara la del color azul. Para conseguir lo deseado hacemos la siguiente modificación:
 
 ```php
 <?php
@@ -429,15 +427,14 @@ class Layout extends AbstractView
 {
     // ...
 
-    public function getView(array $data = []): string
+    public function getOwnDependencies(): array
     {
-        $styles = $this->getStyles();
-        $skinCss = $styles['adminlte-skin-css'];
-        $skinCss->setUri("thenlabs/demo-composed-adminlte/css/skins/skin-{$data['skin']}.min.css");
+        return [
+            // ...
+            new Stylesheet('adminlte-skin-css', null, "thenlabs/demo-composed-adminlte/css/skins/skin-{$this->skin}.min.css"),
 
-        return <<<HTML
-...
-HTML;
+            // ...
+        ];
     }
 }
 ```
