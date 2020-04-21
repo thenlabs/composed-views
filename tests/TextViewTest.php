@@ -3,16 +3,16 @@
 namespace ThenLabs\ComposedViews\Tests;
 
 use ThenLabs\ComposedViews\AbstractView;
-use ThenLabs\ComposedViews\RawView;
+use ThenLabs\ComposedViews\TextView;
 use ThenLabs\Components\DependencyInterface;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('RawViewTest.php', function () {
+testCase('TextViewTest.php', function () {
     setUp(function () {
         $this->content = uniqid();
-        $this->view = new RawView($this->content);
+        $this->view = new TextView($this->content);
     });
 
     test('is instance of AbstractView', function () {

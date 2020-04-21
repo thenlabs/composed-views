@@ -9,7 +9,7 @@ use ThenLabs\Components\EditableDependencyTrait;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class RawView extends AbstractView implements DependencyInterface
+class TextView extends AbstractView implements DependencyInterface
 {
     use EditableDependencyTrait;
 
