@@ -12,6 +12,7 @@ use ThenLabs\Components\EditableDependencyTrait;
 class TextView extends AbstractView implements DependencyInterface
 {
     use EditableDependencyTrait;
+    use ProxyToCrawlerTrait;
 
     protected $content;
 

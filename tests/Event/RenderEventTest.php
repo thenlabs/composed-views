@@ -11,7 +11,7 @@ setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
 testCase('RenderEventTest.php', function () {
-    test('is a proxy to the proxyCrawler property', function () {
+    test('is a proxy to the crawler property', function () {
         $method = uniqid('method');
         $argument = uniqid();
         $result = uniqid();

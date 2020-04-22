@@ -3,24 +3,21 @@ declare(strict_types=1);
 
 namespace ThenLabs\ComposedViews\Event;
 
+use ThenLabs\ComposedViews\ProxyToCrawlerTrait;
 use ThenLabs\Components\Event\Event;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
-use BadMethodCallException;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
 class RenderEvent extends Event
 {
+    use ProxyToCrawlerTrait;
+
     /**
      * @var string|null
      */
     protected $view;
-
-    /**
-     * @var HtmlPageCrawler
-     */
-    protected $crawler;
 
     /**
      * @var array
@@ -46,16 +43,5 @@ class RenderEvent extends Event
     public function getData(): array
     {
         return $this->data;
-    }
-
-    public function __call($method, $arguments)
-    {
-        $callback = [$this->crawler, $method];
-
-        if (is_callable($callback)) {
-            return call_user_func_array($callback, $arguments);
-        } else {
-            throw new BadMethodCallException("Unknow method '{$method}'.");
-        }
     }
 }
