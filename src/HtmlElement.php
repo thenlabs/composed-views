@@ -13,10 +13,25 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
 {
     use EditableDependencyTrait;
 
-    protected $tagName = 'div';
-    protected $attributes = [];
-    protected $endTag = true;
-    protected $selfClosingTag = false;
+    protected $tagName;
+    protected $attributes;
+    protected $endTag;
+    protected $selfClosingTag;
+
+    public function __construct(string $tagName = 'div', ?array $attributes = [], ?string $innerHtml = '', bool $endTag = true, bool $selfClosingTag = false)
+    {
+        $this->setTagName($tagName);
+        $this->setEndTag($endTag);
+        $this->setSelfClosingTag($selfClosingTag);
+
+        if (is_array($attributes)) {
+            $this->setAttributes($attributes);
+        }
+
+        if ($innerHtml) {
+            $this->setInnerHtml($innerHtml);
+        }
+    }
 
     public function setName(?string $name): void
     {

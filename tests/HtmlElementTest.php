@@ -265,5 +265,73 @@ testCase('HtmlElementTest.php', function () {
                 });
             });
         });
+
+        testCase('testing constructor', function () {
+            test(function () {
+                $tagName = uniqid();
+                $attributes = range(0, mt_rand(0, 10));
+                $innerHtml = uniqid();
+                $endTag = boolval(mt_rand(0, 1));
+                $selfClosingTag = boolval(mt_rand(0, 1));
+
+                $element = $this->getMockBuilder(HtmlElement::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods([
+                        'setTagName',
+                        'setAttributes',
+                        'setInnerHtml',
+                        'setEndTag',
+                        'setSelfClosingTag',
+                    ])
+                    ->getMock();
+                $element->expects($this->once())
+                    ->method('setTagName')
+                    ->with($this->equalTo($tagName));
+                $element->expects($this->once())
+                    ->method('setAttributes')
+                    ->with($this->equalTo($attributes));
+                $element->expects($this->once())
+                    ->method('setInnerHtml')
+                    ->with($this->equalTo($innerHtml));
+                $element->expects($this->once())
+                    ->method('setEndTag')
+                    ->with($this->equalTo($endTag));
+                $element->expects($this->once())
+                    ->method('setSelfClosingTag')
+                    ->with($this->equalTo($selfClosingTag));
+
+                $element->__construct($tagName, $attributes, $innerHtml, $endTag, $selfClosingTag);
+            });
+
+            test(function () {
+                $tagName = uniqid();
+                $endTag = boolval(mt_rand(0, 1));
+                $selfClosingTag = boolval(mt_rand(0, 1));
+
+                $element = $this->getMockBuilder(HtmlElement::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods([
+                        'setTagName',
+                        'setAttributes',
+                        'setInnerHtml',
+                        'setEndTag',
+                        'setSelfClosingTag',
+                    ])
+                    ->getMock();
+                $element->expects($this->once())
+                    ->method('setTagName')
+                    ->with($this->equalTo($tagName));
+                $element->expects($this->never())->method('setAttributes');
+                $element->expects($this->never())->method('setInnerHtml');
+                $element->expects($this->once())
+                    ->method('setEndTag')
+                    ->with($this->equalTo($endTag));
+                $element->expects($this->once())
+                    ->method('setSelfClosingTag')
+                    ->with($this->equalTo($selfClosingTag));
+
+                $element->__construct($tagName, null, '', $endTag, $selfClosingTag);
+            });
+        });
     });
 });
