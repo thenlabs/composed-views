@@ -2,10 +2,12 @@
 
 namespace ThenLabs\ComposedViews\Tests;
 
+use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\AbstractCompositeView;
 use ThenLabs\ComposedViews\HtmlElement;
 use ThenLabs\ComposedViews\TextView;
 use ThenLabs\Components\DependencyInterface;
+use ThenLabs\ClassBuilder\ClassBuilder;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
@@ -311,26 +313,44 @@ testCase('HtmlElementTest.php', function () {
                 $element = $this->getMockBuilder(HtmlElement::class)
                     ->disableOriginalConstructor()
                     ->setMethods([
-                        'setTagName',
                         'setAttributes',
                         'setInnerHtml',
-                        'setEndTag',
-                        'setSelfClosingTag',
+                    ])
+                    ->getMock();
+                $element->expects($this->never())->method('setAttributes');
+                $element->expects($this->never())->method('setInnerHtml');
+
+                $element->__construct($tagName, null, '', $endTag, $selfClosingTag);
+                $element->__construct($tagName, null, null, $endTag, $selfClosingTag);
+            });
+
+            test(function () {
+                $tagName = uniqid();
+                $endTag = boolval(mt_rand(0, 1));
+                $selfClosingTag = boolval(mt_rand(0, 1));
+
+                $expectedResult = uniqid();
+                $view = (new ClassBuilder)->extends(AbstractView::class)
+                    ->addMethod('getView')
+                        ->setAccess('protected')
+                        ->setClosure(function (array $data = []) use ($expectedResult): string {
+                            return $expectedResult;
+                        })
+                    ->end()
+                    ->newInstance()
+                ;
+
+                $element = $this->getMockBuilder(HtmlElement::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods([
+                        'setInnerHtml',
                     ])
                     ->getMock();
                 $element->expects($this->once())
-                    ->method('setTagName')
-                    ->with($this->equalTo($tagName));
-                $element->expects($this->never())->method('setAttributes');
-                $element->expects($this->never())->method('setInnerHtml');
-                $element->expects($this->once())
-                    ->method('setEndTag')
-                    ->with($this->equalTo($endTag));
-                $element->expects($this->once())
-                    ->method('setSelfClosingTag')
-                    ->with($this->equalTo($selfClosingTag));
+                    ->method('setInnerHtml')
+                    ->with($this->equalTo($expectedResult));
 
-                $element->__construct($tagName, null, '', $endTag, $selfClosingTag);
+                $element->__construct($tagName, null, $view, $endTag, $selfClosingTag);
             });
         });
     });
