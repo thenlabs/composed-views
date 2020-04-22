@@ -100,7 +100,7 @@ abstract class AbstractView implements ComponentInterface
 
     public function __get($name)
     {
-        $model = static::getModel();
+        $model = $this->getModel();
 
         if (! isset($model['views'][$name])) {
             throw new UnexistentPropertyException($name);
