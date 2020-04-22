@@ -38,6 +38,14 @@ abstract class AbstractView implements ComponentInterface
     private $_basePath;
     private $_dependencies = [];
 
+    public function __construct()
+    {
+        $model = $this->getModel();
+        foreach ($model['sidebars'] as $sidebarName => $sidebarData) {
+            $this->{$sidebarName} = new Sidebar;
+        }
+    }
+
     abstract protected function getView(array $data = []): string;
 
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
@@ -139,10 +147,7 @@ abstract class AbstractView implements ComponentInterface
                         $model['views'][$propertyName] = [];
                     }
 
-                    if ($annotation instanceof SidebarAnnotation &&
-                        ! $this->{$propertyName} instanceof Sidebar
-                    ) {
-                        $this->{$propertyName} = new Sidebar;
+                    if ($annotation instanceof SidebarAnnotation) {
                         $model['sidebars'][$propertyName] = [];
                     }
                 }

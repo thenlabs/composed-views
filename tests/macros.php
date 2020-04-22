@@ -5,6 +5,7 @@ namespace ThenLabs\ComposedViews\Tests;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\DependencyInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\ComposedViews\Sidebar;
 use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Asset\Script;
 use ThenLabs\ComposedViews\Asset\Style;
@@ -711,6 +712,33 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $view->{$property} = $otherView;
 
             $this->assertEquals($expectedResult, $view->render($data, $dispatchRenderEvent));
+        });
+
+        test('bugfix', function () {
+            $property = uniqid('property');
+            $viewClass = (new ClassBuilder)->extends($this->getViewClass())
+                ->addProperty($property)
+                    ->setAccess('protected')
+                    ->addComment('@ThenLabs\ComposedViews\Annotation\Sidebar')
+                ->end()
+                ->addMethod('getView')
+                    ->setAccess('protected')
+                    ->setClosure(function (array $data = []): string {
+                        return '';
+                    })
+                ->end()
+            ;
+
+            $viewClass->install();
+            $className = $viewClass->getFCQN();
+
+            $view1 = new $className;
+            $view2 = new $className;
+            $view3 = new $className;
+
+            $this->assertInstanceOf(Sidebar::class, $view1->{$property});
+            $this->assertInstanceOf(Sidebar::class, $view2->{$property});
+            $this->assertInstanceOf(Sidebar::class, $view3->{$property});
         });
     });
 });
