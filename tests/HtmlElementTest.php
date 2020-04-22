@@ -4,6 +4,7 @@ namespace ThenLabs\ComposedViews\Tests;
 
 use ThenLabs\ComposedViews\AbstractCompositeView;
 use ThenLabs\ComposedViews\HtmlElement;
+use ThenLabs\ComposedViews\TextView;
 use ThenLabs\Components\DependencyInterface;
 
 setTestCaseNamespace(__NAMESPACE__);
@@ -204,6 +205,64 @@ testCase('HtmlElementTest.php', function () {
                 });
 
                 useMacro('has the expected view');
+            });
+        });
+
+        testCase('$element->addChild($child1)', function () {
+            setUp(function () {
+                $this->view1 = uniqid();
+                $child1 = new TextView($this->view1);
+                $this->element->addChild($child1);
+            });
+
+            test('$element->getInnerHtml() === $child1->render()', function () {
+                $this->assertSame($this->view1, $this->element->getInnerHtml());
+            });
+
+            test('has the expected view', function () {
+                $this->assertEquals(
+                    "<div>{$this->view1}</div>",
+                    $this->element->render()
+                );
+            });
+
+            testCase('$element->addChild($child2)', function () {
+                setUp(function () {
+                    $this->view2 = uniqid();
+                    $child2 = new TextView($this->view2);
+                    $this->element->addChild($child2);
+                });
+
+                test('$element->getInnerHtml() === $child1->render().$child2->render()', function () {
+                    $expected = $this->view1.$this->view2;
+                    $this->assertSame($expected, $this->element->getInnerHtml());
+                });
+
+                test('has the expected view', function () {
+                    $this->assertEquals(
+                        "<div>{$this->view1}{$this->view2}</div>",
+                        $this->element->render()
+                    );
+                });
+
+                testCase('$element->setInnerHtml($child3)', function () {
+                    setUp(function () {
+                        $this->view3 = uniqid();
+                        $child3 = new TextView($this->view3);
+                        $this->element->setInnerHtml($child3);
+                    });
+
+                    test('$element->getInnerHtml() === $child3->render()', function () {
+                        $this->assertSame($this->view3, $this->element->getInnerHtml());
+                    });
+
+                    test('has the expected view', function () {
+                        $this->assertEquals(
+                            "<div>{$this->view3}</div>",
+                            $this->element->render()
+                        );
+                    });
+                });
             });
         });
     });

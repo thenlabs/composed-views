@@ -15,7 +15,6 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
 
     protected $tagName = 'div';
     protected $attributes = [];
-    protected $innerHtml = '';
     protected $endTag = true;
     protected $selfClosingTag = false;
 
@@ -36,7 +35,6 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
         }
         $startTag .= $this->selfClosingTag ? ' />' : '>';
 
-        $innerHtml = $this->innerHtml;
         $endTag = "</{$this->tagName}>";
 
         if (! $this->endTag) {
@@ -48,7 +46,7 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
             $endTag = '';
         }
 
-        return $startTag . $innerHtml . $endTag;
+        return $startTag . $this->getInnerHtml() . $endTag;
     }
 
     public function getTagName(): string
@@ -88,12 +86,22 @@ class HtmlElement extends AbstractCompositeView implements DependencyInterface
 
     public function getInnerHtml(): string
     {
-        return $this->innerHtml;
+        $result = '';
+
+        if (! $this->hasSelfClosingTag()) {
+            foreach ($this->getChilds() as $child) {
+                $result .= strval($child);
+            }
+        }
+
+        return $result;
     }
 
     public function setInnerHtml(string $innerHtml): void
     {
-        $this->innerHtml = $innerHtml;
+        $this->childs = [];
+
+        $this->addChild(new TextView($innerHtml));
     }
 
     public function hasEndTag(): bool
