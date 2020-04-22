@@ -62,6 +62,17 @@ testCase('TextViewTest.php', function () {
         $textView->{$method}();
     });
 
+    test('the view is the result of the crawler', function () {
+        $textView = new TextView('<p>my p <strong>my strong <span>my span</span></strong></p>');
+        $attribute = uniqid('attr');
+        $value = uniqid();
+
+        $textView->filter('span')->setAttribute($attribute, $value);
+        $expected = "<p>my p <strong>my strong <span {$attribute}=\"{$value}\">my span</span></strong></p>";
+
+        $this->assertEquals($expected, $textView->render());
+    });
+
     testCase('$view->setName($name)', function () {
         setUp(function () {
             $this->name = uniqid();

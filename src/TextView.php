@@ -5,6 +5,7 @@ namespace ThenLabs\ComposedViews;
 
 use ThenLabs\Components\DependencyInterface;
 use ThenLabs\Components\EditableDependencyTrait;
+use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -14,11 +15,9 @@ class TextView extends AbstractView implements DependencyInterface
     use EditableDependencyTrait;
     use ProxyToCrawlerTrait;
 
-    protected $content;
-
     public function __construct(string $content)
     {
-        $this->content = $content;
+        $this->crawler = new HtmlPageCrawler($content);
     }
 
     public function setName(?string $name): void
@@ -28,6 +27,6 @@ class TextView extends AbstractView implements DependencyInterface
 
     public function getView(array $data = []): string
     {
-        return $this->content;
+        return $this->crawler->saveHTML();
     }
 }
