@@ -73,6 +73,26 @@ testCase('TextViewTest.php', function () {
         $this->assertEquals($expected, $textView->render());
     });
 
+    testCase('the createFromSyntax() static method', function () {
+        setUp(function () {
+            $this->textView = TextView::createFromSyntax('.row > .col-lg-4.col-sm-2');
+        });
+
+        test('returns instance of TextView', function () {
+            $this->assertInstanceOf(TextView::class, $this->textView);
+        });
+
+        test('testing the createFromSyntax() static method', function () {
+            $expected = '
+                <div class="row">
+                    <div class="col-lg-4 col-sm-2"></div>
+                </div>
+            ';
+
+            $this->assertXmlStringEqualsXmlString($expected, $this->textView->render());
+        });
+    });
+
     testCase('$view->setName($name)', function () {
         setUp(function () {
             $this->name = uniqid();
