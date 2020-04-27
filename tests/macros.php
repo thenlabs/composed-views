@@ -137,7 +137,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             ->addMethod('getView')
                 ->setAccess('protected')
-                ->setClosure(function (array $data = []): string {
+                ->setClosure(function (): string {
                     $assets = $this->getDependencies();
                     $asset = array_pop($assets);
 
@@ -193,7 +193,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             ->addMethod('getView')
                 ->setAccess('protected')
-                ->setClosure(function (array $data = []): string {
+                ->setClosure(function (): string {
                     return $this->renderAssets($this->getDependencies());
                 })
             ->end()
@@ -230,7 +230,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         $view = (new ClassBuilder)->extends($this->getViewClass())
             ->addMethod('getView')
                 ->setAccess('protected')
-                ->setClosure(function (array $data = []): string {
+                ->setClosure(function (): string {
                     return '';
                 })
             ->end()
@@ -259,7 +259,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->view = (new ClassBuilder)->extends($this->getViewClass())
                 ->addMethod('getView')
                     ->setAccess('protected')
-                    ->setClosure(function (array $data = []): string {
+                    ->setClosure(function (): string {
                         return '<div>'.uniqid().'</div>';
                     })
                 ->end()
@@ -343,7 +343,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $result = [];
 
                 $view = (new ClassBuilder)->extends($this->getViewClass())
-                    ->addMethod('getView', function (array $data = []) use (&$result): string {
+                    ->addMethod('getView', function () use (&$result): string {
                         $result = $this->getStyles();
                         return '';
                     })->end()
@@ -368,7 +368,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $result = [];
 
                 $view = (new ClassBuilder)->extends($this->getViewClass())
-                    ->addMethod('getView', function (array $data = []) use (&$result): string {
+                    ->addMethod('getView', function () use (&$result): string {
                         $result = $this->getScripts();
                         return '';
                     })->end()
@@ -401,7 +401,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $assets = [$style1, $style2];
 
                 $view = (new ClassBuilder)->extends($this->getViewClass())
-                    ->addMethod('getView', function (array $data = []): string {
+                    ->addMethod('getView', function (): string {
                         return $this->renderStyles();
                     })->end()
 
@@ -431,7 +431,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 $assets = [$script1, $script2];
 
                 $view = (new ClassBuilder)->extends($this->getViewClass())
-                    ->addMethod('getView', function (array $data = []): string {
+                    ->addMethod('getView', function (): string {
                         return $this->renderScripts();
                     })->end()
 
@@ -455,7 +455,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->classBuilder = (new ClassBuilder)->extends($this->getViewClass())
                 ->addMethod('getView')
                     ->setAccess('protected')
-                    ->setClosure(function (array $data = []): string {
+                    ->setClosure(function (): string {
                         return '';
                     })
                 ->end();
@@ -615,7 +615,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $this->classBuilder = (new ClassBuilder)->extends($this->getViewClass())
                 ->addMethod('getView')
                     ->setAccess('protected')
-                    ->setClosure(function (array $data = []): string {
+                    ->setClosure(function (): string {
                         return '';
                     })
                 ->end()
@@ -650,7 +650,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             $view = (new ClassBuilder)->extends($this->getViewClass())
                 ->addMethod('getView')
                     ->setAccess('protected')
-                    ->setClosure(function (array $data = []) use ($property): string {
+                    ->setClosure(function () use ($property): string {
                         $this->renderProperty($property); // throwns exception.
                     })
                 ->end()
@@ -669,7 +669,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->end()
                 ->addMethod('getView')
                     ->setAccess('protected')
-                    ->setClosure(function (array $data = []) use ($property): string {
+                    ->setClosure(function () use ($property): string {
                         return $this->renderProperty($property);
                     })
                 ->end()
@@ -702,7 +702,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->end()
                 ->addMethod('getView')
                     ->setAccess('protected')
-                    ->setClosure(function (array $argData = [], bool $dispatchArg = true) use ($property, $data, $dispatchRenderEvent): string {
+                    ->setClosure(function () use ($property, $data, $dispatchRenderEvent): string {
                         return $this->renderProperty($property, $data, $dispatchRenderEvent);
                     })
                 ->end()
@@ -723,7 +723,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->end()
                 ->addMethod('getView')
                     ->setAccess('protected')
-                    ->setClosure(function (array $data = []): string {
+                    ->setClosure(function (): string {
                         return '';
                     })
                 ->end()

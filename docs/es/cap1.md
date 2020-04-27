@@ -142,7 +142,7 @@ Para crear vistas existen dos clases fundamentales, ellas son `ThenLabs\Composed
 
 >Estas clases están implementadas con el proyecto [Components](https://github.com/thenlabs/components/) por lo que se recomienda leer la documentación del mismo para entender algunos de sus métodos así como otros conceptos en general.
 
-Las clases de las vistas como requisito mínimo deberán definir el método `getView(array $data = []): string` el cual deberá devolver en una cadena de texto el contenido de la vista.
+Las clases de las vistas como requisito mínimo deberán definir el método `getView(): string` el cual deberá devolver en una cadena de texto el contenido de la vista.
 
 Para el caso de la página crearemos el archivo `src/Layout.php` con el siguiente contenido:
 
@@ -156,7 +156,7 @@ use ThenLabs\ComposedViews\AbstractView;
 
 class Layout extends AbstractView
 {
-    public function getView(array $data = []): string
+    public function getView(): string
     {
         return <<<HTML
 ...
@@ -235,7 +235,7 @@ class Layout extends AbstractView
 {
     // ...
 
-    public function getView(array $data = []): string
+    public function getView(): string
     {
         return <<<HTML
 <!DOCTYPE html>
@@ -330,7 +330,7 @@ De manera automática las propiedades que poseen esta anotación contarán con m
 
 >Si por algún motivo se desea modificar los nombres de estos métodos se debe especificar la anotación de la manera `@Data(getter="getMyTitle", setter="setMyTitle")`.
 
-Como hemos visto hasta ahora, es con el método `render(): string` con el que se obtiene el contenido de la vista, sin embargo, el que implementamos para ello es `getView(array $data = []): string`. De este puede llamar la atención la presencia de su argumento `array $data = []` el cual recibirá los valores de las propiedades que posean la anotación antes comentada. Aunque no lo hemos mencionado hasta ahora, al método `render(): string` es posible llamarlo especificándole también un *array* de datos. El objetivo de esto, es que ciertas vistas pueden depender de datos que solo se especificarán al momento de generar su contenido. Una vez aclarado esto usted debe tener en cuenta que los datos que se pasen de esta manera tendrán prioridades sobre los de las propiedades en caso de que existan coincidencias.
+Como hemos visto hasta ahora, es con el método `render(): string` con el que se obtiene el contenido de la vista, sin embargo, el que implementamos para ello es `getView(): string`. De este último podemos decir que recibe un primer argumento `array $data = []` el cual contendrá los valores de las propiedades que posean la anotación antes comentada. Aunque no lo hemos mencionado hasta ahora, al método `render(): string` es posible llamarlo especificándole también un *array* de datos. El objetivo de esto, es que ciertas vistas pueden depender de datos que solo se especificarán al momento de generar su contenido. Una vez aclarado esto usted debe tener en cuenta que los datos que se pasen de esta manera tendrán prioridades sobre los de las propiedades en caso de que existan coincidencias.
 
 Seguidamente pasamos a hacer las modificaciones al código de la vista de la siguiente manera:
 
@@ -343,7 +343,7 @@ class Layout extends AbstractView
 {
     // ...
 
-    public function getView(array $data = []): string
+    public function getView(): string
     {
         return <<<HTML
   <head>
@@ -407,7 +407,7 @@ class Layout extends AbstractView
      */
     protected $layoutType = 'sidebar-mini';
 
-    public function getView(array $data = []): string
+    public function getView(): string
     {
         return <<<HTML
   ...

@@ -46,7 +46,7 @@ abstract class AbstractView implements ComponentInterface
         }
     }
 
-    abstract protected function getView(array $data = []): string;
+    abstract protected function getView(): string;
 
     public function render(array $data = [], bool $dispatchRenderEvent = true): string
     {
