@@ -20,9 +20,7 @@ Define in your `composer.json` file the next options:
 {
     "require": {
         "thenlabs/composed-views": "dev-master"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
 ```
 
