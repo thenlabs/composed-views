@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "thenlabs/components": "dev-master",
+        "thenlabs/components": "^1.0",
         "artyuum/html-element": "^2.0",
         "wa72/htmlpagedom": "^2.0",
         "doctrine/annotations": "^1.6",
@@ -17,7 +17,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
         "thenlabs/pyramidal-tests": "^1.0",
-        "thenlabs/class-builder": "dev-master"
+        "thenlabs/class-builder": "^1.0"
     },
     "autoload": {
         "psr-4": {

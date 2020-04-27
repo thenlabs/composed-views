@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b79c51a8706e60d9121609a66a740c34",
+    "content-hash": "d11fbb2bc3d8d8aeb523720da26c2d97",
     "packages": [
         {
             "name": "artyuum/html-element",
@@ -989,22 +989,23 @@
         },
         {
             "name": "thenlabs/components",
-            "version": "dev-master",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thenlabs/components.git",
-                "reference": "95bf49bcc64aade4a1291894f02801a6724c5587"
+                "reference": "c70457077d298028330b0f95fb381fdb24486fa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thenlabs/components/zipball/95bf49bcc64aade4a1291894f02801a6724c5587",
-                "reference": "95bf49bcc64aade4a1291894f02801a6724c5587",
+                "url": "https://api.github.com/repos/thenlabs/components/zipball/c70457077d298028330b0f95fb381fdb24486fa3",
+                "reference": "c70457077d298028330b0f95fb381fdb24486fa3",
                 "shasum": ""
             },
             "require": {
                 "composer/semver": "^1.5",
                 "doctrine/annotations": "^1.6",
-                "symfony/event-dispatcher": "^4.2"
+                "symfony/event-dispatcher": "^4.2",
+                "thenlabs/components": "^1.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.12",
@@ -1030,7 +1031,7 @@
                     "name": "ThenLabs Community"
                 }
             ],
-            "time": "2020-04-21T17:35:25+00:00"
+            "time": "2020-04-25T12:48:59+00:00"
         },
         {
             "name": "wa72/htmlpagedom",
@@ -1531,23 +1532,20 @@
         },
         {
             "name": "phpdocumentor/reflection-common",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "63a995caa1ca9e5590304cd845c15ad6d482a62a"
+                "reference": "6568f4687e5b41b054365f9ae03fcb1ed5f2069b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/63a995caa1ca9e5590304cd845c15ad6d482a62a",
-                "reference": "63a995caa1ca9e5590304cd845c15ad6d482a62a",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/6568f4687e5b41b054365f9ae03fcb1ed5f2069b",
+                "reference": "6568f4687e5b41b054365f9ae03fcb1ed5f2069b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6"
             },
             "type": "library",
             "extra": {
@@ -1579,7 +1577,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2018-08-07T13:53:10+00:00"
+            "time": "2020-04-27T09:25:28+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2961,22 +2959,22 @@
         },
         {
             "name": "thenlabs/class-builder",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thenlabs/class-builder.git",
-                "reference": "7764816904fd49776adf0cbdb89fcb9a9e986feb"
+                "reference": "d9890184b357d05090c66bb1f886f4808ed3a405"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thenlabs/class-builder/zipball/7764816904fd49776adf0cbdb89fcb9a9e986feb",
-                "reference": "7764816904fd49776adf0cbdb89fcb9a9e986feb",
+                "url": "https://api.github.com/repos/thenlabs/class-builder/zipball/d9890184b357d05090c66bb1f886f4808ed3a405",
+                "reference": "d9890184b357d05090c66bb1f886f4808ed3a405",
                 "shasum": ""
             },
             "require-dev": {
-                "andaniel05/pyramidaltests": "dev-master",
                 "doctrine/annotations": "^1.8",
-                "friendsofphp/php-cs-fixer": "^2.12"
+                "friendsofphp/php-cs-fixer": "^2.12",
+                "thenlabs/pyramidal-tests": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -2997,7 +2995,7 @@
                     "name": "ThenLabs Community"
                 }
             ],
-            "time": "2020-04-17T12:26:23+00:00"
+            "time": "2020-04-22T16:48:06+00:00"
         },
         {
             "name": "thenlabs/pyramidal-tests",
@@ -3128,10 +3126,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "thenlabs/components": 20,
-        "thenlabs/class-builder": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
