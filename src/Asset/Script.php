@@ -9,7 +9,7 @@ namespace ThenLabs\ComposedViews\Asset;
 class Script extends AbstractAsset
 {
     protected $tagName = 'script';
-    protected $attributes = ['src' => ''];
+    protected $attributes = [];
     protected $innerHtml = '';
     protected $endTag = true;
     protected $selfClosingTag = false;
@@ -18,10 +18,13 @@ class Script extends AbstractAsset
     {
         parent::__construct($name, $version, $uri);
 
-        $this->addFilter(function ($event) {
-            $basePath = $event->getData()['basePath'];
-            $event->setAttribute('src', $basePath . $this->uri);
-            $event->setInnerHtml($this->getSource());
+        $this->addFilter(function ($script) {
+            if ($source = $this->getSource()) {
+                $script->setInnerHtml($this->getSource());
+            } else {
+                $basePath = $script->getData()['basePath'];
+                $script->setAttribute('src', $basePath . $this->uri);
+            }
         });
     }
 

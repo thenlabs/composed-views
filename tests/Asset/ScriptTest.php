@@ -60,7 +60,7 @@ testCase('ScriptTest.php', function () {
         useMacro('tests for constructor arguments');
 
         test('render() returns the expected view', function () {
-            $expected = "<script src=\"{$this->basePath}{$this->uri}\">{$this->source}</script>";
+            $expected = "<script>{$this->source}</script>";
 
             $this->assertEquals($expected, $this->script->render(['basePath' => $this->basePath]));
         });
