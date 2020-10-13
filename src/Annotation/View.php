@@ -7,6 +7,8 @@ use ThenLabs\Components\Annotation\Component;
 
 /**
  * @Annotation
+ *
+ * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
 final class View extends Component
 {
