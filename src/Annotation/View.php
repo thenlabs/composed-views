@@ -8,6 +8,6 @@ use ThenLabs\Components\Annotation\Component;
 /**
  * @Annotation
  */
-class View extends Component
+final class View extends Component
 {
 }
