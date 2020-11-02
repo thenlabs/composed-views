@@ -65,4 +65,11 @@ testCase('ScriptTest.php', function () {
             $this->assertEquals($expected, $this->script->render(['basePath' => $this->basePath]));
         });
     });
+
+    test(function () {
+        $script = new Script('my-script', null, '');
+        $script->setSource("let a = 'a';");
+
+        $this->assertEquals("<script>let a = 'a';</script>", $script->render());
+    });
 });

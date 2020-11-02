@@ -13,6 +13,7 @@ class Script extends AbstractAsset
     protected $innerHtml = '';
     protected $endTag = true;
     protected $selfClosingTag = false;
+    protected $source;
 
     public function __construct(string $name, ?string $version, string $uri)
     {
@@ -30,6 +31,11 @@ class Script extends AbstractAsset
 
     public function getSource(): ?string
     {
-        return null;
+        return $this->source;
+    }
+
+    public function setSource(string $source): void
+    {
+        $this->source = $source;
     }
 }
