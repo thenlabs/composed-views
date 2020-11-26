@@ -21,7 +21,7 @@ class Script extends AbstractAsset
 
         $this->addFilter(function ($script) {
             if ($source = $this->getSource()) {
-                $script->setInnerHtml($source);
+                $script->setInnerHtml(htmlspecialchars($source));
             } else {
                 $basePath = $script->getData()['basePath'];
                 $script->setAttribute('src', $basePath . $this->uri);
