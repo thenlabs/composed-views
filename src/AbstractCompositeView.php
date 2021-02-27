@@ -28,7 +28,9 @@ abstract class AbstractCompositeView extends AbstractView implements CompositeCo
         $result = '';
 
         foreach ($this->children(false) as $child) {
-            $result .= $child->render();
+            if ($child instanceof AbstractView) {
+                $result .= $child->render();
+            }
         }
 
         return $result;
