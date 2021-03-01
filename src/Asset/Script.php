@@ -23,7 +23,8 @@ class Script extends AbstractAsset
             if ($source = $this->getSource()) {
                 $script->setInnerHtml(htmlspecialchars($source));
             } else {
-                $basePath = $script->getData()['basePath'];
+                $data = $script->getData();
+                $basePath = $data['basePath'] ?? '';
                 $script->setAttribute('src', $basePath . $this->uri);
             }
         });

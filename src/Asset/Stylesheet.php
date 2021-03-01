@@ -19,7 +19,8 @@ class Stylesheet extends AbstractAsset
         parent::__construct($name, $version, $uri);
 
         $this->addFilter(function ($event) {
-            $basePath = $event->getData()['basePath'];
+            $data = $event->getData();
+            $basePath = $data['basePath'] ?? '';
             $event->setAttribute('href', $basePath . $this->uri);
         });
     }
