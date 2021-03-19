@@ -176,6 +176,7 @@ abstract class AbstractView implements ComponentInterface
         }
 
         if ($this->{$property} instanceof self) {
+            $data = array_merge(['basePath' => $this->_basePath], $data);
             return $this->{$property}->render($data, $dispatchRenderEvent);
         } else {
             return '';
@@ -192,7 +193,7 @@ abstract class AbstractView implements ComponentInterface
         $result = '';
 
         foreach ($assets as $asset) {
-            $result .= $this->renderAsset($asset);
+            $result .= $this->renderAsset($asset).PHP_EOL;
         }
 
         return $result;
@@ -203,7 +204,7 @@ abstract class AbstractView implements ComponentInterface
         $result = '';
 
         foreach ($this->getStyles() as $style) {
-            $result .= $this->renderAsset($style);
+            $result .= $this->renderAsset($style).PHP_EOL;
         }
 
         return $result;
@@ -214,7 +215,7 @@ abstract class AbstractView implements ComponentInterface
         $result = '';
 
         foreach ($this->getScripts() as $script) {
-            $result .= $this->renderAsset($script);
+            $result .= $this->renderAsset($script).PHP_EOL;
         }
 
         return $result;

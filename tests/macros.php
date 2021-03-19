@@ -5,6 +5,7 @@ namespace ThenLabs\ComposedViews\Tests;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\DependencyInterface;
 use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\Sidebar;
 use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Asset\Script;
@@ -203,7 +204,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
         $view->setBasePath($basePath);
 
-        $this->assertEquals($result1.$result2, $view->render());
+        $this->assertEquals("{$result1}\n{$result2}\n", $view->render());
     });
 
     test('getAdditionalDependencies() includes the sidebars dependencies', function () {
@@ -252,6 +253,34 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
             [$dependencyName1 => $dependency1, $dependencyName2 => $dependency2],
             $view->getAdditionalDependencies()
         );
+    });
+
+    test(function () {
+        $view = (new ClassBuilder)->extends($this->getViewClass())
+            ->addProperty('property1')
+            ->end()
+            ->addMethod('__construct')
+                ->setClosure(function () {
+                    $this->property1 = new class extends AbstractView {
+                        public function getView(array $data = []): string
+                        {
+                            return "{$data['basePath']}";
+                        }
+                    };
+                })
+            ->end()
+            ->addMethod('getView')
+                ->setAccess('protected')
+                ->setClosure(function (): string {
+                    return $this->renderProperty('property1');
+                })
+            ->end()
+            ->newInstance()
+        ;
+
+        $view->setBasePath($basePath = uniqid());
+
+        $this->assertEquals($basePath, $view->render());
     });
 
     testCase('exists a view', function () {
@@ -682,8 +711,10 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
         test('returns view of the view component in property', function () {
             $property = uniqid('property');
             $expectedResult = uniqid();
-            $data = range(1, mt_rand(1, 10));
             $dispatchRenderEvent = boolval(mt_rand(0, 1));
+
+            $data = range(1, mt_rand(1, 10));
+            $data['basePath'] = uniqid();
 
             $otherView = $this->getMockBuilder($this->getViewClass())
                 ->setMethods(['render'])
@@ -713,8 +744,10 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
             $this->assertEquals($expectedResult, $view->render($data, $dispatchRenderEvent));
         });
+    });
 
-        test('bugfix', function () {
+    testCase('bug solutions', function () {
+        test(function () {
             $property = uniqid('property');
             $viewClass = (new ClassBuilder)->extends($this->getViewClass())
                 ->addProperty($property)
