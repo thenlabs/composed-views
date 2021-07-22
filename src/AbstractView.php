@@ -169,7 +169,7 @@ abstract class AbstractView implements ComponentInterface
         return $basePath;
     }
 
-    protected function renderProperty(string $property, array $data = [], bool $dispatchRenderEvent = true): string
+    public function renderProperty(string $property, array $data = [], bool $dispatchRenderEvent = true): string
     {
         if (! property_exists($this, $property)) {
             throw new UnexistentPropertyException($property);
@@ -183,12 +183,12 @@ abstract class AbstractView implements ComponentInterface
         }
     }
 
-    protected function renderAsset(AbstractAsset $asset): string
+    public function renderAsset(AbstractAsset $asset): string
     {
         return $asset->render(['basePath' => $this->_basePath]);
     }
 
-    protected function renderAssets(array $assets): string
+    public function renderAssets(array $assets): string
     {
         $result = '';
 
@@ -199,7 +199,7 @@ abstract class AbstractView implements ComponentInterface
         return $result;
     }
 
-    protected function renderStyles(): string
+    public function renderStyles(): string
     {
         $result = '';
 
@@ -210,7 +210,7 @@ abstract class AbstractView implements ComponentInterface
         return $result;
     }
 
-    protected function renderScripts(): string
+    public function renderScripts(): string
     {
         $result = '';
 
@@ -221,14 +221,14 @@ abstract class AbstractView implements ComponentInterface
         return $result;
     }
 
-    protected function getStyles(): array
+    public function getStyles(): array
     {
         return array_filter($this->_dependencies, function ($asset) {
             return ($asset instanceof Style || $asset instanceof Stylesheet);
         });
     }
 
-    protected function getScripts(): array
+    public function getScripts(): array
     {
         return array_filter($this->_dependencies, function ($asset) {
             return $asset instanceof Script;
