@@ -2,17 +2,16 @@
 
 namespace ThenLabs\ComposedViews\Tests;
 
-use ThenLabs\ComposedViews\AbstractView;
+use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\Components\DependencyInterface;
 use ThenLabs\ComposedViews\AbstractCompositeView;
+use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\HtmlElement;
 use ThenLabs\ComposedViews\TextView;
-use ThenLabs\Components\DependencyInterface;
-use ThenLabs\ClassBuilder\ClassBuilder;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('HtmlElementTest.php', function () {
+testCase('test-HtmlElement.php', function () {
     testCase('$element = new HtmlElement', function () {
         setUp(function () {
             $this->element = new HtmlElement;
@@ -182,7 +181,7 @@ testCase('HtmlElementTest.php', function () {
                 $this->element->setSelfClosingTag(true);
             });
 
-            createMacro('has the expected view', function () {
+            macro('has the expected view', function () {
                 test('has the expected view', function () {
                     $this->assertEquals(
                         '<div />',

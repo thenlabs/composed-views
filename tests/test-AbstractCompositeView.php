@@ -2,20 +2,19 @@
 
 namespace ThenLabs\ComposedViews\Tests;
 
-use ThenLabs\ComposedViews\Sidebar;
-use ThenLabs\ComposedViews\AbstractView;
-use ThenLabs\ComposedViews\AbstractCompositeView;
+use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
 use ThenLabs\Components\CompositeComponentInterface;
 use ThenLabs\Components\Exception\InvalidChildException;
-use ThenLabs\ClassBuilder\ClassBuilder;
+use ThenLabs\ComposedViews\AbstractCompositeView;
+use ThenLabs\ComposedViews\AbstractView;
+use ThenLabs\ComposedViews\Sidebar;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('AbstractCompositeViewTest.php', function () {
-    createMethod('getViewClass', function () {
+testCase('test-AbstractCompositeView.php', function () {
+    method('getViewClass', function () {
         return AbstractCompositeView::class;
     });
 

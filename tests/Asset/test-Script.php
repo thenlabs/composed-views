@@ -2,14 +2,13 @@
 
 namespace ThenLabs\ComposedViews\Tests\Asset;
 
+use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\ComposedViews\Asset\Script;
 use ThenLabs\ComposedViews\Tests\TestCase;
-use ThenLabs\ClassBuilder\ClassBuilder;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('ScriptTest.php', function () {
+testCase('test-Script.php', function () {
     setUp(function () {
         $this->name = uniqid('name');
         $this->version = uniqid();
@@ -17,7 +16,7 @@ testCase('ScriptTest.php', function () {
         $this->basePath = uniqid('http://localhost:8080/');
     });
 
-    createMacro('tests for constructor arguments', function () {
+    macro('tests for constructor arguments', function () {
         test('$script->getName() === $name', function () {
             $this->assertSame($this->name, $this->script->getName());
         });

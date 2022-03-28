@@ -2,16 +2,15 @@
 
 namespace ThenLabs\ComposedViews\Tests;
 
+use BadMethodCallException;
+use ThenLabs\Components\DependencyInterface;
 use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\TextView;
-use ThenLabs\Components\DependencyInterface;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
-use BadMethodCallException;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('TextViewTest.php', function () {
+testCase('test-TextView.php', function () {
     setUp(function () {
         $this->content = uniqid();
         $this->view = new TextView($this->content);

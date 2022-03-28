@@ -2,14 +2,13 @@
 
 namespace ThenLabs\ComposedViews\Tests;
 
-use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\AbstractCompositeView;
+use ThenLabs\ComposedViews\AbstractView;
 use ThenLabs\ComposedViews\Sidebar;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('SidebarTest.php', function () {
+testCase('test-Sidebar.php', function () {
     setUp(function () {
         $this->sidebar = new Sidebar;
     });

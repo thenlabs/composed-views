@@ -2,21 +2,20 @@
 
 namespace ThenLabs\ComposedViews\Tests\Asset;
 
+use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Tests\TestCase;
-use ThenLabs\ClassBuilder\ClassBuilder;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('StyleTest.php', function () {
+testCase('test-Style.php', function () {
     setUp(function () {
         $this->name = uniqid('name');
         $this->version = uniqid();
         $this->uri = uniqid('uri');
     });
 
-    createMacro('tests for constructor arguments', function () {
+    macro('tests for constructor arguments', function () {
         test('$style->getName() === $name', function () {
             $this->assertSame($this->name, $this->style->getName());
         });

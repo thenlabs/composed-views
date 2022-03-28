@@ -2,23 +2,23 @@
 
 namespace ThenLabs\ComposedViews\Tests;
 
+use BadMethodCallException;
+use stdClass;
+use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\DependencyInterface;
-use ThenLabs\ClassBuilder\ClassBuilder;
 use ThenLabs\ComposedViews\AbstractView;
-use ThenLabs\ComposedViews\Sidebar;
 use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Asset\Script;
 use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
-use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
-use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
+use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
+use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
+use ThenLabs\ComposedViews\Sidebar;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
-use BadMethodCallException;
-use stdClass;
 
-createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php', function () {
+macro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php', function () {
     test('the view is instance of ThenLabs\Components\ComponentInterface', function () {
         $view = $this->getMockForAbstractClass($this->getViewClass());
 
@@ -443,8 +443,8 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
                 $result = $view->render();
 
-                $this->assertContains($result1, $result);
-                $this->assertContains($result2, $result);
+                $this->assertStringContainsString($result1, $result);
+                $this->assertStringContainsString($result2, $result);
             });
 
             test('renderScripts()', function () {
@@ -473,8 +473,8 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
 
                 $result = $view->render();
 
-                $this->assertContains($result1, $result);
-                $this->assertContains($result2, $result);
+                $this->assertStringContainsString($result1, $result);
+                $this->assertStringContainsString($result2, $result);
             });
         });
     });
@@ -490,7 +490,7 @@ createMacro('commons for AbstractViewTest.php and AbstractCompositeViewTest.php'
                 ->end();
         });
 
-        createMacro('getter and setter tests', function () {
+        macro('getter and setter tests', function () {
             test('exists a magic getter for the property', function () {
                 $this->assertEquals(
                     $this->propertyValue,

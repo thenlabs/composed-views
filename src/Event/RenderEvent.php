@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ThenLabs\ComposedViews\Event;
 
-use ThenLabs\ComposedViews\ProxyToCrawlerTrait;
 use ThenLabs\Components\Event\Event;
+use ThenLabs\ComposedViews\ProxyToCrawlerTrait;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**

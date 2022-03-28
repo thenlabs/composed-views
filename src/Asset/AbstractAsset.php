@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ThenLabs\ComposedViews\Asset;
 
-use ThenLabs\ComposedViews\HtmlElement;
 use ThenLabs\ComposedViews\Annotation\Data;
+use ThenLabs\ComposedViews\HtmlElement;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

@@ -2,15 +2,14 @@
 
 namespace ThenLabs\ComposedViews\Tests\Event;
 
+use BadMethodCallException;
 use ThenLabs\ComposedViews\Event\RenderEvent;
 use ThenLabs\ComposedViews\Tests\TestCase;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
-use BadMethodCallException;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('RenderEventTest.php', function () {
+testCase('test-RenderEvent.php', function () {
     test('is a proxy to the crawler property', function () {
         $method = uniqid('method');
         $argument = uniqid();

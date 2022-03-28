@@ -3,23 +3,23 @@ declare(strict_types=1);
 
 namespace ThenLabs\ComposedViews;
 
+use BadMethodCallException;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use ReflectionClass;
+use ThenLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
-use ThenLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
+use ThenLabs\ComposedViews\Annotation\Data as DataAnnotation;
+use ThenLabs\ComposedViews\Annotation\Sidebar as SidebarAnnotation;
+use ThenLabs\ComposedViews\Annotation\View as ViewAnnotation;
 use ThenLabs\ComposedViews\Asset\AbstractAsset;
 use ThenLabs\ComposedViews\Asset\Script;
 use ThenLabs\ComposedViews\Asset\Style;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Event\RenderEvent;
-use ThenLabs\ComposedViews\Annotation\Data as DataAnnotation;
-use ThenLabs\ComposedViews\Annotation\View as ViewAnnotation;
-use ThenLabs\ComposedViews\Annotation\Sidebar as SidebarAnnotation;
-use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 use ThenLabs\ComposedViews\Exception\InvalidPropertyValueException;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use ReflectionClass;
-use BadMethodCallException;
+use ThenLabs\ComposedViews\Exception\UnexistentPropertyException;
 
 AnnotationRegistry::registerFile(__DIR__.'/Annotation/Data.php');
 AnnotationRegistry::registerFile(__DIR__.'/Annotation/Sidebar.php');
@@ -37,6 +37,7 @@ abstract class AbstractView implements ComponentInterface
 
     private $_basePath;
     private $_dependencies = [];
+    private $_model;
 
     public function __construct()
     {
@@ -119,40 +120,42 @@ abstract class AbstractView implements ComponentInterface
 
     public function getModel(): array
     {
-        static $model = null;
+        if (! is_null($this->_model)) {
+            return $this->_model;
+        }
 
-        if (! $model) {
-            $model = [
-                'data' => [],
-                'views' => [],
-                'sidebars' => [],
-            ];
+        $model = [
+            'data' => [],
+            'views' => [],
+            'sidebars' => [],
+        ];
 
-            $class = new ReflectionClass($this);
-            $reader = new AnnotationReader();
+        $class = new ReflectionClass($this);
+        $reader = new AnnotationReader();
 
-            foreach ($class->getProperties() as $property) {
-                foreach ($reader->getPropertyAnnotations($property) as $annotation) {
-                    $propertyName = $property->getName();
+        foreach ($class->getProperties() as $property) {
+            foreach ($reader->getPropertyAnnotations($property) as $annotation) {
+                $propertyName = $property->getName();
 
-                    if ($annotation instanceof DataAnnotation) {
-                        $model['data'][$propertyName] = [
-                            'getter' => $annotation->getter ?? 'get'.ucfirst($propertyName),
-                            'setter' => $annotation->setter ?? 'set'.ucfirst($propertyName),
-                            'values' => $annotation->values,
-                        ];
-                    }
+                if ($annotation instanceof DataAnnotation) {
+                    $model['data'][$propertyName] = [
+                        'getter' => $annotation->getter ?? 'get'.ucfirst($propertyName),
+                        'setter' => $annotation->setter ?? 'set'.ucfirst($propertyName),
+                        'values' => $annotation->values,
+                    ];
+                }
 
-                    if ($annotation instanceof ViewAnnotation) {
-                        $model['views'][$propertyName] = [];
-                    }
+                if ($annotation instanceof ViewAnnotation) {
+                    $model['views'][$propertyName] = [];
+                }
 
-                    if ($annotation instanceof SidebarAnnotation) {
-                        $model['sidebars'][$propertyName] = [];
-                    }
+                if ($annotation instanceof SidebarAnnotation) {
+                    $model['sidebars'][$propertyName] = [];
                 }
             }
         }
+
+        $this->_model = $model;
 
         return $model;
     }

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ThenLabs\ComposedViews;
 
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 use BadMethodCallException;
+use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

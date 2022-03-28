@@ -5,10 +5,9 @@ namespace ThenLabs\ComposedViews\Tests\Asset;
 use ThenLabs\ComposedViews\Asset\Stylesheet;
 use ThenLabs\ComposedViews\Tests\TestCase;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('StylesheetTest.php', function () {
+testCase('test-Stylesheet.php', function () {
     testCase('$stylesheet = new Stylesheet($name, $version, $uri)', function () {
         setUp(function () {
             $this->name = uniqid('name');
