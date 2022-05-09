@@ -10,7 +10,7 @@
     "require": {
         "thenlabs/components": "^1.0",
         "artyuum/html-element": "^4.0",
-        "wa72/htmlpagedom": "^2.0",
+        "wa72/htmlpagedom": ">=2.0",
         "doctrine/annotations": "^1.6"
     },
     "require-dev": {
