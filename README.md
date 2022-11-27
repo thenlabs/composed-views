@@ -6,7 +6,7 @@ Welcome to ComposedViews, a PHP framework for build redistribuibles views and co
 ## Documentation.
 
 1. English (Pending)
-2. [Español](http://thenlabs.org/docs/composed-views/master/es/index.html)
+2. [Español](https://github.com/thenlabs/doc/blob/master/composed-views/1.0/en/index.md)
 
 ## Licencia.
 
